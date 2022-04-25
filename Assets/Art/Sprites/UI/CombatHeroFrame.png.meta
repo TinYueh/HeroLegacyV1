@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -508,6 +509,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      CombatHeroFrame_1: 2001250281557771660
+      CombatHeroFrame_0: -98141792790281305
+      CombatHeroFrame_12: -1701487792186439298
+      CombatHeroFrame_6: -7253682408402103115
+      CombatHeroFrame_14: 7095720471653651727
+      CombatHeroFrame_3: -698232764218075950
+      CombatHeroFrame_4: 4399134526096193334
+      CombatHeroFrame_7: 2293505346282822593
+      CombatHeroFrame_2: -942807383382206913
+      CombatHeroFrame_8: -6900361406514681870
+      CombatHeroFrame_10: -622007204334366052
+      CombatHeroFrame_11: 8829829863801116109
+      CombatHeroFrame_13: -8904043305396472139
+      CombatHeroFrame_5: 1013017018959472567
+      CombatHeroFrame_9: 6692673915822920723
+      CombatHeroFrame_15: 5820053286727954094
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
