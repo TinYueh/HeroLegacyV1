@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FullScreenSprite : MonoBehaviour
 {
-    void Awake()
+    private void Awake()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -28,12 +28,12 @@ public class FullScreenSprite : MonoBehaviour
         transform.localScale = scale;
     }
 
-    void Start()
+    private void Start()
     {
         
     }
 
-    void Update()
+    private void Update()
     {
         
     }

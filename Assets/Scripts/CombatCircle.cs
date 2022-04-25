@@ -12,40 +12,27 @@ public class CombatCircle : MonoBehaviour
         E_COMBAT_CIRCLE_STATE_LOCK,     // ­áµ²
     }
 
-    float _rotateDeltaAngle = 0f;
-    public float RotateDeltaAngle
-    {
-        set
-        {
-            _rotateDeltaAngle = value;
-        }
-    }
+    public float RotateAnglePerFrame { private get; set; } = 0f;
+    public float RotateAngleRemaining { private get; set; } = 0f;
 
-    float _rotateRemainingAngle = 0f;
-    public float RotateRemainingAngle
-    {
-        set
-        {
-            _rotateRemainingAngle = value;
-        }
-    }
+    private eCombatCircleState _combatCircleState = CombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
 
-    eCombatCircleState _combatCircleState = CombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
     public void Rotate()
     {
         _combatCircleState = CombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
     }
+
     public bool IsStandby()
     {
         return (_combatCircleState == CombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY);
     }
 
-    void Start()
+    private void Start()
     {
         _combatCircleState = CombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
     }
 
-    void Update()
+    private void Update()
     {
         
     }
@@ -54,24 +41,24 @@ public class CombatCircle : MonoBehaviour
     {
         if (_combatCircleState == CombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE)
         {
-            float rotateAngleThisFrame = 0f;
+            float rotateAngleDelta = 0f;
 
-            if (_rotateDeltaAngle > 0)
+            if (RotateAnglePerFrame > 0)
             {
-                rotateAngleThisFrame = (_rotateRemainingAngle < _rotateDeltaAngle) ? _rotateRemainingAngle : _rotateDeltaAngle;
-                _rotateRemainingAngle -= _rotateDeltaAngle;
+                rotateAngleDelta = (RotateAngleRemaining < RotateAnglePerFrame) ? RotateAngleRemaining : RotateAnglePerFrame;
+                RotateAngleRemaining -= rotateAngleDelta;
             }
-            else if (_rotateDeltaAngle < 0)
+            else if (RotateAnglePerFrame < 0)
             {
-                rotateAngleThisFrame = (_rotateRemainingAngle < -_rotateDeltaAngle) ? -_rotateRemainingAngle : _rotateDeltaAngle;
-                _rotateRemainingAngle += _rotateDeltaAngle;
+                rotateAngleDelta = (RotateAngleRemaining < -RotateAnglePerFrame) ? -RotateAngleRemaining : RotateAnglePerFrame;
+                RotateAngleRemaining += rotateAngleDelta;
             }
 
-            this.transform.Rotate(0, 0, rotateAngleThisFrame);
+            this.transform.Rotate(0, 0, rotateAngleDelta);
 
-            if (_rotateRemainingAngle <= 0)
+            if (RotateAngleRemaining <= 0)
             {
-                _rotateDeltaAngle = 0;
+                RotateAnglePerFrame = 0;
                 _combatCircleState = CombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
             }
         }

@@ -9,56 +9,57 @@ public class CombatCircleController : MonoBehaviour
     [SerializeField]
     CombatCircle _combatCircleOpponent = null;
     [SerializeField]
-    float _rotateDeltaAngle = 0f;   // 每 frame 旋轉角度
+    private float _rotateAnglePerFrame = 0f;        // 每個 frame 的旋轉角度
 
-    const float _rotateTotalAngle = 60f; // 每次指令的旋轉角度
+    private const float _rotateAnglePerTime = 60f;  // 每次指令的旋轉角度
 
-    void Start()
+    private EnemyAI _enemyAI = null;
+
+    private void Awake()
     {
+        _enemyAI = GetComponent<EnemyAI>();
     }
 
-    void Update()
+    private void Start()
+    {
+
+    }
+
+    private void Update()
     {
         if (_combatCirclePlayer.IsStandby() && _combatCircleOpponent.IsStandby())
         {
             if (Input.GetKey("up"))
             {
-                RotateCombatCircle(false);
+                // 順時鐘
+                RotateCombatCircle(_combatCirclePlayer, false);
+
+                // Opponent
+                RotateCombatCircle(_combatCircleOpponent, _enemyAI.GetNextRotateDirection());
             }
             else if (Input.GetKey("down"))
             {
-                RotateCombatCircle(true);
+                // 逆時鐘
+                RotateCombatCircle(_combatCirclePlayer, true);
+
+                // Opponent
+                RotateCombatCircle(_combatCircleOpponent, _enemyAI.GetNextRotateDirection());
             }
         }
     }
 
-    private void FixedUpdate()
+    private void RotateCombatCircle(CombatCircle combatCircle, bool isClockWiseDirection)
     {
-        //if (_combatCircleState == CombatCircleController.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE)
-        //{
-        //    _combatCirclePlayer.transform.Rotate(0, 0, _rotateDeltaValue);
-
-        //    _rotateTotalValue -= _rotateDeltaValue;
-
-        //    if (_rotateTotalValue == 0)
-        //    {
-        //        _combatCircleState = CombatCircleController.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
-        //    }
-        //}
-    }
-
-    private void RotateCombatCircle(bool isClockWise)
-    {
-        if (isClockWise)
+        if (isClockWiseDirection)
         {
-            _combatCirclePlayer.RotateDeltaAngle = -_rotateDeltaAngle;
+            combatCircle.RotateAnglePerFrame = -_rotateAnglePerFrame;
         }
         else
         {
-            _combatCirclePlayer.RotateDeltaAngle = _rotateDeltaAngle;
+            combatCircle.RotateAnglePerFrame = _rotateAnglePerFrame;
         }
 
-        _combatCirclePlayer.RotateRemainingAngle = _rotateTotalAngle;
-        _combatCirclePlayer.Rotate();
+        combatCircle.RotateAngleRemaining = _rotateAnglePerTime;
+        combatCircle.Rotate();
     }
 }
