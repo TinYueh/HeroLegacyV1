@@ -13,17 +13,17 @@ public class Hero : MonoBehaviour
     }
 
     [SerializeField]
-    private int _life = 0;          // ¥Í©R
+    private int _life = 0;          // ç”Ÿå‘½
     [SerializeField]
-    private int _attack = 0;        // §ð
+    private int _attack = 0;        // æ”»
     [SerializeField]
-    private int _defence = 0;       // ¨¾
+    private int _defence = 0;       // é˜²
     [SerializeField]
-    private int _intelligent = 0;   // ´¼
+    private int _intelligent = 0;   // æ™º
     [SerializeField]
-    private int _resist = 0;        // §Ü
+    private int _resist = 0;        // æŠ—
     [SerializeField]
-    private int _speed = 0;         // ³t
+    private int _speed = 0;         // é€Ÿ
 
     private void Start()
     {

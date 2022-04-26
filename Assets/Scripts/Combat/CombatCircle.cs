@@ -7,9 +7,9 @@ public class CombatCircle : MonoBehaviour
     enum eCombatCircleState
     {
         E_COMBAT_CIRCLE_STATE_NA = 0,
-        E_COMBAT_CIRCLE_STATE_STANDBY,  // ´›æ˜
-        E_COMBAT_CIRCLE_STATE_ROTATE,   // ±€¬‡
-        E_COMBAT_CIRCLE_STATE_LOCK,     // ≠·µ≤
+        E_COMBAT_CIRCLE_STATE_STANDBY,  // ÂæÖÊ©ü
+        E_COMBAT_CIRCLE_STATE_ROTATE,   // ÊóãËΩâ
+        E_COMBAT_CIRCLE_STATE_LOCK,     // ÂáçÁµê
     }
 
     [SerializeField]

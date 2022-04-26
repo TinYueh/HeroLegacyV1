@@ -9,13 +9,13 @@ public class CombatCircleController : MonoBehaviour
     [SerializeField]
     CombatCircle _combatCircleOpponent = null;
     [SerializeField]
-    private float _rotateAnglePerFrame = 0f;        // ¨C­Ó frame ªº±ÛÂà¨¤«×
+    private float _rotateAnglePerFrame = 0f;        // æ¯å€‹ frame çš„æ—‹è½‰è§’åº¦
     [SerializeField]
     private float _combatCirclePlayerInitialAngle = 0f;
     [SerializeField]
     private float _combatCircleOpponentInitialAngle = 0f;
 
-    private const float _rotateAnglePerTime = 60f;  // ¨C¦¸«ü¥Oªº±ÛÂà¨¤«×
+    private const float _rotateAnglePerTime = 60f;  // æ¯æ¬¡æŒ‡ä»¤çš„æ—‹è½‰è§’åº¦
 
     private EnemyAI _enemyAI = null;
 
@@ -36,7 +36,7 @@ public class CombatCircleController : MonoBehaviour
         {
             if (Input.GetKey("up"))
             {
-                // ¶¶®ÉÄÁ
+                // é †æ™‚é˜
                 RotateCombatCircle(_combatCirclePlayer, false);
 
                 // Opponent
@@ -44,7 +44,7 @@ public class CombatCircleController : MonoBehaviour
             }
             else if (Input.GetKey("down"))
             {
-                // °f®ÉÄÁ
+                // é€†æ™‚é˜
                 RotateCombatCircle(_combatCirclePlayer, true);
 
                 // Opponent
