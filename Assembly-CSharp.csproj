@@ -57,10 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Environment\FullScreenSprite.cs" />
+    <Compile Include="Assets\Scripts\SystemCore\CsvData.cs" />
     <Compile Include="Assets\Scripts\Combat\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\Combat\CombatCircle.cs" />
     <Compile Include="Assets\Scripts\Combat\CombatCircleController.cs" />
+    <Compile Include="Assets\Scripts\SystemCore\CsvLoader.cs" />
     <Compile Include="Assets\Scripts\Hero\Hero.cs" />
+    <Compile Include="Assets\Scripts\SystemCore\GameConst.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
