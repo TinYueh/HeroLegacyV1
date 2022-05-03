@@ -57,13 +57,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Environment\FullScreenSprite.cs" />
-    <Compile Include="Assets\Scripts\SystemCore\CsvData.cs" />
+    <Compile Include="Assets\Scripts\Define\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Combat\CombatManager.cs" />
+    <Compile Include="Assets\Scripts\System\TableManager.cs" />
+    <Compile Include="Assets\Scripts\Define\CsvData.cs" />
     <Compile Include="Assets\Scripts\Combat\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\Define\GameConst.cs" />
+    <Compile Include="Assets\Scripts\Combat\CombatCore.cs" />
+    <Compile Include="Assets\Scripts\System\SoundManager.cs" />
+    <Compile Include="Assets\Scripts\System\UIManager.cs" />
+    <Compile Include="Assets\Scripts\System\SystemCore.cs" />
     <Compile Include="Assets\Scripts\Combat\CombatCircle.cs" />
     <Compile Include="Assets\Scripts\Combat\CombatCircleController.cs" />
-    <Compile Include="Assets\Scripts\SystemCore\CsvLoader.cs" />
     <Compile Include="Assets\Scripts\Hero\Hero.cs" />
-    <Compile Include="Assets\Scripts\SystemCore\GameConst.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -707,6 +713,24 @@
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>Library\ScriptAssemblies\Unity.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Addressables.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Addressables.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.CacheServer">
+      <HintPath>Library\ScriptAssemblies\UnityEditor.CacheServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>Library\ScriptAssemblies\Unity.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ScriptableBuildPipeline">
+      <HintPath>Library\ScriptAssemblies\Unity.ScriptableBuildPipeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ScriptableBuildPipeline.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
