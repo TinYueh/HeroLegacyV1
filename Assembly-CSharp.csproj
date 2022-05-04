@@ -70,7 +70,11 @@
     <Compile Include="Assets\Script\Define\AssetsPath.cs" />
     <Compile Include="Assets\Script\Combat\CombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\CombatCircleController.cs" />
-    <Compile Include="Assets\Script\Hero\Hero.cs" />
+    <Compile Include="Assets\Script\Define\GameData.cs" />
+    <Compile Include="Assets\Script\Role\Role.cs" />
+    <Compile Include="Assets\Script\Role\HeroManager.cs" />
+    <Compile Include="Assets\Script\Role\Hero.cs" />
+    <Compile Include="Assets\Script\Role\Mob.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

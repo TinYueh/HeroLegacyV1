@@ -9,6 +9,7 @@ public class SystemCore : MonoBehaviour
         TableManager.Instance.Init();
         UIManager.Instance.Init();
         SoundManager.Instance.Init();
+        HeroManager.Instance.Init();
     }
 
     private void Start()

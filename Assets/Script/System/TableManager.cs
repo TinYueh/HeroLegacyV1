@@ -12,7 +12,7 @@ public class TableManager : Singleton<TableManager>
     // 新增 Table: 定義 dictionary
 
     // LoadCsvData delegate
-    private delegate bool DlgLoadCsvData(string[] rowData, ref int refIndex);
+    private delegate bool DlgLoadCsvData(string[] rowData, out int outIndex);
 
     // LoadCsvData delegate dictionary
     private Dictionary<string, DlgLoadCsvData> _dicLoadCsvFunc = new Dictionary<string, DlgLoadCsvData>();
@@ -57,7 +57,7 @@ public class TableManager : Singleton<TableManager>
                 int index = 0;
                 string[] rowData = fileData[i].Split(',');
 
-                if (dlgLoadCsvFunc(rowData, ref index) == false)
+                if (dlgLoadCsvFunc(rowData, out index) == false)
                 {
                     Debug.LogError("Fail to exec load function, FileName: " + fileName + ", Row: " + i);
                 }
@@ -78,53 +78,53 @@ public class TableManager : Singleton<TableManager>
         // 新增 Table: 註冊
     }
 
-    private bool LoadHeroCsvData(string[] rowData, ref int refIndex)
+    private bool LoadHeroCsvData(string[] rowData, out int outIndex)
     {
         HeroCsvData data = new HeroCsvData();
-        refIndex = 0;
+        outIndex = 0;
 
-        data.id = int.Parse(rowData[refIndex]);
-        data.portrait = int.Parse(rowData[++refIndex]);
-        data.emblem = int.Parse(rowData[++refIndex]);
-        data.name = int.Parse(rowData[++refIndex]);
-        data.talent = int.Parse(rowData[++refIndex]);
-        data.life = int.Parse(rowData[++refIndex]);
-        data.attack = int.Parse(rowData[++refIndex]);
-        data.defence = int.Parse(rowData[++refIndex]);
+        data.id = int.Parse(rowData[outIndex]);
+        data.portrait = int.Parse(rowData[++outIndex]);
+        data.emblem = int.Parse(rowData[++outIndex]);
+        data.name = int.Parse(rowData[++outIndex]);
+        data.talent = int.Parse(rowData[++outIndex]);
+        data.life = int.Parse(rowData[++outIndex]);
+        data.attack = int.Parse(rowData[++outIndex]);
+        data.defence = int.Parse(rowData[++outIndex]);
 
         _dicHeroCsvData.Add(data.id, data);
 
         return true;
     }
 
-    private bool LoadMobCsvData(string[] rowData, ref int refIndex)
+    private bool LoadMobCsvData(string[] rowData, out int outIndex)
     {
         MobCsvData data = new MobCsvData();
-        refIndex = 0;
+        outIndex = 0;
 
-        data.id = int.Parse(rowData[refIndex]);
-        data.portrait = int.Parse(rowData[++refIndex]);
-        data.emblem = int.Parse(rowData[++refIndex]);
-        data.name = int.Parse(rowData[++refIndex]);
-        data.life = int.Parse(rowData[++refIndex]);
-        data.attack = int.Parse(rowData[++refIndex]);
-        data.defence = int.Parse(rowData[++refIndex]);
-        data.ai = int.Parse(rowData[++refIndex]);
+        data.id = int.Parse(rowData[outIndex]);
+        data.portrait = int.Parse(rowData[++outIndex]);
+        data.emblem = int.Parse(rowData[++outIndex]);
+        data.name = int.Parse(rowData[++outIndex]);
+        data.life = int.Parse(rowData[++outIndex]);
+        data.attack = int.Parse(rowData[++outIndex]);
+        data.defence = int.Parse(rowData[++outIndex]);
+        data.ai = int.Parse(rowData[++outIndex]);
 
         _dicMobCsvData.Add(data.id, data);
 
         return true;
     }
 
-    private bool LoadTeamCsvData(string[] rowData, ref int refIndex)
+    private bool LoadTeamCsvData(string[] rowData, out int outIndex)
     {
         TeamCsvData data = new TeamCsvData();
-        refIndex = 0;
+        outIndex = 0;
 
-        data.id = int.Parse(rowData[refIndex]);
+        data.id = int.Parse(rowData[outIndex]);
         for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
         {
-            data.mobId[i] = int.Parse(rowData[++refIndex]);
+            data.mobId[i] = int.Parse(rowData[++outIndex]);
         }
 
         _dicTeamCsvData.Add(data.id, data);
@@ -134,40 +134,40 @@ public class TableManager : Singleton<TableManager>
 
     // 新增 Table: 定義 Load function
 
-    public HeroCsvData GetHeroCsvData(int id)
+    public bool GetHeroCsvData(int id, out HeroCsvData outCsvData)
     {
-        HeroCsvData csvData = new HeroCsvData();
-
-        if (_dicHeroCsvData.TryGetValue(id, out csvData))
+        if (_dicHeroCsvData.TryGetValue(id, out outCsvData))
         {
-            return csvData;
+            return true;
         }
 
-        return null;
+        outCsvData = null;
+
+        return false;
     }
 
-    public MobCsvData GetMobCsvData(int id)
+    public bool GetMobCsvData(int id, out MobCsvData outCsvData)
     {
-        MobCsvData csvData = new MobCsvData();
-
-        if (_dicMobCsvData.TryGetValue(id, out csvData))
+        if (_dicMobCsvData.TryGetValue(id, out outCsvData))
         {
-            return csvData;
+            return true;
         }
 
-        return null;
+        outCsvData = null;
+
+        return false;
     }
 
-    public TeamCsvData GetTeamCsvData(int id)
+    public bool GetTeamCsvData(int id, out TeamCsvData outCsvData)
     {
-        TeamCsvData csvData = new TeamCsvData();
-
-        if (_dicTeamCsvData.TryGetValue(id, out csvData))
+        if (_dicTeamCsvData.TryGetValue(id, out outCsvData))
         {
-            return csvData;
+            return true;
         }
 
-        return null;
+        outCsvData = null;
+
+        return false;
     }
 
     // 新增 Table: 定義 Get function
