@@ -40,9 +40,9 @@ public class TableManager : Singleton<TableManager>
             string fileName = t.name.Substring(preIndex + 3);
 
             // Load function
-            DlgLoadCsvData dlgLoadCsvFunc;
-            _dicLoadCsvFunc.TryGetValue(fileName, out dlgLoadCsvFunc);
-            if (dlgLoadCsvFunc == null)
+            DlgLoadCsvData dlgFunc = null;
+            _dicLoadCsvFunc.TryGetValue(fileName, out dlgFunc);
+            if (dlgFunc == null)
             {
                 Debug.LogError("Not found LoadCsvFunc for " + fileName);
                 continue;
@@ -57,7 +57,7 @@ public class TableManager : Singleton<TableManager>
                 int index = 0;
                 string[] rowData = fileData[i].Split(',');
 
-                if (dlgLoadCsvFunc(rowData, out index) == false)
+                if (dlgFunc(rowData, out index) == false)
                 {
                     Debug.LogError("Fail to exec load function, FileName: " + fileName + ", Row: " + i);
                 }

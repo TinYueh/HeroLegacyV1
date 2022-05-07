@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEditor;
 
-public class SoundManager : Singleton<SoundManager>
+public class AudioManager : Singleton<AudioManager>
 {
     private AudioSource _bgmSource = null;
     private AudioSource _sfxSource = null;
@@ -23,7 +23,7 @@ public class SoundManager : Singleton<SoundManager>
             Debug.LogError("Not found Sfx AudioSource");
         }
 
-        Debug.Log("SoundManager Init OK");
+        Debug.Log("AudioManager Init OK");
     }
 
     public void PlayBgm(int id, bool isLoop)

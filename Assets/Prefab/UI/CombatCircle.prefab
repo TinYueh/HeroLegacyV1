@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 283113243}
   - component: {fileID: 283113242}
   m_Layer: 5
-  m_Name: HeroJob
+  m_Name: Emblem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1146244430}
   m_RootOrder: 0
@@ -87,7 +88,7 @@ GameObject:
   - component: {fileID: 331365981}
   - component: {fileID: 331365980}
   m_Layer: 5
-  m_Name: HeroSlot4
+  m_Name: RoleSlot4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,6 +104,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1169042312}
   m_Father: {fileID: 440678178263446132}
@@ -163,7 +165,7 @@ GameObject:
   - component: {fileID: 406131668}
   - component: {fileID: 406131667}
   m_Layer: 5
-  m_Name: HeroJob
+  m_Name: Emblem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,6 +181,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 673067808}
   m_RootOrder: 0
@@ -238,7 +241,7 @@ GameObject:
   - component: {fileID: 673067810}
   - component: {fileID: 673067809}
   m_Layer: 5
-  m_Name: HeroSlot1
+  m_Name: RoleSlot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,6 +257,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 406131666}
   m_Father: {fileID: 440678178263446132}
@@ -314,7 +318,7 @@ GameObject:
   - component: {fileID: 715554559}
   - component: {fileID: 715554558}
   m_Layer: 5
-  m_Name: HeroSlot5
+  m_Name: RoleSlot5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -330,6 +334,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2124723568}
   m_Father: {fileID: 440678178263446132}
@@ -390,7 +395,7 @@ GameObject:
   - component: {fileID: 1146244432}
   - component: {fileID: 1146244431}
   m_Layer: 5
-  m_Name: HeroSlot6
+  m_Name: RoleSlot6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -406,6 +411,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 283113241}
   m_Father: {fileID: 440678178263446132}
@@ -466,7 +472,7 @@ GameObject:
   - component: {fileID: 1169042314}
   - component: {fileID: 1169042313}
   m_Layer: 5
-  m_Name: HeroJob
+  m_Name: Emblem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,6 +488,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 331365979}
   m_RootOrder: 0
@@ -541,7 +548,7 @@ GameObject:
   - component: {fileID: 1209335427}
   - component: {fileID: 1209335426}
   m_Layer: 5
-  m_Name: HeroJob
+  m_Name: Emblem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -557,6 +564,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1364994273}
   m_RootOrder: 0
@@ -616,7 +624,7 @@ GameObject:
   - component: {fileID: 1364994275}
   - component: {fileID: 1364994274}
   m_Layer: 5
-  m_Name: HeroSlot3
+  m_Name: RoleSlot3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -632,6 +640,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1209335425}
   m_Father: {fileID: 440678178263446132}
@@ -692,7 +701,7 @@ GameObject:
   - component: {fileID: 1704645474}
   - component: {fileID: 1704645473}
   m_Layer: 5
-  m_Name: HeroJob
+  m_Name: Emblem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -708,6 +717,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2008683353}
   m_RootOrder: 0
@@ -767,7 +777,7 @@ GameObject:
   - component: {fileID: 2008683355}
   - component: {fileID: 2008683354}
   m_Layer: 5
-  m_Name: HeroSlot2
+  m_Name: RoleSlot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -783,6 +793,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1704645472}
   m_Father: {fileID: 440678178263446132}
@@ -843,7 +854,7 @@ GameObject:
   - component: {fileID: 2124723570}
   - component: {fileID: 2124723569}
   m_Layer: 5
-  m_Name: HeroJob
+  m_Name: Emblem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,6 +870,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 715554557}
   m_RootOrder: 0
@@ -935,6 +947,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 673067808}
   - {fileID: 2008683353}
@@ -1000,7 +1013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9745581e1aea90b4cbfc896a754304da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _listHeroSlot:
+  _listRoleSlot:
   - {fileID: 673067807}
   - {fileID: 2008683352}
   - {fileID: 1364994272}
