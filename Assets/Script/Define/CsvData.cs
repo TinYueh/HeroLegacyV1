@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class HeroCsvData
 {
-    public int id;
-    public int portrait;
-    public int emblem;
-    public int name;
-    public int talent;
-    public int life;
-    public int attack;
-    public int defence;
+    public int _id;
+    public int _portrait;
+    public int _emblem;
+    public int _name;
+    public int _talent;
+    public int _life;
+    public int _attack;
+    public int _defence;
 }
 
 public class MobCsvData
 {
-    public int id;
-    public int portrait;
-    public int emblem;
-    public int name;
-    public int life;
-    public int attack;
-    public int defence;
-    public int ai;
+    public int _id;
+    public int _portrait;
+    public int _emblem;
+    public int _name;
+    public int _life;
+    public int _attack;
+    public int _defence;
+    public int _ai;
 }
 
 public class TeamCsvData
 {
-    public int id;
-    public int[] mobId = new int[GameConst.MAX_TEAM_MEMBER];
+    public int _id;
+    public int[] _arrRoleId = new int[GameConst.MAX_TEAM_MEMBER];
 }
 
 // 新增 Table: 定義結構

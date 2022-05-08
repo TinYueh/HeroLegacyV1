@@ -12,7 +12,7 @@ public class TableManager : Singleton<TableManager>
     // 新增 Table: 定義 dictionary
 
     // LoadCsvData delegate
-    private delegate bool DlgLoadCsvData(string[] rowData, ref int refIndex);
+    private delegate bool DlgLoadCsvData(string[] rowData, out int outIndex);
 
     // LoadCsvData delegate dictionary
     private Dictionary<string, DlgLoadCsvData> _dicLoadCsvFunc = new Dictionary<string, DlgLoadCsvData>();
@@ -40,9 +40,9 @@ public class TableManager : Singleton<TableManager>
             string fileName = t.name.Substring(preIndex + 3);
 
             // Load function
-            DlgLoadCsvData dlgLoadCsvFunc;
-            _dicLoadCsvFunc.TryGetValue(fileName, out dlgLoadCsvFunc);
-            if (dlgLoadCsvFunc == null)
+            DlgLoadCsvData dlgFunc = null;
+            _dicLoadCsvFunc.TryGetValue(fileName, out dlgFunc);
+            if (dlgFunc == null)
             {
                 Debug.LogError("Not found LoadCsvFunc for " + fileName);
                 continue;
@@ -57,7 +57,7 @@ public class TableManager : Singleton<TableManager>
                 int index = 0;
                 string[] rowData = fileData[i].Split(',');
 
-                if (dlgLoadCsvFunc(rowData, ref index) == false)
+                if (dlgFunc(rowData, out index) == false)
                 {
                     Debug.LogError("Fail to exec load function, FileName: " + fileName + ", Row: " + i);
                 }
@@ -78,96 +78,96 @@ public class TableManager : Singleton<TableManager>
         // 新增 Table: 註冊
     }
 
-    private bool LoadHeroCsvData(string[] rowData, ref int refIndex)
+    private bool LoadHeroCsvData(string[] rowData, out int outIndex)
     {
         HeroCsvData data = new HeroCsvData();
-        refIndex = 0;
+        outIndex = 0;
 
-        data.id = int.Parse(rowData[refIndex]);
-        data.portrait = int.Parse(rowData[++refIndex]);
-        data.emblem = int.Parse(rowData[++refIndex]);
-        data.name = int.Parse(rowData[++refIndex]);
-        data.talent = int.Parse(rowData[++refIndex]);
-        data.life = int.Parse(rowData[++refIndex]);
-        data.attack = int.Parse(rowData[++refIndex]);
-        data.defence = int.Parse(rowData[++refIndex]);
+        data._id = int.Parse(rowData[outIndex]);
+        data._portrait = int.Parse(rowData[++outIndex]);
+        data._emblem = int.Parse(rowData[++outIndex]);
+        data._name = int.Parse(rowData[++outIndex]);
+        data._talent = int.Parse(rowData[++outIndex]);
+        data._life = int.Parse(rowData[++outIndex]);
+        data._attack = int.Parse(rowData[++outIndex]);
+        data._defence = int.Parse(rowData[++outIndex]);
 
-        _dicHeroCsvData.Add(data.id, data);
+        _dicHeroCsvData.Add(data._id, data);
 
         return true;
     }
 
-    private bool LoadMobCsvData(string[] rowData, ref int refIndex)
+    private bool LoadMobCsvData(string[] rowData, out int outIndex)
     {
         MobCsvData data = new MobCsvData();
-        refIndex = 0;
+        outIndex = 0;
 
-        data.id = int.Parse(rowData[refIndex]);
-        data.portrait = int.Parse(rowData[++refIndex]);
-        data.emblem = int.Parse(rowData[++refIndex]);
-        data.name = int.Parse(rowData[++refIndex]);
-        data.life = int.Parse(rowData[++refIndex]);
-        data.attack = int.Parse(rowData[++refIndex]);
-        data.defence = int.Parse(rowData[++refIndex]);
-        data.ai = int.Parse(rowData[++refIndex]);
+        data._id = int.Parse(rowData[outIndex]);
+        data._portrait = int.Parse(rowData[++outIndex]);
+        data._emblem = int.Parse(rowData[++outIndex]);
+        data._name = int.Parse(rowData[++outIndex]);
+        data._life = int.Parse(rowData[++outIndex]);
+        data._attack = int.Parse(rowData[++outIndex]);
+        data._defence = int.Parse(rowData[++outIndex]);
+        data._ai = int.Parse(rowData[++outIndex]);
 
-        _dicMobCsvData.Add(data.id, data);
+        _dicMobCsvData.Add(data._id, data);
 
         return true;
     }
 
-    private bool LoadTeamCsvData(string[] rowData, ref int refIndex)
+    private bool LoadTeamCsvData(string[] rowData, out int outIndex)
     {
         TeamCsvData data = new TeamCsvData();
-        refIndex = 0;
+        outIndex = 0;
 
-        data.id = int.Parse(rowData[refIndex]);
+        data._id = int.Parse(rowData[outIndex]);
         for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
         {
-            data.mobId[i] = int.Parse(rowData[++refIndex]);
+            data._arrRoleId[i] = int.Parse(rowData[++outIndex]);
         }
 
-        _dicTeamCsvData.Add(data.id, data);
+        _dicTeamCsvData.Add(data._id, data);
 
         return true;
     }
 
     // 新增 Table: 定義 Load function
 
-    public HeroCsvData GetHeroCsvData(int id)
+    public bool GetHeroCsvData(int id, out HeroCsvData outCsvData)
     {
-        HeroCsvData csvData = new HeroCsvData();
-
-        if (_dicHeroCsvData.TryGetValue(id, out csvData))
+        if (_dicHeroCsvData.TryGetValue(id, out outCsvData))
         {
-            return csvData;
+            return true;
         }
 
-        return null;
+        outCsvData = null;
+
+        return false;
     }
 
-    public MobCsvData GetMobCsvData(int id)
+    public bool GetMobCsvData(int id, out MobCsvData outCsvData)
     {
-        MobCsvData csvData = new MobCsvData();
-
-        if (_dicMobCsvData.TryGetValue(id, out csvData))
+        if (_dicMobCsvData.TryGetValue(id, out outCsvData))
         {
-            return csvData;
+            return true;
         }
 
-        return null;
+        outCsvData = null;
+
+        return false;
     }
 
-    public TeamCsvData GetTeamCsvData(int id)
+    public bool GetTeamCsvData(int id, out TeamCsvData outCsvData)
     {
-        TeamCsvData csvData = new TeamCsvData();
-
-        if (_dicTeamCsvData.TryGetValue(id, out csvData))
+        if (_dicTeamCsvData.TryGetValue(id, out outCsvData))
         {
-            return csvData;
+            return true;
         }
 
-        return null;
+        outCsvData = null;
+
+        return false;
     }
 
     // 新增 Table: 定義 Get function

@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class SystemCore : MonoBehaviour
 {
+    [SerializeField]
+    private int _bgmNext = 0;
+
+    //[SerializeField]
+    //private int _sfxNext = 0;
+
     private void Awake()
     {
         TableManager.Instance.Init();
         UIManager.Instance.Init();
-        SoundManager.Instance.Init();
+        AudioManager.Instance.Init();
+        HeroManager.Instance.Init();
     }
 
     private void Start()
@@ -20,19 +27,19 @@ public class SystemCore : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            SoundManager.Instance.StopBgm();
+            AudioManager.Instance.StopBgm();
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
-            SoundManager.Instance.PlayBgm(101, true);
+            AudioManager.Instance.PlayBgm(_bgmNext, true);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            SoundManager.Instance.PlaySfx(101);
+            AudioManager.Instance.PlaySfx(101);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            SoundManager.Instance.PlaySfx(102);
+            AudioManager.Instance.PlaySfx(102);
         }
     }
 }

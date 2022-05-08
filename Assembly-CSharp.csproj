@@ -56,21 +56,27 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\Role\Hero.cs" />
+    <Compile Include="Assets\Script\Role\HeroManager.cs" />
     <Compile Include="Assets\Script\Environment\FullScreenSprite.cs" />
+    <Compile Include="Assets\Script\Combat\CombatAI.cs" />
     <Compile Include="Assets\Script\Define\Singleton.cs" />
+    <Compile Include="Assets\Script\Role\Mob.cs" />
     <Compile Include="Assets\Script\Combat\CombatManager.cs" />
     <Compile Include="Assets\Script\System\TableManager.cs" />
     <Compile Include="Assets\Script\Define\CsvData.cs" />
-    <Compile Include="Assets\Script\Combat\EnemyAI.cs" />
     <Compile Include="Assets\Script\Define\GameConst.cs" />
     <Compile Include="Assets\Script\Combat\CombatCore.cs" />
-    <Compile Include="Assets\Script\System\SoundManager.cs" />
+    <Compile Include="Assets\Script\System\AudioManager.cs" />
     <Compile Include="Assets\Script\System\UIManager.cs" />
+    <Compile Include="Assets\Script\Role\Role.cs" />
+    <Compile Include="Assets\Script\Combat\CombatTeam.cs" />
     <Compile Include="Assets\Script\System\SystemCore.cs" />
     <Compile Include="Assets\Script\Define\AssetsPath.cs" />
-    <Compile Include="Assets\Script\Combat\CombatCircle.cs" />
-    <Compile Include="Assets\Script\Combat\CombatCircleController.cs" />
-    <Compile Include="Assets\Script\Hero\Hero.cs" />
+    <Compile Include="Assets\Script\Combat\UICombatCircle.cs" />
+    <Compile Include="Assets\Script\Combat\UIEnergyBar.cs" />
+    <Compile Include="Assets\Script\Combat\UIRoleList.cs" />
+    <Compile Include="Assets\Script\Combat\UICombatRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
