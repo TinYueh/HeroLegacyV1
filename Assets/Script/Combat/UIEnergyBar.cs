@@ -7,16 +7,14 @@ namespace Combat
 {
     public class UIEnergyBar : MonoBehaviour
     {
-        private Image _bar = null;
-        private Image _cube = null;
-        private int _energyPoint = 0;
-        //private int _energyCube = 0;
+        private Image _imgBar = null;
+        private Image _imgCube = null;
         private float _widthPerUnit = 0;
 
         private void Awake()
         {
-            _bar =  transform.Find("Bar").GetComponent<Image>();
-            _cube = transform.Find("Cube").GetComponent<Image>();
+            _imgBar =  transform.Find("Bar").GetComponent<Image>();
+            _imgCube = transform.Find("Cube").GetComponent<Image>();
         }
 
         private void Start()
@@ -36,43 +34,18 @@ namespace Combat
                 return;   
             }
 
-            _widthPerUnit = _bar.rectTransform.rect.width / barPoint;
+            _widthPerUnit = _imgBar.rectTransform.rect.width / barPoint;
         }
 
-        internal void ChangeEnergyPoint(int deltaPoint)
+        internal void ShowBar(int point)
         {
-            int tmpPoint = _energyPoint + deltaPoint;
-
-            SetEnergyPoint(tmpPoint);
+            _imgBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _widthPerUnit * point);
         }
 
-        internal void SetEnergyPoint(int point)
+        internal void ShowCube(int cube)
         {
-            if (point < 0)
-            {
-                _energyPoint = 0;
-            }
-            else if (point > GameConst.MAX_ENERGY_POINT)
-            {
-                _energyPoint = GameConst.MAX_ENERGY_POINT;
-            }
-            else
-            {
-                _energyPoint = point;
-            }
-
-            int showPoint = _energyPoint % GameConst.BAR_ENERGY_POINT;
-            int showCube = _energyPoint / GameConst.BAR_ENERGY_POINT;
-
-            _bar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _widthPerUnit * showPoint);
-
-            string path = AssetsPath.ENERGY_CUBE_NUM_PATH + showCube;
-            _cube.sprite = Resources.Load<Sprite>(path);
-
-            if (_energyPoint == GameConst.MAX_ENERGY_POINT)
-            {
-                // Todo: Lock EnergyBar
-            }
+            string path = AssetsPath.SPRITE_ENERGY_CUBE_NUM_PATH + cube;
+            _imgCube.sprite = Resources.Load<Sprite>(path);
         }
     }
 }

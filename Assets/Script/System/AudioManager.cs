@@ -34,7 +34,7 @@ public class AudioManager : Singleton<AudioManager>
             return;
         }
 
-        string path = AssetsPath.BGM_PATH + id;
+        string path = AssetsPath.AUDIO_BGM_PATH + id;
         AudioClip clip = Resources.Load<AudioClip>(path);
         if (clip == null)
         {
@@ -68,7 +68,7 @@ public class AudioManager : Singleton<AudioManager>
             return;
         }
 
-        string path = AssetsPath.SFX_PATH + id;
+        string path = AssetsPath.AUDIO_SFX_PATH + id;
         AudioClip clip = Resources.Load<AudioClip>(path);
         if (clip == null)
         {

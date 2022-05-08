@@ -6,11 +6,11 @@ namespace Combat
 {
     public class CombatCore : MonoBehaviour
     {
-        [Header("CombatRole")]
+        [Header("CombatTeam")]
         [SerializeField]
-        private CombatRole _combatPlayer = null;
+        private CombatTeam _combatPlayer = null;
         [SerializeField]
-        private CombatRole _combatOpponent = null;
+        private CombatTeam _combatOpponent = null;
         [Header("CombatCircle")]
         [SerializeField]
         private float _combatPlayerInitAngle = 0f;
@@ -20,27 +20,32 @@ namespace Combat
         private float _rotateAnglePerFrame = 0f;        // 每個 frame 的旋轉角度
         [SerializeField]
         private int _rotateSfxId = 0;                   // 旋轉音效
+        [Header("Team")]
+        [SerializeField]
+        private int _teamPlayer = 0;
+        [SerializeField]
+        private int _teamOpponent = 0;
 
         private const float _rotateAnglePerTime = 60f;  // 每次指令的旋轉角度
 
         private delegate void DlgCombatStateFunc();
         private Dictionary<CombatCore.eCombatState, DlgCombatStateFunc> _dicCombatStateFunc = new Dictionary<CombatCore.eCombatState, DlgCombatStateFunc>();
 
-        public enum eCombatRole : byte
+        public enum eCombatTeam : byte
         {
-            E_COMBAT_ROLE_NA = 0,
-            E_COMBAT_ROLE_PLAYER,   // 玩家
-            E_COMBAT_ROLE_OPPONENT, // 對手
-            E_COMBAT_ROLE_LIMIT,
+            E_COMBAT_TEAM_NA = 0,
+            E_COMBAT_TEAM_PLAYER,   // 玩家
+            E_COMBAT_TEAM_OPPONENT, // 對手
+            E_COMBAT_TEAM_LIMIT,
         }
 
-        public enum eCombatRoleAction : byte
+        public enum eCombatTeamAction : byte
         {
-            E_COMBAT_ROLE_ACTION_NA = 0,
-            E_COMBAT_ROLE_ACTION_ROTATE_RIGHT,  // 順時鐘移動
-            E_COMBAT_ROLE_ACTION_ROTATE_LEFT,   // 逆時鐘移動
-            E_COMBAT_ROLE_ACTION_CAST,          // 使用技能
-            E_COMBAT_ROLE_ACTION_ROTATE_LIMIT,
+            E_COMBAT_TEAM_ACTION_NA = 0,
+            E_COMBAT_TEAM_ACTION_ROTATE_RIGHT,  // 順時鐘移動
+            E_COMBAT_TEAM_ACTION_ROTATE_LEFT,   // 逆時鐘移動
+            E_COMBAT_TEAM_ACTION_CAST,          // 使用技能
+            E_COMBAT_TEAM_ACTION_ROTATE_LIMIT,
         }
 
         public enum eCombatState : byte
@@ -91,20 +96,20 @@ namespace Combat
 
         private void CreateNewCombat()
         {
-            CombatManager.Instance.InitCombatRole(ref _combatPlayer, _combatPlayerInitAngle, _rotateAnglePerFrame, _rotateAnglePerTime);
-            CombatManager.Instance.InitCombatRole(ref _combatOpponent, _combatOpponentInitAngle, _rotateAnglePerFrame, _rotateAnglePerTime);
+            CombatManager.Instance.InitCombatTeam(ref _combatPlayer, _combatPlayerInitAngle, _rotateAnglePerFrame, _rotateAnglePerTime, _teamPlayer);
+            CombatManager.Instance.InitCombatTeam(ref _combatOpponent, _combatOpponentInitAngle, _rotateAnglePerFrame, _rotateAnglePerTime, _teamOpponent);
         }
 
         private void CombatStateStandby()
         {
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow))
             {
-                CombatManager.Instance.StartCombatRoleAction(CombatCore.eCombatRoleAction.E_COMBAT_ROLE_ACTION_ROTATE_LEFT);
+                CombatManager.Instance.StartCombatTeamAction(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_LEFT);
                 CombatManager.Instance.CombatState = CombatCore.eCombatState.E_COMBAT_STATE_ROTATE;
             }
             else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.DownArrow))
             {
-                CombatManager.Instance.StartCombatRoleAction(CombatCore.eCombatRoleAction.E_COMBAT_ROLE_ACTION_ROTATE_RIGHT);
+                CombatManager.Instance.StartCombatTeamAction(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_RIGHT);
                 CombatManager.Instance.CombatState = CombatCore.eCombatState.E_COMBAT_STATE_ROTATE;
             }
         }
@@ -119,7 +124,7 @@ namespace Combat
 
         private void CombatStateExec()
         {
-            CombatManager.Instance.ExecCombatRoleAction();
+            CombatManager.Instance.ExecCombatTeamAction();
             CombatManager.Instance.CombatState = eCombatState.E_COMBAT_STATE_STANDBY;
         }
     }

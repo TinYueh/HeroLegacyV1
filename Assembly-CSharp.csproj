@@ -65,17 +65,18 @@
     <Compile Include="Assets\Script\Combat\CombatManager.cs" />
     <Compile Include="Assets\Script\System\TableManager.cs" />
     <Compile Include="Assets\Script\Define\CsvData.cs" />
-    <Compile Include="Assets\Script\Define\GameData.cs" />
     <Compile Include="Assets\Script\Define\GameConst.cs" />
     <Compile Include="Assets\Script\Combat\CombatCore.cs" />
     <Compile Include="Assets\Script\System\AudioManager.cs" />
     <Compile Include="Assets\Script\System\UIManager.cs" />
     <Compile Include="Assets\Script\Role\Role.cs" />
-    <Compile Include="Assets\Script\Combat\CombatRole.cs" />
+    <Compile Include="Assets\Script\Combat\CombatTeam.cs" />
     <Compile Include="Assets\Script\System\SystemCore.cs" />
     <Compile Include="Assets\Script\Define\AssetsPath.cs" />
     <Compile Include="Assets\Script\Combat\UICombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\UIEnergyBar.cs" />
+    <Compile Include="Assets\Script\Combat\UIRoleList.cs" />
+    <Compile Include="Assets\Script\Combat\UICombatRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

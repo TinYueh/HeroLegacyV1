@@ -7,12 +7,14 @@ namespace Combat
     public class CombatManager : Singleton<CombatManager>
     {
         private CombatAI _combatAI = new CombatAI();
-        private CombatRole _combatPlayer = null;
-        private CombatRole _combatOpponent = null;
+        private CombatTeam _combatPlayer = null;
+        private CombatTeam _combatOpponent = null;
+        private GameObject _prefabCombatRole = null;
+
         internal int RotateSfxId { get; set; } = 0;
 
         private delegate void DlgStartActionFunc();
-        private Dictionary<CombatCore.eCombatRoleAction, DlgStartActionFunc> _dicStartActionFunc = new Dictionary<CombatCore.eCombatRoleAction, DlgStartActionFunc>();
+        private Dictionary<CombatCore.eCombatTeamAction, DlgStartActionFunc> _dicStartActionFunc = new Dictionary<CombatCore.eCombatTeamAction, DlgStartActionFunc>();
 
         internal CombatCore.eCombatState CombatState { get; set; } = CombatCore.eCombatState.E_COMBAT_STATE_NA;
 
@@ -20,41 +22,82 @@ namespace Combat
         {
             RegistStartActionFunc();
 
+            _prefabCombatRole = Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE);
+            if (_prefabCombatRole == null)
+            {
+                Debug.LogError("Not found Prefab: " + AssetsPath.PREFAB_UI_COMBAT_ROLE);
+            }
+
             Debug.Log("CombatManager Init OK");
         }
 
         private void RegistStartActionFunc()
         {
-            _dicStartActionFunc.Add(CombatCore.eCombatRoleAction.E_COMBAT_ROLE_ACTION_ROTATE_RIGHT, StartActionRotateRight);
-            _dicStartActionFunc.Add(CombatCore.eCombatRoleAction.E_COMBAT_ROLE_ACTION_ROTATE_LEFT, StartActionRotateLeft);
-            _dicStartActionFunc.Add(CombatCore.eCombatRoleAction.E_COMBAT_ROLE_ACTION_CAST, StartActionCast);
+            _dicStartActionFunc.Add(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_RIGHT, StartActionRotateRight);
+            _dicStartActionFunc.Add(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_LEFT, StartActionRotateLeft);
+            _dicStartActionFunc.Add(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_CAST, StartActionCast);
         }
 
-        internal void InitCombatRole(ref CombatRole refRole, float initAngle, float anglePerF, float anglePerT)
+        internal void InitCombatTeam(ref CombatTeam refTeam, float initAngle, float anglePerFrame, float anglePerTime, int teamId)
         {
-            if (refRole._role == CombatCore.eCombatRole.E_COMBAT_ROLE_PLAYER)
+            if (refTeam._team == CombatCore.eCombatTeam.E_COMBAT_TEAM_PLAYER)
             {
-                _combatPlayer = refRole;
+                _combatPlayer = refTeam;
             }
-            else if (refRole._role == CombatCore.eCombatRole.E_COMBAT_ROLE_OPPONENT)
+            else if (refTeam._team == CombatCore.eCombatTeam.E_COMBAT_TEAM_OPPONENT)
             {
-                _combatOpponent = refRole;
+                _combatOpponent = refTeam;
             }
             else
             {
-                Debug.LogError("Unknown CombatRole: " + refRole._role);
+                Debug.LogError("Unknown CombatTeam: " + refTeam._team);
                 return;
             }
 
-            refRole._uiCombatCircle.RotateAnglePerFrame = anglePerF;
-            refRole._uiCombatCircle.RotateAnglePerTime = anglePerT;
-            refRole._uiCombatCircle.Rotate(initAngle);
+            refTeam._uiCombatCircle.RotateAnglePerFrame = anglePerFrame;
+            refTeam._uiCombatCircle.RotateAnglePerTime = anglePerTime;
+            refTeam._uiCombatCircle.Rotate(initAngle);
 
-            refRole._uiEnergyBar.SetWidthPerPoint(GameConst.BAR_ENERGY_POINT);
-            refRole._uiEnergyBar.SetEnergyPoint(0);
+            refTeam._uiEnergyBar.SetWidthPerPoint(GameConst.BAR_ENERGY_POINT);
+
+            refTeam.SetEnergyPoint(0);
+
+            // «Ø¥ß¶¤¥î
+            TeamCsvData teamCsvData = new TeamCsvData();
+            if (TableManager.Instance.GetTeamCsvData(teamId, out teamCsvData) == false)
+            {
+                Debug.LogError("Not found TeamCsvData, Id: " + teamId);
+            }
+
+            for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
+            {
+                if (teamCsvData._arrRoleId[i] == 0)
+                {
+                    break;
+                }
+
+                int roleId = teamCsvData._arrRoleId[i];
+
+                HeroCsvData heroCsvData = new HeroCsvData();
+                if (TableManager.Instance.GetHeroCsvData(roleId, out heroCsvData) == false)
+                {
+                    Debug.LogError("Not found HeroCsvData, Id: " + roleId);
+                    break;
+                }
+
+                float posX = refTeam._uiRoleList.initialPosX + (refTeam._uiRoleList.deltaPosX * i);
+                
+                GameObject combatRole = GameObject.Instantiate(_prefabCombatRole, new Vector2(posX, 0), Quaternion.identity);
+                combatRole.transform.SetParent(refTeam._uiRoleList.gameObject.transform, false);
+
+                combatRole.GetComponent<UICombatRole>().ShowPortrait(heroCsvData._portrait);
+                combatRole.GetComponent<UICombatRole>().ShowEmblem(heroCsvData._emblem);
+
+                refTeam._uiRoleList._dicUICombatRole.Add(i + 1, combatRole);
+            }
         }
 
-        internal void StartCombatRoleAction(CombatCore.eCombatRoleAction action)
+        internal void StartCombatTeamAction(CombatCore.eCombatTeamAction action)
         {
             DlgStartActionFunc dlgFunc = null;
             _dicStartActionFunc.TryGetValue(action, out dlgFunc);
@@ -67,10 +110,10 @@ namespace Combat
             dlgFunc();
         }
 
-        internal void ExecCombatRoleAction()
+        internal void ExecCombatTeamAction()
         {
-            _combatPlayer._uiEnergyBar.ChangeEnergyPoint(1);
-            _combatOpponent._uiEnergyBar.ChangeEnergyPoint(1);
+            _combatPlayer.ChangeEnergyPoint(1);
+            _combatOpponent.ChangeEnergyPoint(1);
         }
 
         private void StartActionRotateRight()

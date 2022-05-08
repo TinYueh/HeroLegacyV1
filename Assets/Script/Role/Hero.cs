@@ -18,14 +18,14 @@ public class Hero : Role
             return false;
         }
 
-        Id = csvData.id;
-        Portrait = csvData.portrait;
-        Emblem = csvData.emblem;
-        Name = csvData.name;
-        Talent = csvData.talent;
-        Life = csvData.life;
-        Attack = csvData.attack;
-        Defence = csvData.defence;
+        Id = csvData._id;
+        Portrait = csvData._portrait;
+        Emblem = csvData._emblem;
+        Name = csvData._name;
+        Talent = csvData._talent;
+        Life = csvData._life;
+        Attack = csvData._attack;
+        Defence = csvData._defence;
 
         return true;
     }

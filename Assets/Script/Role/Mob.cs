@@ -18,14 +18,14 @@ public class Mob : Role
             return false;
         }
 
-        Id = csvData.id;
-        Portrait = csvData.portrait;
-        Emblem = csvData.emblem;
-        Name = csvData.name;
-        Life = csvData.life;
-        Attack = csvData.attack;
-        Defence = csvData.defence;
-        Ai = csvData.ai;
+        Id = csvData._id;
+        Portrait = csvData._portrait;
+        Emblem = csvData._emblem;
+        Name = csvData._name;
+        Life = csvData._life;
+        Attack = csvData._attack;
+        Defence = csvData._defence;
+        Ai = csvData._ai;
 
         return true;
     }

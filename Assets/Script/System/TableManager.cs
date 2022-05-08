@@ -83,16 +83,16 @@ public class TableManager : Singleton<TableManager>
         HeroCsvData data = new HeroCsvData();
         outIndex = 0;
 
-        data.id = int.Parse(rowData[outIndex]);
-        data.portrait = int.Parse(rowData[++outIndex]);
-        data.emblem = int.Parse(rowData[++outIndex]);
-        data.name = int.Parse(rowData[++outIndex]);
-        data.talent = int.Parse(rowData[++outIndex]);
-        data.life = int.Parse(rowData[++outIndex]);
-        data.attack = int.Parse(rowData[++outIndex]);
-        data.defence = int.Parse(rowData[++outIndex]);
+        data._id = int.Parse(rowData[outIndex]);
+        data._portrait = int.Parse(rowData[++outIndex]);
+        data._emblem = int.Parse(rowData[++outIndex]);
+        data._name = int.Parse(rowData[++outIndex]);
+        data._talent = int.Parse(rowData[++outIndex]);
+        data._life = int.Parse(rowData[++outIndex]);
+        data._attack = int.Parse(rowData[++outIndex]);
+        data._defence = int.Parse(rowData[++outIndex]);
 
-        _dicHeroCsvData.Add(data.id, data);
+        _dicHeroCsvData.Add(data._id, data);
 
         return true;
     }
@@ -102,16 +102,16 @@ public class TableManager : Singleton<TableManager>
         MobCsvData data = new MobCsvData();
         outIndex = 0;
 
-        data.id = int.Parse(rowData[outIndex]);
-        data.portrait = int.Parse(rowData[++outIndex]);
-        data.emblem = int.Parse(rowData[++outIndex]);
-        data.name = int.Parse(rowData[++outIndex]);
-        data.life = int.Parse(rowData[++outIndex]);
-        data.attack = int.Parse(rowData[++outIndex]);
-        data.defence = int.Parse(rowData[++outIndex]);
-        data.ai = int.Parse(rowData[++outIndex]);
+        data._id = int.Parse(rowData[outIndex]);
+        data._portrait = int.Parse(rowData[++outIndex]);
+        data._emblem = int.Parse(rowData[++outIndex]);
+        data._name = int.Parse(rowData[++outIndex]);
+        data._life = int.Parse(rowData[++outIndex]);
+        data._attack = int.Parse(rowData[++outIndex]);
+        data._defence = int.Parse(rowData[++outIndex]);
+        data._ai = int.Parse(rowData[++outIndex]);
 
-        _dicMobCsvData.Add(data.id, data);
+        _dicMobCsvData.Add(data._id, data);
 
         return true;
     }
@@ -121,13 +121,13 @@ public class TableManager : Singleton<TableManager>
         TeamCsvData data = new TeamCsvData();
         outIndex = 0;
 
-        data.id = int.Parse(rowData[outIndex]);
+        data._id = int.Parse(rowData[outIndex]);
         for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
         {
-            data.mobId[i] = int.Parse(rowData[++outIndex]);
+            data._arrRoleId[i] = int.Parse(rowData[++outIndex]);
         }
 
-        _dicTeamCsvData.Add(data.id, data);
+        _dicTeamCsvData.Add(data._id, data);
 
         return true;
     }
