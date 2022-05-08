@@ -56,6 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Script\Combat\UICombatRole.cs" />
     <Compile Include="Assets\Script\Role\Hero.cs" />
     <Compile Include="Assets\Script\Role\HeroManager.cs" />
     <Compile Include="Assets\Script\Environment\FullScreenSprite.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="Assets\Script\Combat\UICombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\UIEnergyBar.cs" />
     <Compile Include="Assets\Script\Combat\UIRoleList.cs" />
-    <Compile Include="Assets\Script\Combat\UICombatRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
