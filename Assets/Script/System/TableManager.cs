@@ -6,9 +6,10 @@ using System.IO;
 public class TableManager : Singleton<TableManager>
 {
     // CsvData dictionary
-    private Dictionary<int, HeroCsvData> _dicHeroCsvData = new Dictionary<int, HeroCsvData>();
-    private Dictionary<int, MobCsvData> _dicMobCsvData = new Dictionary<int, MobCsvData>();
+    //private Dictionary<int, HeroCsvData> _dicHeroCsvData = new Dictionary<int, HeroCsvData>();
+    //private Dictionary<int, MobCsvData> _dicMobCsvData = new Dictionary<int, MobCsvData>();
     private Dictionary<int, TeamCsvData> _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
+    private Dictionary<int, RoleCsvData> _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
     // 新增 Table: 定義 dictionary
 
     // LoadCsvData delegate
@@ -72,49 +73,50 @@ public class TableManager : Singleton<TableManager>
 
     private void RegistLoadFunc()
     {
-        _dicLoadCsvFunc.Add("Hero", LoadHeroCsvData);
-        _dicLoadCsvFunc.Add("Mob", LoadMobCsvData);
+        //_dicLoadCsvFunc.Add("Hero", LoadHeroCsvData);
+        //_dicLoadCsvFunc.Add("Mob", LoadMobCsvData);
         _dicLoadCsvFunc.Add("Team", LoadTeamCsvData);
+        _dicLoadCsvFunc.Add("Role", LoadRoleCsvData);
         // 新增 Table: 註冊
     }
 
-    private bool LoadHeroCsvData(string[] rowData, out int outIndex)
-    {
-        HeroCsvData data = new HeroCsvData();
-        outIndex = 0;
+    //private bool LoadHeroCsvData(string[] rowData, out int outIndex)
+    //{
+    //    HeroCsvData data = new HeroCsvData();
+    //    outIndex = 0;
 
-        data._id = int.Parse(rowData[outIndex]);
-        data._portrait = int.Parse(rowData[++outIndex]);
-        data._emblem = int.Parse(rowData[++outIndex]);
-        data._name = int.Parse(rowData[++outIndex]);
-        data._talent = int.Parse(rowData[++outIndex]);
-        data._life = int.Parse(rowData[++outIndex]);
-        data._attack = int.Parse(rowData[++outIndex]);
-        data._defence = int.Parse(rowData[++outIndex]);
+    //    data._id = int.Parse(rowData[outIndex]);
+    //    data._portrait = int.Parse(rowData[++outIndex]);
+    //    data._emblem = int.Parse(rowData[++outIndex]);
+    //    data._name = int.Parse(rowData[++outIndex]);
+    //    data._talent = int.Parse(rowData[++outIndex]);
+    //    data._life = int.Parse(rowData[++outIndex]);
+    //    data._attack = int.Parse(rowData[++outIndex]);
+    //    data._defence = int.Parse(rowData[++outIndex]);
 
-        _dicHeroCsvData.Add(data._id, data);
+    //    _dicHeroCsvData.Add(data._id, data);
 
-        return true;
-    }
+    //    return true;
+    //}
 
-    private bool LoadMobCsvData(string[] rowData, out int outIndex)
-    {
-        MobCsvData data = new MobCsvData();
-        outIndex = 0;
+    //private bool LoadMobCsvData(string[] rowData, out int outIndex)
+    //{
+    //    MobCsvData data = new MobCsvData();
+    //    outIndex = 0;
 
-        data._id = int.Parse(rowData[outIndex]);
-        data._portrait = int.Parse(rowData[++outIndex]);
-        data._emblem = int.Parse(rowData[++outIndex]);
-        data._name = int.Parse(rowData[++outIndex]);
-        data._life = int.Parse(rowData[++outIndex]);
-        data._attack = int.Parse(rowData[++outIndex]);
-        data._defence = int.Parse(rowData[++outIndex]);
-        data._ai = int.Parse(rowData[++outIndex]);
+    //    data._id = int.Parse(rowData[outIndex]);
+    //    data._portrait = int.Parse(rowData[++outIndex]);
+    //    data._emblem = int.Parse(rowData[++outIndex]);
+    //    data._name = int.Parse(rowData[++outIndex]);
+    //    data._life = int.Parse(rowData[++outIndex]);
+    //    data._attack = int.Parse(rowData[++outIndex]);
+    //    data._defence = int.Parse(rowData[++outIndex]);
+    //    data._ai = int.Parse(rowData[++outIndex]);
 
-        _dicMobCsvData.Add(data._id, data);
+    //    _dicMobCsvData.Add(data._id, data);
 
-        return true;
-    }
+    //    return true;
+    //}
 
     private bool LoadTeamCsvData(string[] rowData, out int outIndex)
     {
@@ -132,35 +134,69 @@ public class TableManager : Singleton<TableManager>
         return true;
     }
 
+    private bool LoadRoleCsvData(string[] rowData, out int outIndex)
+    {
+        RoleCsvData data = new RoleCsvData();
+        outIndex = 0;
+
+        data._id = int.Parse(rowData[outIndex]);
+        data._team = int.Parse(rowData[++outIndex]);
+        data._portrait = int.Parse(rowData[++outIndex]);
+        data._emblem = int.Parse(rowData[++outIndex]);
+        data._name = int.Parse(rowData[++outIndex]);
+        data._class = int.Parse(rowData[++outIndex]);
+        data._talent = int.Parse(rowData[++outIndex]);
+        data._life = int.Parse(rowData[++outIndex]);
+        data._attack = int.Parse(rowData[++outIndex]);
+        data._defence = int.Parse(rowData[++outIndex]);
+        data._ai = int.Parse(rowData[++outIndex]);
+
+        _dicRoleCsvData.Add(data._id, data);
+
+        return true;
+    }
+
     // 新增 Table: 定義 Load function
 
-    public bool GetHeroCsvData(int id, out HeroCsvData outCsvData)
-    {
-        if (_dicHeroCsvData.TryGetValue(id, out outCsvData))
-        {
-            return true;
-        }
+    //public bool GetHeroCsvData(int id, out HeroCsvData outCsvData)
+    //{
+    //    if (_dicHeroCsvData.TryGetValue(id, out outCsvData))
+    //    {
+    //        return true;
+    //    }
 
-        outCsvData = null;
+    //    outCsvData = null;
 
-        return false;
-    }
+    //    return false;
+    //}
 
-    public bool GetMobCsvData(int id, out MobCsvData outCsvData)
-    {
-        if (_dicMobCsvData.TryGetValue(id, out outCsvData))
-        {
-            return true;
-        }
+    //public bool GetMobCsvData(int id, out MobCsvData outCsvData)
+    //{
+    //    if (_dicMobCsvData.TryGetValue(id, out outCsvData))
+    //    {
+    //        return true;
+    //    }
 
-        outCsvData = null;
+    //    outCsvData = null;
 
-        return false;
-    }
+    //    return false;
+    //}
 
     public bool GetTeamCsvData(int id, out TeamCsvData outCsvData)
     {
         if (_dicTeamCsvData.TryGetValue(id, out outCsvData))
+        {
+            return true;
+        }
+
+        outCsvData = null;
+
+        return false;
+    }
+
+    public bool GetRoleCsvData(int id, out RoleCsvData outCsvData)
+    {
+        if (_dicRoleCsvData.TryGetValue(id, out outCsvData))
         {
             return true;
         }

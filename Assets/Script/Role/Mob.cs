@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class Mob : Role
 {
     public int Life { get; private set; } = 0;
@@ -30,3 +31,4 @@ public class Mob : Role
         return true;
     }
 }
+*/

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class Hero : Role
 {
     public int Talent { get; private set; } = 0;
@@ -30,3 +31,4 @@ public class Hero : Role
         return true;
     }
 }
+*/

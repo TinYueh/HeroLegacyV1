@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Combat
 {
@@ -15,7 +16,7 @@ namespace Combat
         }
 
         [SerializeField]
-        private List<GameObject> _listRoleSlot;
+        private List<GameObject> _listRoleSlot = new List<GameObject>();
 
         internal float RotateAnglePerFrame { get; set; } = 0f;
         internal float RotateAnglePerTime { get; set; } = 0f;
@@ -81,6 +82,25 @@ namespace Combat
             {
                 slot.transform.Rotate(0, 0, -angle);
             }
+        }
+
+        internal void ShowRoleSlot(int teamId, ref RoleCsvData refCsvData)
+        {
+            if (teamId == 0 || teamId > GameConst.MAX_TEAM_MEMBER)
+            {
+                return;
+            }
+
+            GameObject roleSlot = _listRoleSlot[teamId - 1];
+            if (roleSlot == null)
+            {
+                return;
+            }
+
+            roleSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_CLASS_GEM_PATH + refCsvData._class);
+
+            string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');
+            roleSlot.transform.Find("Emblem").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Combat
         private CombatAI _combatAI = new CombatAI();
         private CombatTeam _combatPlayer = null;
         private CombatTeam _combatOpponent = null;
-        private GameObject _prefabCombatRole = null;
 
         internal int RotateSfxId { get; set; } = 0;
 
@@ -21,12 +20,6 @@ namespace Combat
         public override void Init()
         {
             RegistStartActionFunc();
-
-            _prefabCombatRole = Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE);
-            if (_prefabCombatRole == null)
-            {
-                Debug.LogError("Not found Prefab: " + AssetsPath.PREFAB_UI_COMBAT_ROLE);
-            }
 
             Debug.Log("CombatManager Init OK");
         }
@@ -61,8 +54,8 @@ namespace Combat
             refTeam._uiEnergyBar.SetWidthPerPoint(GameConst.BAR_ENERGY_POINT);
 
             refTeam.SetEnergyPoint(0);
+            refTeam.SetFocusTeamId(1);
 
-            // «Ø¥ß¶¤¥î
             TeamCsvData teamCsvData = new TeamCsvData();
             if (TableManager.Instance.GetTeamCsvData(teamId, out teamCsvData) == false)
             {
@@ -76,24 +69,7 @@ namespace Combat
                     break;
                 }
 
-                int roleId = teamCsvData._arrRoleId[i];
-
-                HeroCsvData heroCsvData = new HeroCsvData();
-                if (TableManager.Instance.GetHeroCsvData(roleId, out heroCsvData) == false)
-                {
-                    Debug.LogError("Not found HeroCsvData, Id: " + roleId);
-                    break;
-                }
-
-                float posX = refTeam._uiRoleList.initialPosX + (refTeam._uiRoleList.deltaPosX * i);
-                
-                GameObject combatRole = GameObject.Instantiate(_prefabCombatRole, new Vector2(posX, 0), Quaternion.identity);
-                combatRole.transform.SetParent(refTeam._uiRoleList.gameObject.transform, false);
-
-                combatRole.GetComponent<UICombatRole>().ShowPortrait(heroCsvData._portrait);
-                combatRole.GetComponent<UICombatRole>().ShowEmblem(heroCsvData._emblem);
-
-                refTeam._uiRoleList._dicUICombatRole.Add(i + 1, combatRole);
+                refTeam.CreateCombatRole(i + 1, teamCsvData._arrRoleId[i]);
             }
         }
 
@@ -119,7 +95,11 @@ namespace Combat
         private void StartActionRotateRight()
         {
             RotateCombatCircle(ref _combatPlayer._uiCombatCircle, true);
-            RotateCombatCircle(ref _combatOpponent._uiCombatCircle, _combatAI.GetNextAction());
+            _combatPlayer.ChangeFocusTeamId(true);
+
+            bool isDirectionRight = _combatAI.GetNextAction();
+            RotateCombatCircle(ref _combatOpponent._uiCombatCircle, isDirectionRight);
+            _combatOpponent.ChangeFocusTeamId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
         }
@@ -127,7 +107,11 @@ namespace Combat
         private void StartActionRotateLeft()
         {
             RotateCombatCircle(ref _combatPlayer._uiCombatCircle, false);
-            RotateCombatCircle(ref _combatOpponent._uiCombatCircle, _combatAI.GetNextAction());
+            _combatPlayer.ChangeFocusTeamId(false);
+
+            bool isDirectionRight = _combatAI.GetNextAction();
+            RotateCombatCircle(ref _combatOpponent._uiCombatCircle, isDirectionRight);
+            _combatOpponent.ChangeFocusTeamId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
         }

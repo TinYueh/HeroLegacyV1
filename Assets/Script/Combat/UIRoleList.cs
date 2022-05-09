@@ -11,8 +11,6 @@ namespace Combat
         [SerializeField]
         internal float deltaPosX = 0f;
 
-        internal Dictionary<int, GameObject> _dicUICombatRole = new Dictionary<int, GameObject>();
-
         private void Start()
         {
 
