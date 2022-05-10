@@ -17,8 +17,8 @@ namespace Combat
 
         // 能量點
         internal int EnergyPoint { get; private set; } = 0;
-        // 戰鬥隊員
-        internal int FocusTeamId { get; private set; } = 0;
+        // 對戰中的成員
+        internal int MatchMemberId { get; private set; } = 0;
 
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();       
 
@@ -66,16 +66,16 @@ namespace Combat
             }
         }
 
-        internal void ChangeFocusTeamId(int deltaTeamId)
+        internal void ChangeMatchMemberId(int deltaMemberId)
         {
-            int tmpId = FocusTeamId + deltaTeamId;
+            int tmpId = MatchMemberId + deltaMemberId;
 
-            SetFocusTeamId(tmpId);
+            SetMatchMemberId(tmpId);
         }
 
-        internal void ChangeFocusTeamId(bool isDirectionRight)
+        internal void ChangeMatchMemberId(bool isDirectionRight)
         {
-            int tmpId = FocusTeamId;
+            int tmpId = MatchMemberId;
 
             if (isDirectionRight)
             {
@@ -86,28 +86,29 @@ namespace Combat
                 tmpId += 1;
             }
 
-            SetFocusTeamId(tmpId);
+            SetMatchMemberId(tmpId);
         }
 
-        internal void SetFocusTeamId(int teamId)
+        internal void SetMatchMemberId(int memberId)
         {
-            if (teamId > GameConst.MAX_TEAM_MEMBER)
+            if (memberId > GameConst.MAX_TEAM_MEMBER)
             {
-                FocusTeamId = teamId % GameConst.MAX_TEAM_MEMBER;
+                MatchMemberId = memberId % GameConst.MAX_TEAM_MEMBER;
             }
-            else if (teamId <= 0)
+            else if (memberId <= 0)
             {
-                FocusTeamId = GameConst.MAX_TEAM_MEMBER - (teamId % GameConst.MAX_TEAM_MEMBER);
+                MatchMemberId = GameConst.MAX_TEAM_MEMBER - (memberId % GameConst.MAX_TEAM_MEMBER);
             }
             else
             {
-                FocusTeamId = teamId;
+                MatchMemberId = memberId;
             }
         }
 
-        internal bool CreateCombatRole(int teamId, int roleId)
+        internal bool CreateCombatRole(int memberId, int roleId)
         {
             CombatRole combatRole = new CombatRole();
+            combatRole.Init(memberId, roleId);
 
             RoleCsvData csvData = new RoleCsvData();
             if (TableManager.Instance.GetRoleCsvData(roleId, out csvData) == false)
@@ -116,18 +117,28 @@ namespace Combat
                 return false;
             }
 
-            float posX = _uiRoleList.initialPosX + (_uiRoleList.deltaPosX * (teamId - 1));
+            float posX = _uiRoleList.initialPosX + (_uiRoleList.deltaPosX * (memberId - 1));
             combatRole.UICombatRole = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE), new Vector2(posX, 0), Quaternion.identity);
             combatRole.UICombatRole.transform.SetParent(_uiRoleList.gameObject.transform, false);
             combatRole.UICombatRole.GetComponent<UICombatRole>().ShowPortrait(csvData._portrait);
             combatRole.UICombatRole.GetComponent<UICombatRole>().ShowEmblem(csvData._emblem);
 
-            _uiCombatCircle.ShowRoleSlot(teamId, ref csvData);
+            _uiCombatCircle.ShowRoleSlot(memberId, ref csvData);
 
             // 加入隊伍
-            _dicCombatRole.Add(teamId, combatRole);
+            _dicCombatRole.Add(memberId, combatRole);
 
             return true;
+        }
+
+        internal void GetCombatRole(int memberId, out CombatRole outCombatRole)
+        {
+            _dicCombatRole.TryGetValue(memberId, out outCombatRole);
+        }
+
+        internal void GetMatchCombatRole(out CombatRole outCombatRole)
+        {
+            _dicCombatRole.TryGetValue(MatchMemberId, out outCombatRole);
         }
     }
 }

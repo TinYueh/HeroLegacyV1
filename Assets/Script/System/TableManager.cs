@@ -6,8 +6,6 @@ using System.IO;
 public class TableManager : Singleton<TableManager>
 {
     // CsvData dictionary
-    //private Dictionary<int, HeroCsvData> _dicHeroCsvData = new Dictionary<int, HeroCsvData>();
-    //private Dictionary<int, MobCsvData> _dicMobCsvData = new Dictionary<int, MobCsvData>();
     private Dictionary<int, TeamCsvData> _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
     private Dictionary<int, RoleCsvData> _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
     // 新增 Table: 定義 dictionary
@@ -73,50 +71,10 @@ public class TableManager : Singleton<TableManager>
 
     private void RegistLoadFunc()
     {
-        //_dicLoadCsvFunc.Add("Hero", LoadHeroCsvData);
-        //_dicLoadCsvFunc.Add("Mob", LoadMobCsvData);
         _dicLoadCsvFunc.Add("Team", LoadTeamCsvData);
         _dicLoadCsvFunc.Add("Role", LoadRoleCsvData);
         // 新增 Table: 註冊
     }
-
-    //private bool LoadHeroCsvData(string[] rowData, out int outIndex)
-    //{
-    //    HeroCsvData data = new HeroCsvData();
-    //    outIndex = 0;
-
-    //    data._id = int.Parse(rowData[outIndex]);
-    //    data._portrait = int.Parse(rowData[++outIndex]);
-    //    data._emblem = int.Parse(rowData[++outIndex]);
-    //    data._name = int.Parse(rowData[++outIndex]);
-    //    data._talent = int.Parse(rowData[++outIndex]);
-    //    data._life = int.Parse(rowData[++outIndex]);
-    //    data._attack = int.Parse(rowData[++outIndex]);
-    //    data._defence = int.Parse(rowData[++outIndex]);
-
-    //    _dicHeroCsvData.Add(data._id, data);
-
-    //    return true;
-    //}
-
-    //private bool LoadMobCsvData(string[] rowData, out int outIndex)
-    //{
-    //    MobCsvData data = new MobCsvData();
-    //    outIndex = 0;
-
-    //    data._id = int.Parse(rowData[outIndex]);
-    //    data._portrait = int.Parse(rowData[++outIndex]);
-    //    data._emblem = int.Parse(rowData[++outIndex]);
-    //    data._name = int.Parse(rowData[++outIndex]);
-    //    data._life = int.Parse(rowData[++outIndex]);
-    //    data._attack = int.Parse(rowData[++outIndex]);
-    //    data._defence = int.Parse(rowData[++outIndex]);
-    //    data._ai = int.Parse(rowData[++outIndex]);
-
-    //    _dicMobCsvData.Add(data._id, data);
-
-    //    return true;
-    //}
 
     private bool LoadTeamCsvData(string[] rowData, out int outIndex)
     {
@@ -144,7 +102,7 @@ public class TableManager : Singleton<TableManager>
         data._portrait = int.Parse(rowData[++outIndex]);
         data._emblem = int.Parse(rowData[++outIndex]);
         data._name = int.Parse(rowData[++outIndex]);
-        data._class = int.Parse(rowData[++outIndex]);
+        data._attribute = int.Parse(rowData[++outIndex]);
         data._talent = int.Parse(rowData[++outIndex]);
         data._life = int.Parse(rowData[++outIndex]);
         data._attack = int.Parse(rowData[++outIndex]);

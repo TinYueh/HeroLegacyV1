@@ -2615,14 +2615,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5d47e63eb8aab4a973ce0bde00c62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _combatPlayer: {fileID: 736253219}
-  _combatOpponent: {fileID: 1416900626}
-  _combatPlayerInitAngle: -45
-  _combatOpponentInitAngle: 135
+  _playerCombatTeam: {fileID: 736253219}
+  _opponentCombatTeam: {fileID: 1416900626}
+  _playerCombatTeamInitAngle: -45
+  _opponentCombatTeamInitAngle: 135
   _rotateAnglePerFrame: 1.5
   _rotateSfxId: 201
-  _teamPlayer: 1
-  _teamOpponent: 2
+  _playerTeamId: 1
+  _opponentTeamId: 2
 --- !u!1 &2033012963
 GameObject:
   m_ObjectHideFlags: 0

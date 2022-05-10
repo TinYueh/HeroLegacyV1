@@ -4,17 +4,10 @@ using UnityEngine;
 
 public static class GameConst
 {
-    // Fire > Wind > Water > Fire
-    public enum eRoleClass : byte
-    {
-        E_ROLE_CLASS_NA = 0,
-        E_ROLE_CLASS_POWER,      // Fire(Red)
-        E_ROLE_CLASS_SPEED,      // Wind(Green)
-        E_ROLE_CLASS_TECHNIQUE,  // Water(Blue)
-        E_ROLE_CLASS_LIMIT,
-    }
-
-    public const int MAX_TEAM_MEMBER = 6;       // 钉ヮΘ计
-    public const int BAR_ENERGY_POINT = 5;      // 兵 bar 秖翴
-    public const int MAX_ENERGY_POINT = 25;     // 程秖翴
+    public const int MAX_TEAM_MEMBER = 6;               // 钉ヮΘ计
+    public const int BAR_ENERGY_POINT = 5;              // 兵 bar 秖翴
+    public const int MAX_ENERGY_POINT = 25;             // 程秖翴
+    public const int COMBAT_MATCH_WIN_ENERGY_POINT = 3;
+    public const int COMBAT_MATCH_LOSE_ENERGY_POINT = 1;
+    public const int COMBAT_MATCH_DRAW_ENERGY_POINT = 2;
 }

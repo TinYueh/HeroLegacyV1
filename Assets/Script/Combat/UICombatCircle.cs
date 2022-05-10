@@ -7,7 +7,7 @@ namespace Combat
 {
     public class UICombatCircle : MonoBehaviour
     {
-        enum eCombatCircleState : byte
+        private enum eCombatCircleState
         {
             E_COMBAT_CIRCLE_STATE_NA = 0,
             E_COMBAT_CIRCLE_STATE_STANDBY,  // 待機
@@ -84,20 +84,20 @@ namespace Combat
             }
         }
 
-        internal void ShowRoleSlot(int teamId, ref RoleCsvData refCsvData)
+        internal void ShowRoleSlot(int memberId, ref RoleCsvData refCsvData)
         {
-            if (teamId == 0 || teamId > GameConst.MAX_TEAM_MEMBER)
+            if (memberId == 0 || memberId > GameConst.MAX_TEAM_MEMBER)
             {
                 return;
             }
 
-            GameObject roleSlot = _listRoleSlot[teamId - 1];
+            GameObject roleSlot = _listRoleSlot[memberId - 1];
             if (roleSlot == null)
             {
                 return;
             }
 
-            roleSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_CLASS_GEM_PATH + refCsvData._class);
+            roleSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
 
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');
             roleSlot.transform.Find("Emblem").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
