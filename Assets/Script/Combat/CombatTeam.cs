@@ -54,11 +54,11 @@ namespace Combat
                 EnergyPoint = point;
             }
 
-            int showPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
-            int showCube = EnergyPoint / GameConst.BAR_ENERGY_POINT;
+            int newPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
+            int newCube = EnergyPoint / GameConst.BAR_ENERGY_POINT;
 
-            _uiEnergyBar.ShowBar(showPoint);
-            _uiEnergyBar.ShowCube(showCube);
+            _uiEnergyBar.ChangeViewBar(newPoint);
+            _uiEnergyBar.ChangeViewCube(newCube);
 
             if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
             {
@@ -120,10 +120,10 @@ namespace Combat
             float posX = _uiRoleList.initialPosX + (_uiRoleList.deltaPosX * (memberId - 1));
             combatRole.UICombatRole = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE), new Vector2(posX, 0), Quaternion.identity);
             combatRole.UICombatRole.transform.SetParent(_uiRoleList.gameObject.transform, false);
-            combatRole.UICombatRole.GetComponent<UICombatRole>().ShowPortrait(csvData._portrait);
-            combatRole.UICombatRole.GetComponent<UICombatRole>().ShowEmblem(csvData._emblem);
+            combatRole.UICombatRole.GetComponent<UICombatRole>().ChangeViewPortrait(csvData._portrait);
+            combatRole.UICombatRole.GetComponent<UICombatRole>().ChangeViewEmblem(csvData._emblem);
 
-            _uiCombatCircle.ShowRoleSlot(memberId, ref csvData);
+            _uiCombatCircle.ChangeViewRoleSlot(memberId, ref csvData);
 
             // ¥[¤J¶¤¥î
             _dicCombatRole.Add(memberId, combatRole);

@@ -91,7 +91,7 @@ namespace Combat
             }
         }
 
-        internal void ShowRoleSlot(int memberId, ref RoleCsvData refCsvData)
+        internal void ChangeViewRoleSlot(int memberId, ref RoleCsvData refCsvData)
         {
             if (memberId == 0 || memberId > GameConst.MAX_TEAM_MEMBER)
             {

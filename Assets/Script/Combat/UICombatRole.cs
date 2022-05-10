@@ -26,13 +26,13 @@ namespace Combat
 
         }
 
-        internal void ShowPortrait(int id)
+        internal void ChangeViewPortrait(int id)
         {
             string path = AssetsPath.SPRITE_ROLE_PORTRAIT_PATH + id.ToString().PadLeft(3, '0');
             _imgPortrait.sprite = Resources.Load<Sprite>(path);
         }
 
-        internal void ShowEmblem(int id)
+        internal void ChangeViewEmblem(int id)
         {
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + id.ToString().PadLeft(3, '0');
             _imgEmblem.sprite = Resources.Load<Sprite>(path);

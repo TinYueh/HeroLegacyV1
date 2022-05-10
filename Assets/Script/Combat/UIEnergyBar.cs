@@ -37,12 +37,12 @@ namespace Combat
             _widthPerUnit = _imgBar.rectTransform.rect.width / barPoint;
         }
 
-        internal void ShowBar(int point)
+        internal void ChangeViewBar(int point)
         {
             _imgBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _widthPerUnit * point);
         }
 
-        internal void ShowCube(int cube)
+        internal void ChangeViewCube(int cube)
         {
             string path = AssetsPath.SPRITE_ENERGY_CUBE_NUM_PATH + cube;
             _imgCube.sprite = Resources.Load<Sprite>(path);
