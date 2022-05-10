@@ -15,7 +15,7 @@ namespace Combat
         private delegate void DlgStartActionFunc();
         private Dictionary<CombatCore.eCombatTeamAction, DlgStartActionFunc> _dicStartActionFunc = null;
 
-        internal CombatCore.eCombatRoundState CombatState { get; set; } = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
+        internal CombatCore.eCombatRoundState CombatRoundState { get; set; } = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
 
         public override void Init()
         {
@@ -34,7 +34,7 @@ namespace Combat
             _dicStartActionFunc.Add(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_CAST, StartActionCast);
         }
 
-        internal void InitCombatTeam(ref CombatTeam refTeam, float initAngle, float anglePerFrame, float anglePerTime, int teamId)
+        internal void InitCombatTeam(ref CombatTeam refTeam, int teamId)
         {
             if (refTeam._team == CombatCore.eCombatTeam.E_COMBAT_TEAM_PLAYER)
             {
@@ -50,9 +50,7 @@ namespace Combat
                 return;
             }
 
-            refTeam._uiCombatCircle.RotateAnglePerFrame = anglePerFrame;
-            refTeam._uiCombatCircle.RotateAnglePerTime = anglePerTime;
-            refTeam._uiCombatCircle.Rotate(initAngle);
+            refTeam._uiCombatCircle.Init();
 
             refTeam._uiEnergyBar.SetWidthPerPoint(GameConst.BAR_ENERGY_POINT);
 
@@ -136,6 +134,8 @@ namespace Combat
             _opponentCombatTeam.ChangeMatchMemberId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
+
+            CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
         }
 
         private void StartActionRotateLeft()
@@ -148,6 +148,8 @@ namespace Combat
             _opponentCombatTeam.ChangeMatchMemberId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
+
+            CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
         }
 
         private void StartActionCast()
@@ -167,8 +169,6 @@ namespace Combat
             }
 
             refUICombatCircle.EnableRotate();
-
-            CombatState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
         }
 
         internal bool IsCombatCircleStandby()

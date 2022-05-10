@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 638357226}
   - component: {fileID: 638357225}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: MainCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2617,9 +2617,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCombatTeam: {fileID: 736253219}
   _opponentCombatTeam: {fileID: 1416900626}
-  _playerCombatTeamInitAngle: -45
-  _opponentCombatTeamInitAngle: 135
-  _rotateAnglePerFrame: 1.5
   _rotateSfxId: 201
   _playerTeamId: 1
   _opponentTeamId: 2
@@ -2949,6 +2946,7 @@ MonoBehaviour:
   - {fileID: 713274905}
   - {fileID: 333838015}
   - {fileID: 2098316558}
+  _initAngle: 135
 --- !u!114 &340459708159595413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2968,6 +2966,7 @@ MonoBehaviour:
   - {fileID: 440678178015644179}
   - {fileID: 440678178428930741}
   - {fileID: 440678176649246980}
+  _initAngle: -45
 --- !u!114 &440678176634281920
 MonoBehaviour:
   m_ObjectHideFlags: 0

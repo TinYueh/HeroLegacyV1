@@ -11,22 +11,12 @@ namespace Combat
         private CombatTeam _playerCombatTeam = null;
         [SerializeField]
         private CombatTeam _opponentCombatTeam = null;
-        [Header("CombatCircle")]
-        [SerializeField]
-        private float _playerCombatTeamInitAngle = 0f;
-        [SerializeField]
-        private float _opponentCombatTeamInitAngle = 0f;
-        [SerializeField]
-        private float _rotateAnglePerFrame = 0f;        // 每個 frame 的旋轉角度
         [SerializeField]
         private int _rotateSfxId = 0;                   // 旋轉音效
-        [Header("Team")]
         [SerializeField]
         private int _playerTeamId = 0;
         [SerializeField]
         private int _opponentTeamId = 0;
-
-        private const float _rotateAnglePerTime = 60f;  // 每次指令的旋轉角度
 
         private delegate void DlgCombatRoundStateFunc();
         private Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc>();
@@ -60,9 +50,9 @@ namespace Combat
         public enum eCombatMatchResult
         {
             E_COMBAT_MATCH_RESULT_NA = 0,
-            E_COMBAT_MATCH_RESULT_WIN,
-            E_COMBAT_MATCH_RESULT_LOSE,
-            E_COMBAT_MATCH_RESULT_DRAW,
+            E_COMBAT_MATCH_RESULT_WIN,      // 勝
+            E_COMBAT_MATCH_RESULT_LOSE,     // 負
+            E_COMBAT_MATCH_RESULT_DRAW,     // 平
             E_COMBAT_MATCH_RESULT_LIMIT,
         }
 
@@ -80,16 +70,16 @@ namespace Combat
 
             CreateNewCombat();
 
-            CombatManager.Instance.CombatState = eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
+            CombatManager.Instance.CombatRoundState = eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
 
         private void Update()
         {
             DlgCombatRoundStateFunc dlgFunc = null;
-            _dicCombatRoundStateFunc.TryGetValue(CombatManager.Instance.CombatState, out dlgFunc);
+            _dicCombatRoundStateFunc.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc);
             if (dlgFunc == null)
             {
-                Debug.LogError("Not found CombatRoundStateFunc for " + CombatManager.Instance.CombatState);
+                Debug.LogError("Not found CombatRoundStateFunc for " + CombatManager.Instance.CombatRoundState);
                 return;
             }
 
@@ -105,8 +95,8 @@ namespace Combat
 
         private void CreateNewCombat()
         {
-            CombatManager.Instance.InitCombatTeam(ref _playerCombatTeam, _playerCombatTeamInitAngle, _rotateAnglePerFrame, _rotateAnglePerTime, _playerTeamId);
-            CombatManager.Instance.InitCombatTeam(ref _opponentCombatTeam, _opponentCombatTeamInitAngle, _rotateAnglePerFrame, _rotateAnglePerTime, _opponentTeamId);
+            CombatManager.Instance.InitCombatTeam(ref _playerCombatTeam, _playerTeamId);
+            CombatManager.Instance.InitCombatTeam(ref _opponentCombatTeam, _opponentTeamId);
         }
 
         private void CombatRoundStateStandby()
@@ -114,12 +104,12 @@ namespace Combat
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow))
             {
                 CombatManager.Instance.StartCombatTeamAction(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_LEFT);
-                CombatManager.Instance.CombatState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+                CombatManager.Instance.CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
             else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.DownArrow))
             {
                 CombatManager.Instance.StartCombatTeamAction(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_RIGHT);
-                CombatManager.Instance.CombatState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+                CombatManager.Instance.CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
         }
 
@@ -127,14 +117,14 @@ namespace Combat
         {
             if (CombatManager.Instance.IsCombatCircleStandby())
             {
-                CombatManager.Instance.CombatState = eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
+                CombatManager.Instance.CombatRoundState = eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
             }
         }
 
         private void CombatRoundStateMatch()
         {
             CombatManager.Instance.ExecCombatTeamAction();
-            CombatManager.Instance.CombatState = eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
+            CombatManager.Instance.CombatRoundState = eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
     }
 }
