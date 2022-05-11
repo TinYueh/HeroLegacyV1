@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Combat
 {
     public class UICombatCircle : MonoBehaviour
     {
-        enum eCombatCircleState : byte
+        private enum eCombatCircleState
         {
             E_COMBAT_CIRCLE_STATE_NA = 0,
             E_COMBAT_CIRCLE_STATE_STANDBY,  // 待機
@@ -15,10 +16,12 @@ namespace Combat
         }
 
         [SerializeField]
-        private List<GameObject> _listRoleSlot;
+        private List<GameObject> _listRoleSlot = new List<GameObject>();
+        [SerializeField]
+        private float _initAngle = 0f; 
 
-        internal float RotateAnglePerFrame { get; set; } = 0f;
-        internal float RotateAnglePerTime { get; set; } = 0f;
+        internal float RotateAnglePerFrame { get; set; } = 1.5f;    // 每個 frame 的旋轉角度
+        private float RotateAnglePerTime { get; set; } = 60.0f;     // 每次指令的旋轉角度
         internal float RotateAnglePerFrameActual { get; set; } = 0f;
         private float RotateAngleRemaining { get; set; } = 0f;
 
@@ -62,6 +65,11 @@ namespace Combat
             }
         }
 
+        internal void Init()
+        {
+            Rotate(_initAngle);
+        }
+
         internal bool IsStandby()
         {
             return _combatCircleState == UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
@@ -77,10 +85,29 @@ namespace Combat
         {
             this.transform.Rotate(0, 0, angle);
 
-            foreach (GameObject slot in _listRoleSlot)
+            foreach (GameObject objSlot in _listRoleSlot)
             {
-                slot.transform.Rotate(0, 0, -angle);
+                objSlot.transform.Rotate(0, 0, -angle);
             }
+        }
+
+        internal void ChangeViewRoleSlot(int memberId, ref RoleCsvData refCsvData)
+        {
+            if (memberId == 0 || memberId > GameConst.MAX_TEAM_MEMBER)
+            {
+                return;
+            }
+
+            GameObject objSlot = _listRoleSlot[memberId - 1];
+            if (objSlot == null)
+            {
+                return;
+            }
+
+            objSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
+
+            string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');
+            objSlot.transform.Find("Emblem").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
         }
     }
 }

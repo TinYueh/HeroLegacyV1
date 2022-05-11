@@ -6,10 +6,9 @@ using System.IO;
 public class TableManager : Singleton<TableManager>
 {
     // CsvData dictionary
-    private Dictionary<int, HeroCsvData> _dicHeroCsvData = new Dictionary<int, HeroCsvData>();
-    private Dictionary<int, MobCsvData> _dicMobCsvData = new Dictionary<int, MobCsvData>();
     private Dictionary<int, TeamCsvData> _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
-    // ·s¼W Table: ©w¸q dictionary
+    private Dictionary<int, RoleCsvData> _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
+    // æ–°å¢ Table: å®šç¾© dictionary
 
     // LoadCsvData delegate
     private delegate bool DlgLoadCsvData(string[] rowData, out int outIndex);
@@ -19,10 +18,10 @@ public class TableManager : Singleton<TableManager>
 
     public override void Init()
     {
-        // µù¥U Load function
+        // è¨»å†Š Load function
         RegistLoadFunc();
 
-        // Åª¨ú©Ò¦³ªº csv
+        // è®€å–æ‰€æœ‰çš„ csv
         LoadTable();
 
         Debug.Log("TableManager Init OK");
@@ -30,12 +29,12 @@ public class TableManager : Singleton<TableManager>
 
     private void LoadTable()
     {
-        // ©Ò¦³ªº Table
+        // æ‰€æœ‰çš„ Table
         TextAsset[] arrTextAsset = Resources.LoadAll<TextAsset>(AssetsPath.TABLE_PATH);
 
         foreach (var t in arrTextAsset)
         {
-            // ÀÉ®×¦WºÙ
+            // æª”æ¡ˆåç¨±
             int preIndex = t.name.IndexOf(" - ");
             string fileName = t.name.Substring(preIndex + 3);
 
@@ -51,7 +50,7 @@ public class TableManager : Singleton<TableManager>
             string[] fileData = t.text.Split("\r\n");
             string[] key = fileData[0].Split(',');
 
-            // ¸ê®Æ±q²Ä 2 ¦æ¶}©l
+            // è³‡æ–™å¾ç¬¬ 2 è¡Œé–‹å§‹
             for (int i = 1; i < fileData.Length; ++i)
             {
                 int index = 0;
@@ -72,48 +71,9 @@ public class TableManager : Singleton<TableManager>
 
     private void RegistLoadFunc()
     {
-        _dicLoadCsvFunc.Add("Hero", LoadHeroCsvData);
-        _dicLoadCsvFunc.Add("Mob", LoadMobCsvData);
         _dicLoadCsvFunc.Add("Team", LoadTeamCsvData);
-        // ·s¼W Table: µù¥U
-    }
-
-    private bool LoadHeroCsvData(string[] rowData, out int outIndex)
-    {
-        HeroCsvData data = new HeroCsvData();
-        outIndex = 0;
-
-        data._id = int.Parse(rowData[outIndex]);
-        data._portrait = int.Parse(rowData[++outIndex]);
-        data._emblem = int.Parse(rowData[++outIndex]);
-        data._name = int.Parse(rowData[++outIndex]);
-        data._talent = int.Parse(rowData[++outIndex]);
-        data._life = int.Parse(rowData[++outIndex]);
-        data._attack = int.Parse(rowData[++outIndex]);
-        data._defence = int.Parse(rowData[++outIndex]);
-
-        _dicHeroCsvData.Add(data._id, data);
-
-        return true;
-    }
-
-    private bool LoadMobCsvData(string[] rowData, out int outIndex)
-    {
-        MobCsvData data = new MobCsvData();
-        outIndex = 0;
-
-        data._id = int.Parse(rowData[outIndex]);
-        data._portrait = int.Parse(rowData[++outIndex]);
-        data._emblem = int.Parse(rowData[++outIndex]);
-        data._name = int.Parse(rowData[++outIndex]);
-        data._life = int.Parse(rowData[++outIndex]);
-        data._attack = int.Parse(rowData[++outIndex]);
-        data._defence = int.Parse(rowData[++outIndex]);
-        data._ai = int.Parse(rowData[++outIndex]);
-
-        _dicMobCsvData.Add(data._id, data);
-
-        return true;
+        _dicLoadCsvFunc.Add("Role", LoadRoleCsvData);
+        // æ–°å¢ Table: è¨»å†Š
     }
 
     private bool LoadTeamCsvData(string[] rowData, out int outIndex)
@@ -132,31 +92,29 @@ public class TableManager : Singleton<TableManager>
         return true;
     }
 
-    // ·s¼W Table: ©w¸q Load function
-
-    public bool GetHeroCsvData(int id, out HeroCsvData outCsvData)
+    private bool LoadRoleCsvData(string[] rowData, out int outIndex)
     {
-        if (_dicHeroCsvData.TryGetValue(id, out outCsvData))
-        {
-            return true;
-        }
+        RoleCsvData data = new RoleCsvData();
+        outIndex = 0;
 
-        outCsvData = null;
+        data._id = int.Parse(rowData[outIndex]);
+        data._team = int.Parse(rowData[++outIndex]);
+        data._portrait = int.Parse(rowData[++outIndex]);
+        data._emblem = int.Parse(rowData[++outIndex]);
+        data._name = int.Parse(rowData[++outIndex]);
+        data._attribute = int.Parse(rowData[++outIndex]);
+        data._talent = int.Parse(rowData[++outIndex]);
+        data._life = int.Parse(rowData[++outIndex]);
+        data._attack = int.Parse(rowData[++outIndex]);
+        data._defence = int.Parse(rowData[++outIndex]);
+        data._ai = int.Parse(rowData[++outIndex]);
 
-        return false;
+        _dicRoleCsvData.Add(data._id, data);
+
+        return true;
     }
 
-    public bool GetMobCsvData(int id, out MobCsvData outCsvData)
-    {
-        if (_dicMobCsvData.TryGetValue(id, out outCsvData))
-        {
-            return true;
-        }
-
-        outCsvData = null;
-
-        return false;
-    }
+    // æ–°å¢ Table: å®šç¾© Load function
 
     public bool GetTeamCsvData(int id, out TeamCsvData outCsvData)
     {
@@ -170,5 +128,17 @@ public class TableManager : Singleton<TableManager>
         return false;
     }
 
-    // ·s¼W Table: ©w¸q Get function
+    public bool GetRoleCsvData(int id, out RoleCsvData outCsvData)
+    {
+        if (_dicRoleCsvData.TryGetValue(id, out outCsvData))
+        {
+            return true;
+        }
+
+        outCsvData = null;
+
+        return false;
+    }
+
+    // æ–°å¢ Table: å®šç¾© Get function
 }

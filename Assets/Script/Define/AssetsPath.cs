@@ -12,8 +12,9 @@ public static class AssetsPath
     // Sprite UI
     public static string SPRITE_ENERGY_CUBE_NUM_PATH = "Sprite/UI/Number_";
     // Sprite Role
-    public static string SPRITE_ROLE_PORTRAIT_PATH = "Sprite/Role/Portrait/Hero_c_";
+    public static string SPRITE_ROLE_PORTRAIT_PATH = "Sprite/Role/Portrait/Role_";
     public static string SPRITE_ROLE_EMBLEM_PATH = "Sprite/Role/Emblem/Emblem_";
+    public static string SPRITE_ROLE_ATTRIBUTE_GEM_PATH = "Sprite/Role/Class/ClassGem_";
     // Prefab
     public static string PREFAB_UI_COMBAT_ROLE = "Prefab/UI/UICombatRole";
 }

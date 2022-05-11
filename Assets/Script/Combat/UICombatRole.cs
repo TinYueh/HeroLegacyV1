@@ -9,33 +9,33 @@ namespace Combat
     {
         private Image _imgPortrait = null;
         private Image _imgEmblem = null;
+        private Image _imgBar = null;
+        private float _barInitLen = 0;
 
         private void Awake()
         {
             _imgPortrait = GetComponent<Image>();
             _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
+            _imgBar = transform.Find("HpBar").transform.Find("Bar").GetComponent<Image>();
+
+            _barInitLen = _imgBar.rectTransform.rect.width;
         }
 
-        private void Start()
-        {
-
-        }
-
-        private void Update()
-        {
-
-        }
-
-        internal void ShowPortrait(int id)
+        internal void ChangeViewPortrait(int id)
         {
             string path = AssetsPath.SPRITE_ROLE_PORTRAIT_PATH + id.ToString().PadLeft(3, '0');
             _imgPortrait.sprite = Resources.Load<Sprite>(path);
         }
 
-        internal void ShowEmblem(int id)
+        internal void ChangeViewEmblem(int id)
         {
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + id.ToString().PadLeft(3, '0');
             _imgEmblem.sprite = Resources.Load<Sprite>(path);
+        }
+
+        internal void ChangeViewBar(int value, int max)
+        {
+            _imgBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
         }
     }
 }
