@@ -23,4 +23,4 @@ public class RoleCsvData
     public int _ai;
 }
 
-// ·s¼W Table: ©w¸qµ²ºc
+// æ–°å¢ Table: å®šç¾©çµæ§‹

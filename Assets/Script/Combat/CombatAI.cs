@@ -6,7 +6,7 @@ namespace Combat
 {
     public class CombatAI
     {
-        public bool GetNextAction()
+        internal bool GetNextAction()
         {
             int rand = Random.Range(0, 2);
 

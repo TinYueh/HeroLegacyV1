@@ -15,9 +15,9 @@ namespace Combat
         [SerializeField]
         internal UIRoleList _uiRoleList = null;
 
-        // Ø‡∂q¬I
+        // ËÉΩÈáèÈªû
         internal int EnergyPoint { get; private set; } = 0;
-        // πÔæ‘§§™∫¶®≠˚
+        // Â∞çÊà∞‰∏≠ÁöÑÊàêÂì°
         internal int MatchMemberId { get; private set; } = 0;
 
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();       
@@ -117,15 +117,20 @@ namespace Combat
                 return false;
             }
 
-            float posX = _uiRoleList.initialPosX + (_uiRoleList.deltaPosX * (memberId - 1));
-            combatRole.UICombatRole = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE), new Vector2(posX, 0), Quaternion.identity);
-            combatRole.UICombatRole.transform.SetParent(_uiRoleList.gameObject.transform, false);
-            combatRole.UICombatRole.GetComponent<UICombatRole>().ChangeViewPortrait(csvData._portrait);
-            combatRole.UICombatRole.GetComponent<UICombatRole>().ChangeViewEmblem(csvData._emblem);
+            float posX = _uiRoleList.initPosX + (_uiRoleList.deltaPosX * (memberId - 1));
+            GameObject objUICombatRole = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE), new Vector2(posX, 0), Quaternion.identity);
+            objUICombatRole.transform.SetParent(_uiRoleList.gameObject.transform, false);
+
+            combatRole._uiCombatRole = objUICombatRole.GetComponent<UICombatRole>();
+            combatRole._uiCombatRole.ChangeViewPortrait(csvData._portrait);
+            combatRole._uiCombatRole.ChangeViewEmblem(csvData._emblem);
 
             _uiCombatCircle.ChangeViewRoleSlot(memberId, ref csvData);
 
-            // •[§J∂§•Ó
+            // UICombatRole Âä†ÂÖ• RoleList
+            _uiRoleList._dicUICombatRole.Add(memberId, objUICombatRole);
+
+            // CombatRole Âä†ÂÖ• CombatTeam
             _dicCombatRole.Add(memberId, combatRole);
 
             return true;

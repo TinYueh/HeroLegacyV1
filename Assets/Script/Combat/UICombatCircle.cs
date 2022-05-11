@@ -85,9 +85,9 @@ namespace Combat
         {
             this.transform.Rotate(0, 0, angle);
 
-            foreach (GameObject slot in _listRoleSlot)
+            foreach (GameObject objSlot in _listRoleSlot)
             {
-                slot.transform.Rotate(0, 0, -angle);
+                objSlot.transform.Rotate(0, 0, -angle);
             }
         }
 
@@ -98,16 +98,16 @@ namespace Combat
                 return;
             }
 
-            GameObject roleSlot = _listRoleSlot[memberId - 1];
-            if (roleSlot == null)
+            GameObject objSlot = _listRoleSlot[memberId - 1];
+            if (objSlot == null)
             {
                 return;
             }
 
-            roleSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
+            objSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
 
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');
-            roleSlot.transform.Find("Emblem").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+            objSlot.transform.Find("Emblem").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
         }
     }
 }

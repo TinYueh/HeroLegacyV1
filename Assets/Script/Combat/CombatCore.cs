@@ -6,36 +6,21 @@ namespace Combat
 {
     public class CombatCore : MonoBehaviour
     {
-        [Header("CombatTeam")]
-        [SerializeField]
-        private CombatTeam _playerCombatTeam = null;
-        [SerializeField]
-        private CombatTeam _opponentCombatTeam = null;
-        [SerializeField]
-        private int _rotateSfxId = 0;                   // ±€¬‡≠µÆƒ
-        [SerializeField]
-        private int _playerTeamId = 0;
-        [SerializeField]
-        private int _opponentTeamId = 0;
-
-        private delegate void DlgCombatRoundStateFunc();
-        private Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc>();
-
         public enum eCombatTeam
         {
             E_COMBAT_TEAM_NA = 0,
-            E_COMBAT_TEAM_PLAYER,   // ™±Æa
-            E_COMBAT_TEAM_OPPONENT, // πÔ§‚
+            E_COMBAT_TEAM_PLAYER,   // Áé©ÂÆ∂
+            E_COMBAT_TEAM_OPPONENT, // Â∞çÊâã
             E_COMBAT_TEAM_LIMIT,
         }
 
-        public enum eCombatTeamAction
+        public enum eCombatRoundAction
         {
-            E_COMBAT_TEAM_ACTION_NA = 0,
-            E_COMBAT_TEAM_ACTION_ROTATE_RIGHT,  // ∂∂Æ…ƒ¡≤æ∞ 
-            E_COMBAT_TEAM_ACTION_ROTATE_LEFT,   // ∞fÆ…ƒ¡≤æ∞ 
-            E_COMBAT_TEAM_ACTION_CAST,          // ®œ•ŒßﬁØ‡
-            E_COMBAT_TEAM_ACTION_ROTATE_LIMIT,
+            E_COMBAT_ROUND_ACTION_NA = 0,
+            E_COMBAT_ROUND_ACTION_ROTATE_RIGHT,  // È†ÜÊôÇÈêòÁßªÂãï
+            E_COMBAT_ROUND_ACTION_ROTATE_LEFT,   // ÈÄÜÊôÇÈêòÁßªÂãï
+            E_COMBAT_ROUND_ACTION_CAST,          // ‰ΩøÁî®ÊäÄËÉΩ
+            E_COMBAT_ROUND_ACTION_ROTATE_LIMIT,
         }
 
         public enum eCombatRoundState
@@ -50,11 +35,25 @@ namespace Combat
         public enum eCombatMatchResult
         {
             E_COMBAT_MATCH_RESULT_NA = 0,
-            E_COMBAT_MATCH_RESULT_WIN,      // ≥”
-            E_COMBAT_MATCH_RESULT_LOSE,     // ≠t
-            E_COMBAT_MATCH_RESULT_DRAW,     // •≠
+            E_COMBAT_MATCH_RESULT_WIN,      // Âãù
+            E_COMBAT_MATCH_RESULT_LOSE,     // Ë≤†
+            E_COMBAT_MATCH_RESULT_DRAW,     // Âπ≥
             E_COMBAT_MATCH_RESULT_LIMIT,
         }
+
+        [SerializeField]
+        private CombatTeam _playerCombatTeam = null;
+        [SerializeField]
+        private CombatTeam _opponentCombatTeam = null;
+        [SerializeField]
+        private int _playerTeamId = 0;                  // Áé©ÂÆ∂Èöä‰ºç TeamId
+        [SerializeField]
+        private int _opponentTeamId = 0;                // ÊïµÂ∞çÈöä‰ºç TeamId
+        [SerializeField]
+        private int _rotateSfxId = 0;                   // Êà∞ÂúìÊóãËΩâÈü≥Êïà
+
+        private delegate void DlgCombatRoundStateFunc();
+        private Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc>();
 
         private void Awake()
         {
@@ -65,7 +64,7 @@ namespace Combat
 
         private void Start()
         {
-            // ±€¬‡≠µÆƒ
+            // Êà∞ÂúìÊóãËΩâÈü≥Êïà
             CombatManager.Instance.RotateSfxId = _rotateSfxId;
 
             CreateNewCombat();
@@ -103,12 +102,12 @@ namespace Combat
         {
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow))
             {
-                CombatManager.Instance.StartCombatTeamAction(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_LEFT);
+                CombatManager.Instance.StartRoundAction(CombatCore.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT);
                 CombatManager.Instance.CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
             else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.DownArrow))
             {
-                CombatManager.Instance.StartCombatTeamAction(CombatCore.eCombatTeamAction.E_COMBAT_TEAM_ACTION_ROTATE_RIGHT);
+                CombatManager.Instance.StartRoundAction(CombatCore.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT);
                 CombatManager.Instance.CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
         }
@@ -123,7 +122,7 @@ namespace Combat
 
         private void CombatRoundStateMatch()
         {
-            CombatManager.Instance.ExecCombatTeamAction();
+            CombatManager.Instance.ExecRoundAction();
             CombatManager.Instance.CombatRoundState = eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
     }
