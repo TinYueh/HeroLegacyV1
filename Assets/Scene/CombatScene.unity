@@ -866,7 +866,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc5b68aef9f25d46a4ab708320f251f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPosX: 0
+  initPosX: 0
   deltaPosX: 150
 --- !u!1 &613090876
 GameObject:
@@ -1852,7 +1852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfc5b68aef9f25d46a4ab708320f251f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPosX: 750
+  initPosX: 750
   deltaPosX: -150
 --- !u!1 &1557748508
 GameObject:
@@ -2617,9 +2617,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCombatTeam: {fileID: 736253219}
   _opponentCombatTeam: {fileID: 1416900626}
-  _rotateSfxId: 201
   _playerTeamId: 1
   _opponentTeamId: 2
+  _rotateSfxId: 201
 --- !u!1 &2033012963
 GameObject:
   m_ObjectHideFlags: 0
