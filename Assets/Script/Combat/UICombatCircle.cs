@@ -20,8 +20,8 @@ namespace Combat
         [SerializeField]
         private float _initAngle = 0f; 
 
-        internal float RotateAnglePerFrame { get; set; } = 1.5f;    // 每個 frame 的旋轉角度
-        private float RotateAnglePerTime { get; set; } = 60.0f;     // 每次指令的旋轉角度
+        internal float RotateAnglePerFrame { get; set; } = 2f;      // 每個 frame 的旋轉角度
+        internal float RotateAnglePerTime { get; set; } = 0f;       // 每次指令的旋轉角度
         internal float RotateAnglePerFrameActual { get; set; } = 0f;
         private float RotateAngleRemaining { get; set; } = 0f;
 
@@ -91,14 +91,14 @@ namespace Combat
             }
         }
 
-        internal void ChangeViewRoleSlot(int memberId, ref RoleCsvData refCsvData)
+        internal void ChangeViewRoleSlot(int slotId, ref RoleCsvData refCsvData)
         {
-            if (memberId == 0 || memberId > GameConst.MAX_TEAM_MEMBER)
+            if (slotId == 0 || slotId > GameConst.MAX_TEAM_MEMBER)
             {
                 return;
             }
 
-            GameObject objSlot = _listRoleSlot[memberId - 1];
+            GameObject objSlot = _listRoleSlot[slotId - 1];
             if (objSlot == null)
             {
                 return;
@@ -107,7 +107,9 @@ namespace Combat
             objSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
 
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');
-            objSlot.transform.Find("Emblem").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+            GameObject objEmblem = objSlot.transform.Find("Emblem").gameObject;
+            objEmblem.SetActive(true);
+            objEmblem.GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
         }
     }
 }

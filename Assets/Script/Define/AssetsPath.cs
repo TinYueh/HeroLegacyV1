@@ -10,7 +10,7 @@ public static class AssetsPath
     public static string AUDIO_BGM_PATH = "Audio/Bgm/Bgm_";
     public static string AUDIO_SFX_PATH = "Audio/Sfx/Sfx_";
     // Sprite UI
-    public static string SPRITE_ENERGY_CUBE_NUM_PATH = "Sprite/UI/Number_";
+    public static string SPRITE_ENERGY_ORB_NUM_PATH = "Sprite/UI/Number_";
     // Sprite Role
     public static string SPRITE_ROLE_PORTRAIT_PATH = "Sprite/Role/Portrait/Role_";
     public static string SPRITE_ROLE_EMBLEM_PATH = "Sprite/Role/Emblem/Emblem_";

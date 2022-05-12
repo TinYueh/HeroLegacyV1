@@ -64,6 +64,7 @@
     <Compile Include="Assets\Script\Combat\CombatManager.cs" />
     <Compile Include="Assets\Script\System\TableManager.cs" />
     <Compile Include="Assets\Script\Define\CsvData.cs" />
+    <Compile Include="Assets\Script\Combat\CombatFormula.cs" />
     <Compile Include="Assets\Script\Combat\CombatRole.cs" />
     <Compile Include="Assets\Script\Define\GameConst.cs" />
     <Compile Include="Assets\Script\Combat\CombatCore.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="Assets\Script\Combat\UICombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\UIEnergyBar.cs" />
     <Compile Include="Assets\Script\Combat\UIRoleList.cs" />
-    <Compile Include="Assets\Script\Combat\CombatFormula.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

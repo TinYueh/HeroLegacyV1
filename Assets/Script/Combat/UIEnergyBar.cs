@@ -8,14 +8,14 @@ namespace Combat
     public class UIEnergyBar : MonoBehaviour
     {
         private Image _imgBar = null;
-        private Image _imgCube = null;
+        private Image _imgOrb = null;
         private float _barInitLen = 0;
         private float _barLenPerUnit = 0;
 
         private void Awake()
         {
             _imgBar =  transform.Find("Bar").GetComponent<Image>();
-            _imgCube = transform.Find("Cube").GetComponent<Image>();
+            _imgOrb = transform.Find("Orb").GetComponent<Image>();
 
             _barInitLen = _imgBar.rectTransform.rect.width;
 
@@ -32,10 +32,10 @@ namespace Combat
             _imgBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _barLenPerUnit * value);
         }
 
-        internal void ChangeViewCube(int value)
+        internal void ChangeViewOrb(int value)
         {
-            string path = AssetsPath.SPRITE_ENERGY_CUBE_NUM_PATH + value;
-            _imgCube.sprite = Resources.Load<Sprite>(path);
+            string path = AssetsPath.SPRITE_ENERGY_ORB_NUM_PATH + value;
+            _imgOrb.sprite = Resources.Load<Sprite>(path);
         }
     }
 }

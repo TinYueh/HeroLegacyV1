@@ -6,41 +6,6 @@ namespace Combat
 {
     public class CombatCore : MonoBehaviour
     {
-        public enum eCombatTeam
-        {
-            E_COMBAT_TEAM_NA = 0,
-            E_COMBAT_TEAM_PLAYER,   // 玩家
-            E_COMBAT_TEAM_OPPONENT, // 對手
-            E_COMBAT_TEAM_LIMIT,
-        }
-
-        public enum eCombatRoundAction
-        {
-            E_COMBAT_ROUND_ACTION_NA = 0,
-            E_COMBAT_ROUND_ACTION_ROTATE_RIGHT,  // 順時鐘移動
-            E_COMBAT_ROUND_ACTION_ROTATE_LEFT,   // 逆時鐘移動
-            E_COMBAT_ROUND_ACTION_CAST,          // 使用技能
-            E_COMBAT_ROUND_ACTION_ROTATE_LIMIT,
-        }
-
-        public enum eCombatRoundState
-        {
-            E_COMBAT_ROUND_STATE_NA = 0,
-            E_COMBAT_ROUND_STATE_STANDBY,
-            E_COMBAT_ROUND_STATE_ROTATE,
-            E_COMBAT_ROUND_STATE_MATCH,
-            E_COMBAT_ROUND_STATE_LIMIT,
-        }
-
-        public enum eCombatMatchResult
-        {
-            E_COMBAT_MATCH_RESULT_NA = 0,
-            E_COMBAT_MATCH_RESULT_WIN,      // 勝
-            E_COMBAT_MATCH_RESULT_LOSE,     // 負
-            E_COMBAT_MATCH_RESULT_DRAW,     // 平
-            E_COMBAT_MATCH_RESULT_LIMIT,
-        }
-
         [SerializeField]
         private CombatTeam _playerCombatTeam = null;
         [SerializeField]
@@ -53,7 +18,7 @@ namespace Combat
         private int _rotateSfxId = 0;                   // 戰圓旋轉音效
 
         private delegate void DlgCombatRoundStateFunc();
-        private Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<CombatCore.eCombatRoundState, DlgCombatRoundStateFunc>();
+        private Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc>();
 
         private void Awake()
         {
@@ -69,7 +34,7 @@ namespace Combat
 
             CreateNewCombat();
 
-            CombatManager.Instance.CombatRoundState = eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
+            CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
 
         private void Update()
@@ -87,9 +52,9 @@ namespace Combat
 
         private void RegistCombatStateFunc()
         {
-            _dicCombatRoundStateFunc.Add(CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY, CombatRoundStateStandby);
-            _dicCombatRoundStateFunc.Add(CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
-            _dicCombatRoundStateFunc.Add(CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH, CombatRoundStateMatch);
+            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY, CombatRoundStateStandby);
+            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
+            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH, CombatRoundStateMatch);
         }
 
         private void CreateNewCombat()
@@ -102,13 +67,13 @@ namespace Combat
         {
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow))
             {
-                CombatManager.Instance.StartRoundAction(CombatCore.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT);
-                CombatManager.Instance.CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+                CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT);
+                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
             else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.DownArrow))
             {
-                CombatManager.Instance.StartRoundAction(CombatCore.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT);
-                CombatManager.Instance.CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+                CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT);
+                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
         }
 
@@ -116,14 +81,14 @@ namespace Combat
         {
             if (CombatManager.Instance.IsCombatCircleStandby())
             {
-                CombatManager.Instance.CombatRoundState = eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
+                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
             }
         }
 
         private void CombatRoundStateMatch()
         {
             CombatManager.Instance.ExecRoundAction();
-            CombatManager.Instance.CombatRoundState = eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
+            CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
     }
 }

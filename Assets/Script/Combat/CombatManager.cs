@@ -14,9 +14,9 @@ namespace Combat
         internal int RotateSfxId { get; set; } = 0;     // 戰圓旋轉音效
 
         private delegate void DlgStartActionFunc();
-        private Dictionary<CombatCore.eCombatRoundAction, DlgStartActionFunc> _dicStartActionFunc = new Dictionary<CombatCore.eCombatRoundAction, DlgStartActionFunc>();
+        private Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc> _dicStartActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc>();
 
-        internal CombatCore.eCombatRoundState CombatRoundState { get; set; } = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
+        internal GameEnum.eCombatRoundState CombatRoundState { get; set; } = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
 
         public override void Init()
         {
@@ -27,18 +27,18 @@ namespace Combat
 
         private void RegistStartActionFunc()
         {
-            _dicStartActionFunc.Add(CombatCore.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT, StartActionRotateRight);
-            _dicStartActionFunc.Add(CombatCore.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT, StartActionRotateLeft);
-            _dicStartActionFunc.Add(CombatCore.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST, StartActionCast);
+            _dicStartActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT, StartActionRotateRight);
+            _dicStartActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT, StartActionRotateLeft);
+            _dicStartActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST, StartActionCast);
         }
 
         internal void InitCombatTeam(ref CombatTeam refTeam, int teamId)
         {
-            if (refTeam._team == CombatCore.eCombatTeam.E_COMBAT_TEAM_PLAYER)
+            if (refTeam._team == GameEnum.eCombatTeam.E_COMBAT_TEAM_PLAYER)
             {
                 _playerCombatTeam = refTeam;
             }
-            else if (refTeam._team == CombatCore.eCombatTeam.E_COMBAT_TEAM_OPPONENT)
+            else if (refTeam._team == GameEnum.eCombatTeam.E_COMBAT_TEAM_OPPONENT)
             {
                 _opponentCombatTeam = refTeam;
             }
@@ -51,7 +51,7 @@ namespace Combat
             refTeam._uiCombatCircle.Init();
 
             refTeam.SetEnergyPoint(0);
-            refTeam.SetMatchMemberId(1);
+            refTeam.SetMatchSlotId(1);
 
             TeamCsvData teamCsvData = new TeamCsvData();
             if (TableManager.Instance.GetTeamCsvData(teamId, out teamCsvData) == false)
@@ -70,7 +70,7 @@ namespace Combat
             }
         }
 
-        internal void StartRoundAction(CombatCore.eCombatRoundAction action)
+        internal void StartRoundAction(GameEnum.eCombatRoundAction action)
         {
             DlgStartActionFunc dlgFunc = null;
             _dicStartActionFunc.TryGetValue(action, out dlgFunc);
@@ -101,72 +101,71 @@ namespace Combat
                 return;
             }
 
-            CombatCore.eCombatMatchResult result = GetMatchResult(playerCombatRole.Role.Attribute, opponentCombatRole.Role.Attribute);
+            GameEnum.eCombatMatchResult result = GetMatchResult(playerCombatRole.Role.Attribute, opponentCombatRole.Role.Attribute);
             switch (result)
             {
-                case CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN:
-                    {
-                        _playerCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
-                        _opponentCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
-                        break;
-                    }
-                case CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE:
-                    {
-                        _playerCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
-                        _opponentCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
-                        break;
-                    }
-                case CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_DRAW:
-                    {
-                        _playerCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
-                        _opponentCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
-                        break;
-                    }
+                case GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN:
+                {
+                    _playerCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
+                    _opponentCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
+                    break;
+                }
+                case GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE:
+                {
+                    _playerCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
+                    _opponentCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
+                    break;
+                }
+                case GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_DRAW:
+                {
+                    _playerCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
+                    _opponentCombatTeam.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
+                    break;
+                }
                 default:
-                    {
-                        Debug.LogError("Unknown CombatMatchResult: " + result);
-                        break;
-                    }
+                {
+                    Debug.LogError("Unknown CombatMatchResult: " + result);
+                    break;
+                }
             }
 
             int damageValue = 0;
             
-            _combatFormula.GetNormalDamage(playerCombatRole, opponentCombatRole, (result == CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN), out damageValue);
+            _combatFormula.GetNormalDamage(playerCombatRole, opponentCombatRole, (result == GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN), out damageValue);
             playerCombatRole.NormalDamage = damageValue;
             opponentCombatRole.ChangeLife(-damageValue);
             
-            _combatFormula.GetNormalDamage(opponentCombatRole, playerCombatRole, (result == CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_DRAW), out damageValue);
+            _combatFormula.GetNormalDamage(opponentCombatRole, playerCombatRole, (result == GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_DRAW), out damageValue);
             opponentCombatRole.NormalDamage = damageValue;
             playerCombatRole.ChangeLife(-damageValue);
         }
 
-
         private void StartActionRotateRight()
         {
-            RotateCombatCircle(ref _playerCombatTeam._uiCombatCircle, true);
-            _playerCombatTeam.ChangeMatchMemberId(true);
+            RotateCombatCircle(ref _playerCombatTeam._uiCombatCircle, true, 1);
+            _playerCombatTeam.ChangeMatchSlotId(true);
 
             bool isDirectionRight = _combatAI.GetNextAction();
-            RotateCombatCircle(ref _opponentCombatTeam._uiCombatCircle, isDirectionRight);
-            _opponentCombatTeam.ChangeMatchMemberId(isDirectionRight);
+            RotateCombatCircle(ref _opponentCombatTeam._uiCombatCircle, isDirectionRight, 1);
+            _opponentCombatTeam.ChangeMatchSlotId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
 
-            CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+            CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
         }
 
         private void StartActionRotateLeft()
         {
-            RotateCombatCircle(ref _playerCombatTeam._uiCombatCircle, false);
-            _playerCombatTeam.ChangeMatchMemberId(false);
+            RotateCombatCircle(ref _playerCombatTeam._uiCombatCircle, false, 1);
+            _playerCombatTeam.ChangeMatchSlotId(false);
 
             bool isDirectionRight = _combatAI.GetNextAction();
-            RotateCombatCircle(ref _opponentCombatTeam._uiCombatCircle, isDirectionRight);
-            _opponentCombatTeam.ChangeMatchMemberId(isDirectionRight);
+            RotateCombatCircle(ref _opponentCombatTeam._uiCombatCircle, isDirectionRight, 1);
+            _opponentCombatTeam.ChangeMatchSlotId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
 
-            CombatRoundState = CombatCore.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+            CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
         }
 
         private void StartActionCast()
@@ -174,7 +173,7 @@ namespace Combat
 
         }
 
-        private void RotateCombatCircle(ref UICombatCircle refUICombatCircle, bool isDirectionRight)
+        private void RotateCombatCircle(ref UICombatCircle refUICombatCircle, bool isDirectionRight, int deltaSlot)
         {
             if (isDirectionRight)
             {
@@ -184,6 +183,8 @@ namespace Combat
             {
                 refUICombatCircle.RotateAnglePerFrameActual = refUICombatCircle.RotateAnglePerFrame;
             }
+
+            refUICombatCircle.RotateAnglePerTime = GameConst.COMBAT_CIRCLE_SLOT_ANGLE * deltaSlot;
 
             refUICombatCircle.EnableRotate();
         }
@@ -198,43 +199,43 @@ namespace Combat
             return false;
         }
 
-        private CombatCore.eCombatMatchResult GetMatchResult(GameEnum.eRoleAttribute playerAttribute, GameEnum.eRoleAttribute opponentAttribute)
+        private GameEnum.eCombatMatchResult GetMatchResult(GameEnum.eRoleAttribute playerAttribute, GameEnum.eRoleAttribute opponentAttribute)
         {
             if (playerAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
             {
                 if (opponentAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
                 {
-                    return CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN;
+                    return GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN;
                 }
                 else if (opponentAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
                 {
-                    return CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE;
+                    return GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE;
                 }
             }
             else if (playerAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
             {
                 if (opponentAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
                 {
-                    return CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE;
+                    return GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE;
                 }
                 else if (opponentAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
                 {
-                    return CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN;
+                    return GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN;
                 }
             }
             else  if (playerAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
             {
                 if (opponentAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
                 {       
-                    return CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN;
+                    return GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_WIN;
                 }
                 else if (opponentAttribute == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
                 {
-                    return CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE;
+                    return GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_LOSE;
                 }
             }
 
-            return CombatCore.eCombatMatchResult.E_COMBAT_MATCH_RESULT_DRAW;
+            return GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_DRAW;
         }
     }
 }

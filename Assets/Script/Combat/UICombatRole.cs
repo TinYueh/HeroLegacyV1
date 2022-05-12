@@ -37,5 +37,17 @@ namespace Combat
         {
             _imgBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
         }
+
+        internal void ChangeViewStateDying()
+        {
+            _imgPortrait.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
+            _imgEmblem.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
+        }
+
+        internal void ChangeViewStateNormal()
+        {
+            _imgPortrait.color = new Color(1f, 1f, 1f, 1f);
+            _imgEmblem.color = new Color(1f, 1f, 1f, 1f);
+        }
     }
 }
