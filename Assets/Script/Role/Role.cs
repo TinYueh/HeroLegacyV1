@@ -6,7 +6,7 @@ using Combat;
 public class Role
 {
     public int Id { get; protected set; } = 0;
-    public CombatCore.eCombatTeam Team { get; protected set; } = 0;
+    public GameEnum.eCombatTeam Team { get; protected set; } = 0;
     public int Portrait { get; protected set; } = 0;
     public int Emblem { get; protected set; } = 0;
     public int Name { get; protected set; } = 0;
@@ -27,7 +27,7 @@ public class Role
         }
 
         Id = csvData._id;
-        Team = (CombatCore.eCombatTeam)csvData._team;
+        Team = (GameEnum.eCombatTeam)csvData._team;
         Portrait = csvData._portrait;
         Emblem = csvData._emblem;
         Name = csvData._name;

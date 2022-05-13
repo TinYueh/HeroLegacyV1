@@ -9,6 +9,8 @@ namespace Combat
         internal UICombatRole _uiCombatRole = null;
         internal int MemberId { get; set; } = 0;
         internal Role Role { get; set; } = null;
+
+        internal GameEnum.eCombatRoleState State { get; set; } = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NA;
         internal int Life { get; private set; } = 0;
         internal int NormalDamage { get; set; } = 0;
 
@@ -23,6 +25,7 @@ namespace Combat
 
             MemberId = memberId;
             Life = Role.Life;
+            State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
 
             return true;
         }
@@ -50,6 +53,21 @@ namespace Combat
             }
 
             _uiCombatRole.ChangeViewBar(Life, Role.Life);
+
+            if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL
+                && Life == 0)
+            {
+                State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
+
+                _uiCombatRole.ChangeViewStateDying();
+            }
+            else if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
+                && Life > 0)
+            {
+                State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
+
+                _uiCombatRole.ChangeViewStateNormal();
+            }
         }
     }
 }

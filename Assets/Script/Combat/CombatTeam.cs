@@ -7,7 +7,7 @@ namespace Combat
     public class CombatTeam : MonoBehaviour
     {
         [SerializeField]
-        internal CombatCore.eCombatTeam _team = CombatCore.eCombatTeam.E_COMBAT_TEAM_NA;
+        internal GameEnum.eCombatTeam _team = GameEnum.eCombatTeam.E_COMBAT_TEAM_NA;
         [SerializeField]
         internal UICombatCircle _uiCombatCircle = null;
         [SerializeField]
@@ -18,9 +18,10 @@ namespace Combat
         // 能量點
         internal int EnergyPoint { get; private set; } = 0;
         // 對戰中的成員
-        internal int MatchMemberId { get; private set; } = 0;
+        internal int MatchSlotId { get; private set; } = 0;
 
-        private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();       
+        private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>(); // <memberId, CombatRole>
+        private Dictionary<int, int> _dicSlotMember = new Dictionary<int, int>();               // <slotId, memberId>
 
         private void Start()
         {
@@ -54,11 +55,11 @@ namespace Combat
                 EnergyPoint = point;
             }
 
-            int newPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
-            int newCube = EnergyPoint / GameConst.BAR_ENERGY_POINT;
+            int viewPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
+            int viewOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
 
-            _uiEnergyBar.ChangeViewBar(newPoint);
-            _uiEnergyBar.ChangeViewCube(newCube);
+            _uiEnergyBar.ChangeViewBar(viewPoint);
+            _uiEnergyBar.ChangeViewOrb(viewOrb);
 
             if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
             {
@@ -66,16 +67,41 @@ namespace Combat
             }
         }
 
-        internal void ChangeMatchMemberId(int deltaMemberId)
+        internal int ConvertFormalSlotId(int informalId)
         {
-            int tmpId = MatchMemberId + deltaMemberId;
+            int slotId = 0;
 
-            SetMatchMemberId(tmpId);
+            if (informalId > GameConst.MAX_TEAM_MEMBER)
+            {
+                slotId = informalId % GameConst.MAX_TEAM_MEMBER;
+            }
+            else if (informalId < 0)
+            {
+                slotId = GameConst.MAX_TEAM_MEMBER - (informalId % GameConst.MAX_TEAM_MEMBER);
+            }
+            else
+            {
+                slotId = informalId;
+            }
+
+            if (slotId == 0)
+            {
+                slotId = GameConst.MAX_TEAM_MEMBER;
+            }
+
+            return slotId;
         }
 
-        internal void ChangeMatchMemberId(bool isDirectionRight)
+        internal void ChangeMatchSlotId(int deltaSlotId)
         {
-            int tmpId = MatchMemberId;
+            int tmpId = MatchSlotId + deltaSlotId;
+
+            SetMatchSlotId(tmpId);
+        }
+
+        internal void ChangeMatchSlotId(bool isDirectionRight)
+        {
+            int tmpId = MatchSlotId;
 
             if (isDirectionRight)
             {
@@ -86,23 +112,12 @@ namespace Combat
                 tmpId += 1;
             }
 
-            SetMatchMemberId(tmpId);
+            SetMatchSlotId(tmpId);
         }
 
-        internal void SetMatchMemberId(int memberId)
+        internal void SetMatchSlotId(int slotId)
         {
-            if (memberId > GameConst.MAX_TEAM_MEMBER)
-            {
-                MatchMemberId = memberId % GameConst.MAX_TEAM_MEMBER;
-            }
-            else if (memberId <= 0)
-            {
-                MatchMemberId = GameConst.MAX_TEAM_MEMBER - (memberId % GameConst.MAX_TEAM_MEMBER);
-            }
-            else
-            {
-                MatchMemberId = memberId;
-            }
+            MatchSlotId = ConvertFormalSlotId(slotId);
         }
 
         internal bool CreateCombatRole(int memberId, int roleId)
@@ -136,14 +151,23 @@ namespace Combat
             return true;
         }
 
-        internal void GetCombatRole(int memberId, out CombatRole outCombatRole)
+        internal void GetCombatRoleByMember(int memberId, out CombatRole outCombatRole)
         {
+            _dicCombatRole.TryGetValue(memberId, out outCombatRole);
+        }
+
+        internal void GetCombatRoleBySlot(int slotId, out CombatRole outCombatRole)
+        {
+            int memberId = 0;
+            
+            _dicSlotMember.TryGetValue(slotId, out memberId);
             _dicCombatRole.TryGetValue(memberId, out outCombatRole);
         }
 
         internal void GetMatchCombatRole(out CombatRole outCombatRole)
         {
-            _dicCombatRole.TryGetValue(MatchMemberId, out outCombatRole);
+            //GetCombatRoleBySlot(MatchSlotId, out outCombatRole);
+            GetCombatRoleByMember(MatchSlotId, out outCombatRole);
         }
     }
 }
