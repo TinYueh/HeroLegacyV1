@@ -16,5 +16,6 @@ public static class AssetsPath
     public static string SPRITE_ROLE_EMBLEM_PATH = "Sprite/Role/Emblem/Emblem_";
     public static string SPRITE_ROLE_ATTRIBUTE_GEM_PATH = "Sprite/Role/Class/ClassGem_";
     // Prefab
+    public static string PREFAB_COMBAT_CIRCLE_SOCKET = "Prefab/Combat/CircleSocket";
     public static string PREFAB_UI_COMBAT_ROLE = "Prefab/UI/UICombatRole";
 }

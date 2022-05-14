@@ -140,7 +140,7 @@ namespace Combat
             combatRole._uiCombatRole.ChangeViewPortrait(csvData._portrait);
             combatRole._uiCombatRole.ChangeViewEmblem(csvData._emblem);
 
-            _uiCombatCircle.ChangeViewRoleSlot(memberId, ref csvData);
+            _uiCombatCircle.ChangeViewSocket(memberId, ref csvData);
 
             // UICombatRole 加入 RoleList
             _uiRoleList._dicUICombatRole.Add(memberId, objUICombatRole);
