@@ -112,7 +112,7 @@ namespace Combat
 
         internal void ChangeViewSocket(int socketId, ref RoleCsvData refCsvData)
         {
-            GameObject objSocket = new GameObject();
+            GameObject objSocket = null;
 
             if (_dicCircleSocket.TryGetValue(socketId, out objSocket) == false)
             {
