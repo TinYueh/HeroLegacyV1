@@ -16,9 +16,9 @@ namespace Combat
         }
 
         [SerializeField]
-        private List<GameObject> _listRoleSlot = new List<GameObject>();
+        private float _adjustRadiusForSocket = -70f; // 微調 CircleSocket 與圓心的距離
         [SerializeField]
-        private float _initAngle = 0f; 
+        private float _initAngle = 0f;              // 45f 和 225f 戰鬥開始時的起始角度
 
         internal float RotateAnglePerFrame { get; set; } = 2f;      // 每個 frame 的旋轉角度
         internal float RotateAnglePerTime { get; set; } = 0f;       // 每次指令的旋轉角度
@@ -26,6 +26,25 @@ namespace Combat
         private float RotateAngleRemaining { get; set; } = 0f;
 
         private eCombatCircleState _combatCircleState = UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
+        private Dictionary<int, GameObject> _dicCircleSocket = new Dictionary<int, GameObject>();
+
+        private void Awake()
+        {
+            float radius = (this.transform.GetComponent<RectTransform>().sizeDelta.x + _adjustRadiusForSocket) / 2;
+
+            for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
+            {
+                int socketId = i + 1;
+
+                float posX = radius * Mathf.Cos(-60 * i * Mathf.Deg2Rad);
+                float posY = radius * Mathf.Sin(-60 * i * Mathf.Deg2Rad);
+
+                GameObject objSocket = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_COMBAT_CIRCLE_SOCKET), new Vector2(posX, posY), Quaternion.identity);
+                objSocket.transform.SetParent(this.transform, false);
+
+                _dicCircleSocket.Add(socketId, objSocket);
+            }
+        }
 
         private void Start()
         {
@@ -85,29 +104,27 @@ namespace Combat
         {
             this.transform.Rotate(0, 0, angle);
 
-            foreach (GameObject objSlot in _listRoleSlot)
+            foreach (var socket in _dicCircleSocket)
             {
-                objSlot.transform.Rotate(0, 0, -angle);
+                socket.Value.transform.Rotate(0, 0, -angle);
             }
         }
 
-        internal void ChangeViewRoleSlot(int slotId, ref RoleCsvData refCsvData)
+        internal void ChangeViewSocket(int socketId, ref RoleCsvData refCsvData)
         {
-            if (slotId == 0 || slotId > GameConst.MAX_TEAM_MEMBER)
+            GameObject objSocket = null;
+
+            if (_dicCircleSocket.TryGetValue(socketId, out objSocket) == false)
             {
                 return;
             }
 
-            GameObject objSlot = _listRoleSlot[slotId - 1];
-            if (objSlot == null)
-            {
-                return;
-            }
+            // 屬性
+            objSocket.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
 
-            objSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
-
+            // 徽章
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');
-            GameObject objEmblem = objSlot.transform.Find("Emblem").gameObject;
+            GameObject objEmblem = objSocket.transform.Find("Emblem").gameObject;
             objEmblem.SetActive(true);
             objEmblem.GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
         }
