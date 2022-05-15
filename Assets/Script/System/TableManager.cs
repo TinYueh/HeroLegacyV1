@@ -81,10 +81,11 @@ public class TableManager : Singleton<TableManager>
         TeamCsvData data = new TeamCsvData();
         outIndex = 0;
 
-        data._id = int.Parse(rowData[outIndex]);
+        int.TryParse(rowData[outIndex], out data._id);
+
         for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
         {
-            data._arrRoleId[i] = int.Parse(rowData[++outIndex]);
+            int.TryParse(rowData[++outIndex], out data._arrRoleId[i]);
         }
 
         _dicTeamCsvData.Add(data._id, data);
@@ -97,17 +98,17 @@ public class TableManager : Singleton<TableManager>
         RoleCsvData data = new RoleCsvData();
         outIndex = 0;
 
-        data._id = int.Parse(rowData[outIndex]);
-        data._team = int.Parse(rowData[++outIndex]);
-        data._portrait = int.Parse(rowData[++outIndex]);
-        data._emblem = int.Parse(rowData[++outIndex]);
-        data._name = int.Parse(rowData[++outIndex]);
-        data._attribute = int.Parse(rowData[++outIndex]);
-        data._talent = int.Parse(rowData[++outIndex]);
-        data._life = int.Parse(rowData[++outIndex]);
-        data._attack = int.Parse(rowData[++outIndex]);
-        data._defence = int.Parse(rowData[++outIndex]);
-        data._ai = int.Parse(rowData[++outIndex]);
+        int.TryParse(rowData[outIndex], out data._id);
+        int.TryParse(rowData[++outIndex], out data._team);
+        int.TryParse(rowData[++outIndex], out data._portrait);
+        int.TryParse(rowData[++outIndex], out data._emblem);
+        int.TryParse(rowData[++outIndex], out data._name);
+        int.TryParse(rowData[++outIndex], out data._attribute);
+        int.TryParse(rowData[++outIndex], out data._talent);
+        int.TryParse(rowData[++outIndex], out data._life);
+        int.TryParse(rowData[++outIndex], out data._attack);
+        int.TryParse(rowData[++outIndex], out data._defence);
+        int.TryParse(rowData[++outIndex], out data._ai);
 
         _dicRoleCsvData.Add(data._id, data);
 
