@@ -8,8 +8,9 @@ namespace Combat
     {
         private CombatAI _combatAI = new CombatAI();
         private CombatFormula _combatFormula = new CombatFormula();
-        private CombatTeam _playerCombatTeam = null;
-        private CombatTeam _opponentCombatTeam = null;
+
+        private ViewCombatTeam _playerCombatTeam = null;
+        private ViewCombatTeam _opponentCombatTeam = null;
 
         internal int RotateSfxId { get; set; } = 0;     // 戰圓旋轉音效
 
@@ -32,7 +33,14 @@ namespace Combat
             _dicStartActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST, StartActionCast);
         }
 
-        internal void InitCombatTeam(ref CombatTeam refTeam, int teamId)
+        internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)
+        {
+
+
+            return true;
+        }
+
+        internal void InitCombatTeam(ref ViewCombatTeam refTeam, int teamId)
         {
             if (refTeam._team == GameEnum.eCombatTeam.E_COMBAT_TEAM_PLAYER)
             {
@@ -44,11 +52,11 @@ namespace Combat
             }
             else
             {
-                Debug.LogError("Unknown CombatTeam: " + refTeam._team);
+                Debug.LogError("Unknown ViewCombatTeam: " + refTeam._team);
                 return;
             }
 
-            refTeam._uiCombatCircle.Init();
+            refTeam._viewCombatCircle.Init();
 
             refTeam.SetEnergyPoint(0);
             refTeam.SetMatchSlotId(1);
@@ -142,11 +150,11 @@ namespace Combat
 
         private void StartActionRotateRight()
         {
-            RotateCombatCircle(ref _playerCombatTeam._uiCombatCircle, true, 1);
+            RotateCombatCircle(ref _playerCombatTeam._viewCombatCircle, true, 1);
             _playerCombatTeam.ChangeMatchSlotId(true);
 
             bool isDirectionRight = _combatAI.GetNextAction();
-            RotateCombatCircle(ref _opponentCombatTeam._uiCombatCircle, isDirectionRight, 1);
+            RotateCombatCircle(ref _opponentCombatTeam._viewCombatCircle, isDirectionRight, 1);
             _opponentCombatTeam.ChangeMatchSlotId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
@@ -156,11 +164,11 @@ namespace Combat
 
         private void StartActionRotateLeft()
         {
-            RotateCombatCircle(ref _playerCombatTeam._uiCombatCircle, false, 1);
+            RotateCombatCircle(ref _playerCombatTeam._viewCombatCircle, false, 1);
             _playerCombatTeam.ChangeMatchSlotId(false);
 
             bool isDirectionRight = _combatAI.GetNextAction();
-            RotateCombatCircle(ref _opponentCombatTeam._uiCombatCircle, isDirectionRight, 1);
+            RotateCombatCircle(ref _opponentCombatTeam._viewCombatCircle, isDirectionRight, 1);
             _opponentCombatTeam.ChangeMatchSlotId(isDirectionRight);
 
             AudioManager.Instance.PlaySfx(RotateSfxId);
@@ -173,7 +181,7 @@ namespace Combat
 
         }
 
-        private void RotateCombatCircle(ref UICombatCircle refUICombatCircle, bool isDirectionRight, int deltaSlot)
+        private void RotateCombatCircle(ref ViewCombatCircle refUICombatCircle, bool isDirectionRight, int deltaSlot)
         {
             if (isDirectionRight)
             {
@@ -191,7 +199,7 @@ namespace Combat
 
         internal bool IsCombatCircleStandby()
         {
-            if (_playerCombatTeam._uiCombatCircle.IsStandby() && _opponentCombatTeam._uiCombatCircle.IsStandby())
+            if (_playerCombatTeam._viewCombatCircle.IsStandby() && _opponentCombatTeam._viewCombatCircle.IsStandby())
             {
                 return true;
             }

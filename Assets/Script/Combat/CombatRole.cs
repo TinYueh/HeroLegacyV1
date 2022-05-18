@@ -6,7 +6,7 @@ namespace Combat
 {
     public class CombatRole
     {
-        internal UICombatRole _uiCombatRole = null;
+        internal ViewCombatRole _viewCombatRole = null;
         internal int MemberId { get; set; } = 0;
         internal Role Role { get; set; } = null;
 
@@ -52,21 +52,21 @@ namespace Combat
                 Life = life;
             }
 
-            _uiCombatRole.ChangeViewBar(Life, Role.Life);
+            _viewCombatRole.ChangeViewBar(Life, Role.Life);
 
             if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL
                 && Life == 0)
             {
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
 
-                _uiCombatRole.ChangeViewStateDying();
+                _viewCombatRole.ChangeViewStateDying();
             }
             else if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
                 && Life > 0)
             {
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
 
-                _uiCombatRole.ChangeViewStateNormal();
+                _viewCombatRole.ChangeViewStateNormal();
             }
         }
     }

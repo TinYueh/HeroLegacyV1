@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 95360953}
   - component: {fileID: 95360954}
   m_Layer: 0
-  m_Name: EnergyBar
+  m_Name: UIEnergyBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 570440645}
   - component: {fileID: 570440646}
   m_Layer: 0
-  m_Name: RoleList
+  m_Name: UIMember
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -651,7 +651,7 @@ GameObject:
   - component: {fileID: 613090878}
   - component: {fileID: 340459708159595413}
   m_Layer: 5
-  m_Name: CombatCircle
+  m_Name: UICombatCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -827,7 +827,7 @@ GameObject:
   - component: {fileID: 736253218}
   - component: {fileID: 736253219}
   m_Layer: 0
-  m_Name: CombatPlayer
+  m_Name: UIPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -869,9 +869,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: 1
-  _uiCombatCircle: {fileID: 340459708159595413}
-  _uiEnergyBar: {fileID: 1075513756}
-  _uiRoleList: {fileID: 570440646}
+  _viewCombatCircle: {fileID: 340459708159595413}
+  _viewEnergyBar: {fileID: 1075513756}
+  _viewMember: {fileID: 570440646}
 --- !u!1 &946598409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,7 +1087,7 @@ GameObject:
   - component: {fileID: 1075513755}
   - component: {fileID: 1075513756}
   m_Layer: 0
-  m_Name: EnergyBar
+  m_Name: UIEnergyBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1216,7 +1216,7 @@ GameObject:
   - component: {fileID: 1416900625}
   - component: {fileID: 1416900626}
   m_Layer: 0
-  m_Name: CombatOpponent
+  m_Name: UIOpponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1258,9 +1258,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: 2
-  _uiCombatCircle: {fileID: 190299327947583391}
-  _uiEnergyBar: {fileID: 95360954}
-  _uiRoleList: {fileID: 1528521996}
+  _viewCombatCircle: {fileID: 190299327947583391}
+  _viewEnergyBar: {fileID: 95360954}
+  _viewMember: {fileID: 1528521996}
 --- !u!1 &1528521994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1272,7 +1272,7 @@ GameObject:
   - component: {fileID: 1528521995}
   - component: {fileID: 1528521996}
   m_Layer: 0
-  m_Name: RoleList
+  m_Name: UIMember
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2082,7 +2082,7 @@ GameObject:
   - component: {fileID: 440678178116811316}
   - component: {fileID: 190299327947583391}
   m_Layer: 5
-  m_Name: CombatCircle
+  m_Name: UICombatCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

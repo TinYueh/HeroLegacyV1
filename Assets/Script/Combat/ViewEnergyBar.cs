@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Combat
 {
-    public class UIEnergyBar : MonoBehaviour
+    public class ViewEnergyBar : MonoBehaviour
     {
         private Image _imgBar = null;
         private Image _imgOrb = null;

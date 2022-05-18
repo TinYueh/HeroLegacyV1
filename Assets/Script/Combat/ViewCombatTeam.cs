@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace Combat
 {
-    public class CombatTeam : MonoBehaviour
+    public class ViewCombatTeam : MonoBehaviour
     {
         [SerializeField]
         internal GameEnum.eCombatTeam _team = GameEnum.eCombatTeam.E_COMBAT_TEAM_NA;
         [SerializeField]
-        internal UICombatCircle _uiCombatCircle = null;
+        internal ViewCombatCircle _viewCombatCircle = null;
         [SerializeField]
-        internal UIEnergyBar _uiEnergyBar = null;
+        internal ViewEnergyBar _viewEnergyBar = null;
         [SerializeField]
-        internal UIRoleList _uiRoleList = null;
+        internal ViewMember _viewMember = null;
 
         // 能量點
         internal int EnergyPoint { get; private set; } = 0;
@@ -58,8 +58,8 @@ namespace Combat
             int viewPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
             int viewOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
 
-            _uiEnergyBar.ChangeViewBar(viewPoint);
-            _uiEnergyBar.ChangeViewOrb(viewOrb);
+            _viewEnergyBar.ChangeViewBar(viewPoint);
+            _viewEnergyBar.ChangeViewOrb(viewOrb);
 
             if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
             {
@@ -132,20 +132,20 @@ namespace Combat
                 return false;
             }
 
-            float posX = _uiRoleList.initPosX + (_uiRoleList.deltaPosX * (memberId - 1));
+            float posX = _viewMember.initPosX + (_viewMember.deltaPosX * (memberId - 1));
             GameObject objUICombatRole = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE), new Vector2(posX, 0), Quaternion.identity);
-            objUICombatRole.transform.SetParent(_uiRoleList.gameObject.transform, false);
+            objUICombatRole.transform.SetParent(_viewMember.gameObject.transform, false);
 
-            combatRole._uiCombatRole = objUICombatRole.GetComponent<UICombatRole>();
-            combatRole._uiCombatRole.ChangeViewPortrait(csvData._portrait);
-            combatRole._uiCombatRole.ChangeViewEmblem(csvData._emblem);
+            combatRole._viewCombatRole = objUICombatRole.GetComponent<ViewCombatRole>();
+            combatRole._viewCombatRole.ChangeViewPortrait(csvData._portrait);
+            combatRole._viewCombatRole.ChangeViewEmblem(csvData._emblem);
 
-            _uiCombatCircle.ChangeViewSocket(memberId, ref csvData);
+            _viewCombatCircle.ChangeViewSocket(memberId, ref csvData);
 
-            // UICombatRole 加入 RoleList
-            _uiRoleList._dicUICombatRole.Add(memberId, objUICombatRole);
+            // ViewCombatRole 加入 RoleList
+            _viewMember._dicUICombatRole.Add(memberId, objUICombatRole);
 
-            // CombatRole 加入 CombatTeam
+            // CombatRole 加入 ViewCombatTeam
             _dicCombatRole.Add(memberId, combatRole);
 
             return true;

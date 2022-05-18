@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Combat
 {
-    public class UIRoleList : MonoBehaviour
+    public class ViewMember : MonoBehaviour
     {
         [SerializeField]
         internal float initPosX = 0f;

@@ -7,9 +7,9 @@ namespace Combat
     public class CombatCore : MonoBehaviour
     {
         [SerializeField]
-        private CombatTeam _playerCombatTeam = null;
+        private ViewCombatTeam _playerCombatTeam = null;
         [SerializeField]
-        private CombatTeam _opponentCombatTeam = null;
+        private ViewCombatTeam _opponentCombatTeam = null;
         [SerializeField]
         private int _playerTeamId = 0;                  // 玩家隊伍 TeamId
         [SerializeField]

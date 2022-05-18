@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Combat
 {
-    public class UICombatCircle : MonoBehaviour
+    public class ViewCombatCircle : MonoBehaviour
     {
         private enum eCombatCircleState
         {
@@ -25,7 +25,7 @@ namespace Combat
         internal float RotateAnglePerFrameActual { get; set; } = 0f;
         private float RotateAngleRemaining { get; set; } = 0f;
 
-        private eCombatCircleState _combatCircleState = UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
+        private eCombatCircleState _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
         private Dictionary<int, GameObject> _dicCircleSocket = new Dictionary<int, GameObject>();
 
         private void Awake()
@@ -39,7 +39,7 @@ namespace Combat
                 float posX = radius * Mathf.Cos(-60 * i * Mathf.Deg2Rad);
                 float posY = radius * Mathf.Sin(-60 * i * Mathf.Deg2Rad);
 
-                GameObject objSocket = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_COMBAT_CIRCLE_SOCKET), new Vector2(posX, posY), Quaternion.identity);
+                GameObject objSocket = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_CIRCLE_SOCKET), new Vector2(posX, posY), Quaternion.identity);
                 objSocket.transform.SetParent(this.transform, false);
 
                 _dicCircleSocket.Add(socketId, objSocket);
@@ -48,7 +48,7 @@ namespace Combat
 
         private void Start()
         {
-            _combatCircleState = UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
+            _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
         }
 
         private void Update()
@@ -58,7 +58,7 @@ namespace Combat
 
         private void FixedUpdate()
         {
-            if (_combatCircleState == UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE)
+            if (_combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE)
             {
                 float rotateAngleDelta = 0f;
 
@@ -79,7 +79,7 @@ namespace Combat
                 {
                     RotateAnglePerFrameActual = 0;
                     RotateAngleRemaining = 0;
-                    _combatCircleState = UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
+                    _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
                 }
             }
         }
@@ -91,13 +91,13 @@ namespace Combat
 
         internal bool IsStandby()
         {
-            return _combatCircleState == UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
+            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
         }
 
         internal void EnableRotate()
         {
             RotateAngleRemaining = RotateAnglePerTime;
-            _combatCircleState = UICombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
+            _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
         }
 
         internal void Rotate(float angle)
@@ -120,7 +120,7 @@ namespace Combat
             }
 
             // 屬性
-            objSocket.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_GEM_PATH + refCsvData._attribute);
+            objSocket.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_PATH + refCsvData._attribute);
 
             // 徽章
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');

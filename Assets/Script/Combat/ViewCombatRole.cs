@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Combat
 {
-    public class UICombatRole : MonoBehaviour
+    public class ViewCombatRole : MonoBehaviour
     {
         private Image _imgPortrait = null;
         private Image _imgEmblem = null;
