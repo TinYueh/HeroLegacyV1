@@ -78,6 +78,9 @@
     <Compile Include="Assets\Script\Combat\ViewEnergyBar.cs" />
     <Compile Include="Assets\Script\Combat\ViewMember.cs" />
     <Compile Include="Assets\Script\System\UIBase.cs" />
+    <Compile Include="Assets\Script\System\SceneManager.cs" />
+    <Compile Include="Assets\Script\System\Controller\BackgroundController.cs" />
+    <Compile Include="Assets\Script\System\Controller\CoverController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

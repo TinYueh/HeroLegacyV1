@@ -2,40 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SystemCore : MonoBehaviour
+namespace GameSystem
 {
-    [SerializeField]
-    private int _bgmNext = 0;
-
-    private void Awake()
+    public class SystemCore : MonoBehaviour
     {
-        TableManager.Instance.Init();
-        UIManager.Instance.Init();
-        AudioManager.Instance.Init();
-    }
-
-    private void Start()
-    {
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
+        internal enum eGameScene
         {
-            AudioManager.Instance.StopBgm();
+            E_GAME_SCENE_NA = 0,
+            E_GAME_SCENE_START,     // 開始
+            E_GAME_SCENE_ORIGIN,    // 起源
+            E_GAME_SCENE_MAP,       // 地圖
+            E_GAME_SCENE_COMBAT,    // 戰鬥
+            E_GAME_SCENE_LIMIT,
         }
-        else if (Input.GetKeyDown(KeyCode.Q))
+
+        private void Awake()
         {
-            AudioManager.Instance.PlayBgm(_bgmNext, true);
+            DontDestroyOnLoad(this);
+
+            TableManager.Instance.Init();
+            UIManager.Instance.Init();
+            AudioManager.Instance.Init();
+            SceneManager.Instance.Init();
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+
+        private void Start()
         {
-            AudioManager.Instance.PlaySfx(101);
+
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+
+        private void Update()
         {
-            AudioManager.Instance.PlaySfx(102);
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                StartCoroutine(SceneManager.Instance.LoadScene(SystemCore.eGameScene.E_GAME_SCENE_COMBAT));
+            }
         }
     }
 }
