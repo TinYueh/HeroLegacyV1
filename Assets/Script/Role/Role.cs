@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using GameSystem;
 public class Role
 {
     public int Id { get; protected set; } = 0;
