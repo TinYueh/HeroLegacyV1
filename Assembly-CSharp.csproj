@@ -61,15 +61,18 @@
     <Compile Include="Assets\Script\Environment\FullScreenSprite.cs" />
     <Compile Include="Assets\Script\Combat\CombatAI.cs" />
     <Compile Include="Assets\Script\Define\Singleton.cs" />
+    <Compile Include="Assets\Script\System\Controller\BackgroundController.cs" />
     <Compile Include="Assets\Script\Combat\CombatManager.cs" />
     <Compile Include="Assets\Script\System\TableManager.cs" />
     <Compile Include="Assets\Script\Define\CsvData.cs" />
+    <Compile Include="Assets\Script\System\SceneManager.cs" />
     <Compile Include="Assets\Script\Combat\CombatFormula.cs" />
     <Compile Include="Assets\Script\Combat\CombatRole.cs" />
     <Compile Include="Assets\Script\Define\GameConst.cs" />
     <Compile Include="Assets\Script\Combat\CombatCore.cs" />
     <Compile Include="Assets\Script\System\AudioManager.cs" />
     <Compile Include="Assets\Script\System\UIManager.cs" />
+    <Compile Include="Assets\Script\System\Controller\CoverController.cs" />
     <Compile Include="Assets\Script\Role\Role.cs" />
     <Compile Include="Assets\Script\Combat\ViewCombatTeam.cs" />
     <Compile Include="Assets\Script\System\SystemCore.cs" />
@@ -77,10 +80,6 @@
     <Compile Include="Assets\Script\Combat\ViewCombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\ViewEnergyBar.cs" />
     <Compile Include="Assets\Script\Combat\ViewMember.cs" />
-    <Compile Include="Assets\Script\System\UIBase.cs" />
-    <Compile Include="Assets\Script\System\SceneManager.cs" />
-    <Compile Include="Assets\Script\System\Controller\BackgroundController.cs" />
-    <Compile Include="Assets\Script\System\Controller\CoverController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

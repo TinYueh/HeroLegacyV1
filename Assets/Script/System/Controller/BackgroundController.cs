@@ -6,13 +6,16 @@ namespace GameSystem
 {
     public class BackgroundController : MonoBehaviour
     {
+        [SerializeField]
+        private int _pictureId = 0;
+
         SpriteRenderer _sprPicture = null;
 
         private void Awake()
         {
             _sprPicture = transform.Find("Picture").GetComponent<SpriteRenderer>();
-            _sprPicture.sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_PICTURE_PATH + "001");
-            _sprPicture.gameObject.SetActive(true);
+            SetPicture(_pictureId);
+            ShowPicture();
         }
 
         private void Start()
@@ -23,6 +26,21 @@ namespace GameSystem
         private void Update()
         {
 
+        }
+
+        internal void SetPicture(int pictureId)
+        {
+            _sprPicture.sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_PICTURE_PATH + pictureId.ToString().PadLeft(3, '0'));
+        }
+
+        internal void ShowPicture()
+        {
+            _sprPicture.gameObject.SetActive(true);
+        }
+
+        internal void HidePicture()
+        {
+            _sprPicture.gameObject.SetActive(false);
         }
     }
 }

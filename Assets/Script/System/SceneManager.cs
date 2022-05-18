@@ -62,6 +62,8 @@ namespace GameSystem
                 yield break;
             }
 
+            _coverController.ShowPicture();
+
             AsyncOperation asyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             asyncOperation.allowSceneActivation = false;
 
@@ -69,6 +71,8 @@ namespace GameSystem
             {
                 yield return null;
             }
+
+            _coverController.HidePicture();
 
             asyncOperation.allowSceneActivation = true;
         }
