@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameSystem;
+using GameSystem.Table;
+
 public class Role
 {
-    public int Id { get; protected set; } = 0;
-    public GameEnum.eCombatTeam Team { get; protected set; } = 0;
-    public int Portrait { get; protected set; } = 0;
-    public int Emblem { get; protected set; } = 0;
-    public int Name { get; protected set; } = 0;
-    public GameEnum.eRoleAttribute Attribute { get; protected set; } = 0;
-    public int Talent { get; protected set; } = 0;
-    public int Life { get; protected set; } = 0;
-    public int Attack { get; protected set; } = 0;
-    public int Defence { get; protected set; } = 0;
-    public int Ai { get; protected set; } = 0;
+    public int Id { get; protected set; }
+    public GameEnum.eCombatTeamType TeamType { get; protected set; }
+    public int Portrait { get; protected set; }
+    public int Emblem { get; protected set; }
+    public int Name { get; protected set; }
+    public GameEnum.eRoleAttribute Attribute { get; protected set; }
+    public int Talent { get; protected set; }
+    public int Life { get; protected set; }
+    public int Attack { get; protected set; }
+    public int Defence { get; protected set; }
+    public int Ai { get; protected set; }
 
     public bool Init(int roleId)
     {
@@ -26,7 +27,7 @@ public class Role
         }
 
         Id = csvData._id;
-        Team = (GameEnum.eCombatTeam)csvData._team;
+        TeamType = (GameEnum.eCombatTeamType)csvData._teamType;
         Portrait = csvData._portrait;
         Emblem = csvData._emblem;
         Name = csvData._name;

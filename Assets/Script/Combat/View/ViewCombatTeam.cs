@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameSystem;
+using GameSystem.Table;
 
 namespace GameCombat
 {
     public class ViewCombatTeam : MonoBehaviour
     {
         [SerializeField]
-        internal GameEnum.eCombatTeam _team = GameEnum.eCombatTeam.E_COMBAT_TEAM_NA;
+        internal GameEnum.eCombatTeamType _team = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         [SerializeField]
         internal ViewCombatCircle _viewCombatCircle = null;
         [SerializeField]

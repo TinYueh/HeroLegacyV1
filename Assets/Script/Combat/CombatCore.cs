@@ -7,32 +7,23 @@ namespace GameCombat
     public class CombatCore : MonoBehaviour
     {
         [SerializeField]
-        private ViewCombatTeam _playerCombatTeam = null;
-        [SerializeField]
-        private ViewCombatTeam _opponentCombatTeam = null;
-        [SerializeField]
         private int _playerTeamId = 0;                  // 玩家隊伍 TeamId
         [SerializeField]
         private int _opponentTeamId = 0;                // 敵對隊伍 TeamId
-        [SerializeField]
-        private int _rotateSfxId = 0;                   // 戰圓旋轉音效
 
         private delegate void DlgCombatRoundStateFunc();
         private Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc>();
 
         private void Awake()
         {
-            CombatManager.Instance.Init();
+            CombatManager.Instance.Init();          
 
             RegistCombatStateFunc();
         }
 
         private void Start()
         {
-            // 戰圓旋轉音效
-            CombatManager.Instance.RotateSfxId = _rotateSfxId;
-
-            CreateNewCombat();
+            CombatManager.Instance.CreateNewCombat(_playerTeamId, _opponentTeamId);
 
             CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
@@ -55,12 +46,6 @@ namespace GameCombat
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY, CombatRoundStateStandby);
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH, CombatRoundStateMatch);
-        }
-
-        private void CreateNewCombat()
-        {
-            CombatManager.Instance.InitCombatTeam(ref _playerCombatTeam, _playerTeamId);
-            CombatManager.Instance.InitCombatTeam(ref _opponentCombatTeam, _opponentTeamId);
         }
 
         private void CombatRoundStateStandby()

@@ -11,7 +11,7 @@ public class TeamCsvData
 public class RoleCsvData
 {
     public int _id;
-    public int _team;
+    public int _teamType;
     public int _portrait;
     public int _emblem;
     public int _name;

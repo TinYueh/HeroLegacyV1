@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GameEnum
 {
-    public enum eCombatTeam
+    public enum eCombatTeamType
     {
-        E_COMBAT_TEAM_NA = 0,
-        E_COMBAT_TEAM_PLAYER,   // 玩家
-        E_COMBAT_TEAM_OPPONENT, // 對手
-        E_COMBAT_TEAM_LIMIT,
+        E_COMBAT_TEAM_TYPE_NA = 0,
+        E_COMBAT_TEAM_TYPE_PLAYER,   // 玩家
+        E_COMBAT_TEAM_TYPE_OPPONENT, // 對手
+        E_COMBAT_TEAM_TYPE_LIMIT,
     }
 
     public enum eCombatRoundAction
@@ -47,7 +47,6 @@ public class GameEnum
         E_COMBAT_ROLE_STATE_LIMIT,
     }
 
-    // Fire > Wind > Water > Fire
     public enum eRoleAttribute
     {
         E_ROLE_ATTRIBUTE_NA = 0,
@@ -55,5 +54,13 @@ public class GameEnum
         E_ROLE_ATTRIBUTE_SPEED,      // Wind(Green)
         E_ROLE_ATTRIBUTE_TECHNIQUE,  // Water(Blue)
         E_ROLE_ATTRIBUTE_LIMIT,
+    }
+
+    public enum eCircleSocketType
+    {
+        E_CIRCLE_SOCKET_TYPE_NA = 0,
+        E_CIRCLE_SOCKET_TYPE_SPACE,
+        E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE,
+        E_CIRCLE_SOCKET_TYPE_LIMIT,
     }
 }

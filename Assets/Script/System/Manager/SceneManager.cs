@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace GameSystem
+namespace GameSystem.Scene
 {
     public class SceneManager : Singleton<SceneManager>
     {
         BackgroundController _backgroundController = null;
         CoverController _coverController = null;
 
-        // ©Ò¦³³õ´º
+        // æ‰€æœ‰å ´æ™¯
         Dictionary<SystemCore.eGameScene, string> _dicScene = new Dictionary<SystemCore.eGameScene, string>();
 
         public override void Init()

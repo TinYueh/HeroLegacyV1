@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using UnityEngine;
 
-namespace GameSystem
+namespace GameSystem.Table
 {
     public class TableManager : Singleton<TableManager>
     {
@@ -101,7 +101,7 @@ namespace GameSystem
             outIndex = 0;
 
             int.TryParse(rowData[outIndex], out data._id);
-            int.TryParse(rowData[++outIndex], out data._team);
+            int.TryParse(rowData[++outIndex], out data._teamType);
             int.TryParse(rowData[++outIndex], out data._portrait);
             int.TryParse(rowData[++outIndex], out data._emblem);
             int.TryParse(rowData[++outIndex], out data._name);

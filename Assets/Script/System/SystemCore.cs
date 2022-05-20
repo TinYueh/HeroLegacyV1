@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameSystem.Audio;
+using GameSystem.Scene;
+using GameSystem.Table;
+using GameSystem.UI;
 
 namespace GameSystem
 {
@@ -9,10 +13,10 @@ namespace GameSystem
         internal enum eGameScene
         {
             E_GAME_SCENE_NA = 0,
-            E_GAME_SCENE_START,     // ∂}©l
-            E_GAME_SCENE_ORIGIN,    // ∞_∑Ω
-            E_GAME_SCENE_MAP,       // ¶aπœ
-            E_GAME_SCENE_COMBAT,    // æ‘∞´
+            E_GAME_SCENE_START,     // ÈñãÂßã
+            E_GAME_SCENE_ORIGIN,    // Ëµ∑Ê∫ê
+            E_GAME_SCENE_MAP,       // Âú∞Âúñ
+            E_GAME_SCENE_COMBAT,    // Êà∞È¨•
             E_GAME_SCENE_LIMIT,
         }
 
