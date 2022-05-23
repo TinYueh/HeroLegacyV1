@@ -146,24 +146,26 @@ namespace GameCombat
                 return;
             }
 
-            HandleAttributeMatch(ref combatPlayer, ref combatOpponent);
+            // ÄÝ©Ê¹ï¾Ô
+            GameEnum.eCombatAttributeMatchResult result = GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_NA;
+            if (HandleAttributeMatch(ref combatPlayer, ref combatOpponent, ref result) == false)
+            {
+                Debug.LogError("HandleAttributeMatch failed");
+            }
 
-            //int damageValue = 0;
+            // ´¶§ð
+            if (HandleNormalAttack(ref combatPlayer, ref combatOpponent, result) == false)
+            {
+                Debug.LogError("HandleNormalAttack failed");
+            }
 
-            //_combatFormula.GetNormalDamage(playerCombatRole, opponentCombatRole, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN), out damageValue);
-            //playerCombatRole.NormalDamage = damageValue;
-            //opponentCombatRole.ChangeHealth(-damageValue);
-
-            //_combatFormula.GetNormalDamage(opponentCombatRole, playerCombatRole, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW), out damageValue);
-            //opponentCombatRole.NormalDamage = damageValue;
-            //playerCombatRole.ChangeHealth(-damageValue);
         }
 
-        internal void HandleAttributeMatch(ref CombatRole refPlayer, ref CombatRole refOpponent)
+        private  bool HandleAttributeMatch(ref CombatRole refPlayer, ref CombatRole refOpponent, ref GameEnum.eCombatAttributeMatchResult refResult)
         {
-            GameEnum.eCombatAttributeMatchResult result = _combatFormula.CheckAttributeMatch(refPlayer.Role.Attribute, refOpponent.Role.Attribute);
+            refResult = _combatFormula.CheckAttributeMatch(refPlayer.Role.Attribute, refOpponent.Role.Attribute);
             
-            switch (result)
+            switch (refResult)
             {
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN:
                 {
@@ -185,10 +187,27 @@ namespace GameCombat
                 }
                 default:
                 {
-                    Debug.LogError("Unknown CombatAttributeMatchResult: " + result);
-                    break;
+                    Debug.LogError("Unknown CombatAttributeMatchResult: " + refResult);
+                    return false;
                 }
             }
+
+            return true;
+        }
+
+        private bool HandleNormalAttack(ref CombatRole refPlayer, ref CombatRole refOpponent, GameEnum.eCombatAttributeMatchResult result)
+        {
+            int damageValue = 0;
+
+            _combatFormula.GetNormalDamage(refPlayer, refOpponent, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN), out damageValue);
+            refPlayer.NormalDamage = damageValue;
+            _combatOpponent.ChangeHealth(refOpponent.MemberId, -damageValue);
+
+            _combatFormula.GetNormalDamage(refOpponent, refPlayer, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW), out damageValue);
+            refOpponent.NormalDamage = damageValue;
+            _combatPlayer.ChangeHealth(refPlayer.MemberId, -damageValue);
+
+            return true;
         }
     }
 }

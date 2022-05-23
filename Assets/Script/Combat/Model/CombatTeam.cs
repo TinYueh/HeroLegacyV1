@@ -224,44 +224,14 @@ namespace GameCombat
             return true;
         }
 
-        //internal void ChangeHealth(int deltaHealth)
-        //{
-        //    int tmpHealth = Health + deltaHealth;
+        internal void ChangeHealth(int memberId, int deltaHealth)
+        {
+            CombatRole combatRole = null;
+            GetCombatRoleByMember(memberId, out combatRole);
 
-        //    SetHealth(tmpHealth);
-        //}
+            combatRole.ChangeHealth(deltaHealth);
 
-        //internal void SetHealth(int health)
-        //{
-        //    if (health < 0)
-        //    {
-        //        Health = 0;
-        //    }
-        //    else if (health > Role.Health)
-        //    {
-        //        Health = Role.Health;
-        //    }
-        //    else
-        //    {
-        //        Health = health;
-        //    }
-
-        //    _viewCombatRole.SetHealthBar(Health, Role.Health);
-
-        //    if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL
-        //        && Health == 0)
-        //    {
-        //        State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
-
-        //        _viewCombatRole.SetStateDying();
-        //    }
-        //    else if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
-        //        && Health > 0)
-        //    {
-        //        State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
-
-        //        _viewCombatRole.SetStateNormal();
-        //    }
-        //}
+            _vwCombatTeam.SetHealthBar(combatRole.MemberId, combatRole.Health, combatRole.Role.Health);
+        }
     }
 }

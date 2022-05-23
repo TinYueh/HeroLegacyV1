@@ -39,10 +39,9 @@ namespace GameCombat
 
         internal void SetCombatRole(int memberId, ref CombatRole refCombatRole)
         {
-            ViewCombatRole vwCombatRole;
-            if (_dicVwCombatRole.TryGetValue(memberId, out vwCombatRole) == false)
+            ViewCombatRole vwCombatRole = null;
+            if (GetCombatRole(memberId, out vwCombatRole) == false)
             {
-                Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
                 return;
             }
 
@@ -52,10 +51,9 @@ namespace GameCombat
 
         internal void ShowCombatRole(int memberId)
         {
-            ViewCombatRole vwCombatRole;
-            if (_dicVwCombatRole.TryGetValue(memberId, out vwCombatRole) == false)
+            ViewCombatRole vwCombatRole = null;
+            if (GetCombatRole(memberId, out vwCombatRole) == false)
             {
-                Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
                 return;
             }
 
@@ -64,14 +62,24 @@ namespace GameCombat
 
         internal void HideCombatRole(int memberId)
         {
-            ViewCombatRole vwCombatRole;
-            if (_dicVwCombatRole.TryGetValue(memberId, out vwCombatRole) == false)
+            ViewCombatRole vwCombatRole = null;
+            if (GetCombatRole(memberId, out vwCombatRole) == false)
             {
-                Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
-                return;
+                return;   
             }
 
             vwCombatRole.gameObject.SetActive(false);
+        }
+
+        internal bool GetCombatRole(int memberId, out ViewCombatRole outVwCombatRole)
+        {
+            if (_dicVwCombatRole.TryGetValue(memberId, out outVwCombatRole) == false)
+            {
+                Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
+                return false;
+            }
+
+            return true;
         }
     }
 }

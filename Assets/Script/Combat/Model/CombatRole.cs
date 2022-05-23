@@ -26,5 +26,28 @@ namespace GameCombat
 
             return true;
         }
+
+        internal void ChangeHealth(int deltaHealth)
+        {
+            int tmpHealth = Health + deltaHealth;
+
+            SetHealth(tmpHealth);
+        }
+
+        internal void SetHealth(int health)
+        {
+            if (health < 0)
+            {
+                Health = 0;
+            }
+            else if (health > Role.Health)
+            {
+                Health = Role.Health;
+            }
+            else
+            {
+                Health = health;
+            }
+        }
     }
 }

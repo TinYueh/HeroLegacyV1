@@ -87,5 +87,25 @@ namespace GameCombat
         {
             _vwMember.HideCombatRole(memberId);
         }
+
+        internal void SetHealthBar(int memberId, int value, int max)
+        {
+            ViewCombatRole vwCombatRole = null;
+            if (_vwMember.GetCombatRole(memberId, out vwCombatRole) == false)
+            {
+                return;
+            }
+
+            vwCombatRole.SetHealthBar(value, max);
+
+            if (value == 0)
+            {
+                vwCombatRole.SetStateDying();
+            }
+            else
+            {
+                vwCombatRole.SetStateNormal();
+            }
+        }
     }
 }
