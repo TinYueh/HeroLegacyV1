@@ -7,44 +7,63 @@ namespace GameCombat
 {
     public class ViewCombatRole : MonoBehaviour
     {
-        private Image _imgPortrait = null;
-        private Image _imgEmblem = null;
-        private Image _imgBar = null;
-        private float _barInitLen = 0;
+        private Image _imgPortrait;
+        private Image _imgEmblem;
+        private Image _imgHealthBar;
+        private float _barInitLen;
 
-        private void Awake()
+        internal bool Init()
         {
             _imgPortrait = GetComponent<Image>();
-            _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
-            _imgBar = transform.Find("HpBar").transform.Find("Bar").GetComponent<Image>();
+            if (_imgPortrait == null)
+            {
+                Debug.LogError("Not found ImgPortrait");
+                return false;
+            }
 
-            _barInitLen = _imgBar.rectTransform.rect.width;
+            _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
+            if (_imgEmblem == null)
+            {
+                Debug.LogError("Not found ImgEmblem");
+                return false;
+            }
+
+            _imgHealthBar = transform.Find("HealthBar").transform.Find("Bar").GetComponent<Image>();
+            if (_imgHealthBar == null)
+            {
+                Debug.LogError("Not found ImgHealthBar");
+                return false;
+            }
+
+            _barInitLen = _imgHealthBar.rectTransform.rect.width;
+
+            return true;
         }
 
-        internal void ChangeViewPortrait(int id)
+        internal void SetPortrait(int portraitId)
         {
-            string path = AssetsPath.SPRITE_ROLE_PORTRAIT_PATH + id.ToString().PadLeft(3, '0');
+            string path = AssetsPath.SPRITE_ROLE_PORTRAIT_PATH + portraitId.ToString().PadLeft(3, '0');
             _imgPortrait.sprite = Resources.Load<Sprite>(path);
         }
 
-        internal void ChangeViewEmblem(int id)
+        internal void SetEmblem(int emblemId)
         {
-            string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + id.ToString().PadLeft(3, '0');
+            string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + emblemId.ToString().PadLeft(3, '0');
             _imgEmblem.sprite = Resources.Load<Sprite>(path);
         }
 
-        internal void ChangeViewBar(int value, int max)
+        internal void SetHealthBar(int value, int max)
         {
-            _imgBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
+            _imgHealthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
         }
 
-        internal void ChangeViewStateDying()
+        internal void SetStateDying()
         {
             _imgPortrait.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
             _imgEmblem.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
         }
 
-        internal void ChangeViewStateNormal()
+        internal void SetStateNormal()
         {
             _imgPortrait.color = new Color(1f, 1f, 1f, 1f);
             _imgEmblem.color = new Color(1f, 1f, 1f, 1f);

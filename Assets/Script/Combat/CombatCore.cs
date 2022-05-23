@@ -30,7 +30,7 @@ namespace GameCombat
 
         private void Update()
         {
-            DlgCombatRoundStateFunc dlgFunc = null;
+            DlgCombatRoundStateFunc dlgFunc;
             _dicCombatRoundStateFunc.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc);
             if (dlgFunc == null)
             {

@@ -693,10 +693,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16f733730db6ac44a569e86db2ce6c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 1
-  _viewCombatCircle: {fileID: 340459708159595413}
-  _viewEnergyBar: {fileID: 1075513756}
-  _viewMember: {fileID: 570440646}
+  _vwCombatCircle: {fileID: 340459708159595413}
+  _vwEnergyBar: {fileID: 1075513756}
+  _vwMember: {fileID: 570440646}
 --- !u!1 &946598409
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,10 +953,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16f733730db6ac44a569e86db2ce6c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 2
-  _viewCombatCircle: {fileID: 190299327947583391}
-  _viewEnergyBar: {fileID: 95360954}
-  _viewMember: {fileID: 1528521996}
+  _vwCombatCircle: {fileID: 190299327947583391}
+  _vwEnergyBar: {fileID: 95360954}
+  _vwMember: {fileID: 1528521996}
 --- !u!1 &1528521994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1380,11 +1378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f5d47e63eb8aab4a973ce0bde00c62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerCombatTeam: {fileID: 736253219}
-  _opponentCombatTeam: {fileID: 1416900626}
   _playerTeamId: 1
-  _opponentTeamId: 2
-  _rotateSfxId: 201
+  _opponentTeamId: 3
 --- !u!1 &2033012963
 GameObject:
   m_ObjectHideFlags: 0

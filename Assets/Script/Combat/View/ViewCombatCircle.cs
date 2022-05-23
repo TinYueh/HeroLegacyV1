@@ -16,44 +16,50 @@ namespace GameCombat
         }
 
         [SerializeField]
-        private float _adjustRadiusForSocket = -70f; // 微調 CircleSocket 與圓心的距離
+        private float _adjustRadiusForSocket;   // -70f 微調 CircleSocket 與圓心的距離
         [SerializeField]
-        private float _initAngle = 0f;              // 45f 和 225f 戰鬥開始時的起始角度
+        private float _initAngle;               // 45f 和 225f 戰鬥開始時的起始角度
 
-        internal float RotateAnglePerFrame { get; set; } = 2f;      // 每個 frame 的旋轉角度
-        internal float RotateAnglePerTime { get; set; } = 0f;       // 每次指令的旋轉角度
-        internal float RotateAnglePerFrameActual { get; set; } = 0f;
-        private float RotateAngleRemaining { get; set; } = 0f;
+        internal float RotateAnglePerFrame { get; set; }    // 每個 frame 的旋轉角度
+        internal float RotateAnglePerTime { get; set; }     // 每次指令的旋轉角度
+        internal float RotateAnglePerFrameActual { get; set; }
+        private float RotateAngleRemaining { get; set; }
 
-        private eCombatCircleState _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
-        private Dictionary<int, GameObject> _dicCircleSocket = new Dictionary<int, GameObject>();
+        private eCombatCircleState _combatCircleState;
+        private Dictionary<int, ViewCircleSocket> _dicVwCircleSocket;
 
-        private void Awake()
+        internal bool Init()
         {
+            RotateAnglePerFrame = 2f;
+
+            _dicVwCircleSocket = new Dictionary<int, ViewCircleSocket>();
+
             float radius = (this.transform.GetComponent<RectTransform>().sizeDelta.x + _adjustRadiusForSocket) / 2;
 
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
             {
-                int socketId = i + 1;
+                int posId = i + 1;
 
                 float posX = radius * Mathf.Cos(-60 * i * Mathf.Deg2Rad);
                 float posY = radius * Mathf.Sin(-60 * i * Mathf.Deg2Rad);
 
-                GameObject objSocket = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_CIRCLE_SOCKET), new Vector2(posX, posY), Quaternion.identity);
-                objSocket.transform.SetParent(this.transform, false);
+                GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_CIRCLE_SOCKET), new Vector2(posX, posY), Quaternion.identity);
+                obj.transform.SetParent(this.transform, false);
 
-                _dicCircleSocket.Add(socketId, objSocket);
+                ViewCircleSocket vwCircleSocket = obj.GetComponent<ViewCircleSocket>();
+                if (vwCircleSocket.Init() == false)
+                {
+                    Debug.LogError("Init ViewCircleSocket failed, PosId: " + posId);
+                }
+
+                _dicVwCircleSocket.Add(posId, vwCircleSocket);
             }
-        }
 
-        private void Start()
-        {
+            Rotate(_initAngle);
+
             _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
-        }
 
-        private void Update()
-        {
-
+            return true;
         }
 
         private void FixedUpdate()
@@ -84,11 +90,6 @@ namespace GameCombat
             }
         }
 
-        internal void Init()
-        {
-            Rotate(_initAngle);
-        }
-
         internal bool IsStandby()
         {
             return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
@@ -104,29 +105,24 @@ namespace GameCombat
         {
             this.transform.Rotate(0, 0, angle);
 
-            foreach (var socket in _dicCircleSocket)
+            foreach (var vwSocket in _dicVwCircleSocket)
             {
-                socket.Value.transform.Rotate(0, 0, -angle);
+                vwSocket.Value.transform.Rotate(0, 0, -angle);
             }
         }
 
-        internal void ChangeViewSocket(int socketId, ref RoleCsvData refCsvData)
+        internal void SetSocket(int posId, CombatRole combatRole)
         {
-            GameObject objSocket = null;
-
-            if (_dicCircleSocket.TryGetValue(socketId, out objSocket) == false)
+            ViewCircleSocket vwSocket = _dicVwCircleSocket[posId];
+            if (vwSocket == null)
             {
+                Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);
                 return;
             }
 
-            // 屬性
-            objSocket.GetComponent<Image>().sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_ROLE_ATTRIBUTE_PATH + refCsvData._attribute);
-
-            // 徽章
-            string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + refCsvData._emblem.ToString().PadLeft(3, '0');
-            GameObject objEmblem = objSocket.transform.Find("Emblem").gameObject;
-            objEmblem.SetActive(true);
-            objEmblem.GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+            vwSocket.SetSocket(combatRole.Role.Attribute);
+            vwSocket.SetEmblem(combatRole.Role.Emblem);
+            vwSocket.ShowEmblem();
         }
     }
 }

@@ -9,64 +9,63 @@ namespace GameCombat
         internal ViewCombatRole _viewCombatRole = null;
         internal int MemberId { get; set; } = 0;
         internal Role Role { get; set; } = null;
-
         internal GameEnum.eCombatRoleState State { get; set; } = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NA;
-        internal int Life { get; private set; } = 0;
+        internal int Health { get; private set; } = 0;
         internal int NormalDamage { get; set; } = 0;
 
-        internal bool Init(int memberId, int roleId)
+        internal bool Init(int memberId, RoleCsvData csvData)
         {
             Role = new Role();
-            if (Role.Init(roleId) == false)
+            if (Role.Init(csvData) == false)
             {
-                Debug.LogError("Init Role failed, Id: " + roleId);
+                Debug.LogError("Init Role failed, Id: " + csvData._id);
                 return false;
             }
 
             MemberId = memberId;
-            Life = Role.Life;
+            Health = Role.Health;
             State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
 
             return true;
         }
 
-        internal void ChangeLife(int deltaLife)
+        internal void ChangeHealth(int deltaHealth)
         {
-            int tmpLife = Life + deltaLife;
+            int tmpHealth = Health + deltaHealth;
 
-            SetLife(tmpLife);
+            SetHealth(tmpHealth);
         }
 
-        internal void SetLife(int life)
+        internal void SetHealth(int health)
         {
-            if (life < 0)
+            if (health < 0)
             {
-                Life = 0;
+                Health = 0;
             }
-            else if (life > Role.Life)
+            else if (health > Role.Health)
             {
-                Life = Role.Life;
+                Health = Role.Health;
             }
             else
             {
-                Life = life;
+                Health = health;
             }
 
-            _viewCombatRole.ChangeViewBar(Life, Role.Life);
+            _viewCombatRole.SetHealthBar(Health, Role.Health);
 
             if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL
-                && Life == 0)
+                && Health == 0)
             {
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
 
-                _viewCombatRole.ChangeViewStateDying();
+                _viewCombatRole.SetStateDying();
             }
             else if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
-                && Life > 0)
+                && Health > 0)
             {
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
 
-                _viewCombatRole.ChangeViewStateNormal();
+                _viewCombatRole.SetStateNormal();
             }
         }
     }

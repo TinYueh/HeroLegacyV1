@@ -12,20 +12,13 @@ public class Role
     public int Name { get; protected set; }
     public GameEnum.eRoleAttribute Attribute { get; protected set; }
     public int Talent { get; protected set; }
-    public int Life { get; protected set; }
+    public int Health { get; protected set; }
     public int Attack { get; protected set; }
     public int Defence { get; protected set; }
     public int Ai { get; protected set; }
 
-    public bool Init(int roleId)
+    public bool Init(RoleCsvData csvData)
     {
-        RoleCsvData csvData = new RoleCsvData();
-        if (TableManager.Instance.GetRoleCsvData(roleId, out csvData) == false)
-        {
-            Debug.LogError("Not found RoleCsvData, Id: " + roleId);
-            return false;
-        }
-
         Id = csvData._id;
         TeamType = (GameEnum.eCombatTeamType)csvData._teamType;
         Portrait = csvData._portrait;
@@ -33,7 +26,7 @@ public class Role
         Name = csvData._name;
         Attribute = (GameEnum.eRoleAttribute)csvData._attribute;
         Talent = csvData._talent;
-        Life = csvData._life;
+        Health = csvData._health;
         Attack = csvData._attack;
         Defence = csvData._defence;
         Ai = csvData._ai;

@@ -16,9 +16,11 @@ namespace GameSystem.Scene
         public override void Init()
         {
             _backgroundController = GameObject.Find("Background").transform.GetComponent<BackgroundController>();
+            _backgroundController.Init();
             GameObject.DontDestroyOnLoad(_backgroundController);
 
             _coverController = GameObject.Find("Cover").transform.GetComponent<CoverController>();
+            _coverController.Init();
             GameObject.DontDestroyOnLoad(_coverController);
 
             RegistAllScene();

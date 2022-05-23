@@ -41,7 +41,7 @@ namespace GameSystem.Table
                 string fileName = t.name.Substring(preIndex + 3);
 
                 // Load function
-                DlgLoadCsvData dlgFunc = null;
+                DlgLoadCsvData dlgFunc;
                 _dicLoadCsvFunc.TryGetValue(fileName, out dlgFunc);
                 if (dlgFunc == null)
                 {
@@ -107,7 +107,7 @@ namespace GameSystem.Table
             int.TryParse(rowData[++outIndex], out data._name);
             int.TryParse(rowData[++outIndex], out data._attribute);
             int.TryParse(rowData[++outIndex], out data._talent);
-            int.TryParse(rowData[++outIndex], out data._life);
+            int.TryParse(rowData[++outIndex], out data._health);
             int.TryParse(rowData[++outIndex], out data._attack);
             int.TryParse(rowData[++outIndex], out data._defence);
             int.TryParse(rowData[++outIndex], out data._ai);

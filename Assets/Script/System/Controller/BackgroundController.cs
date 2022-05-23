@@ -11,21 +11,36 @@ namespace GameSystem
 
         SpriteRenderer _sprPicture = null;
 
-        private void Awake()
+        internal bool Init()
         {
             _sprPicture = transform.Find("Picture").GetComponent<SpriteRenderer>();
             SetPicture(_pictureId);
+            FullScreenSprite();
             ShowPicture();
+
+            return true;
         }
 
-        private void Start()
+        private void FullScreenSprite()
         {
+            float cameraHeight = Camera.main.orthographicSize * 2;
+            Vector2 cameraSize = new Vector2(Camera.main.aspect * cameraHeight, cameraHeight);
+            Vector2 spriteSize = _sprPicture.sprite.bounds.size;
 
-        }
+            Vector2 scale = transform.localScale;
+            if (cameraSize.x >= cameraSize.y)
+            {
+                // Landscape
+                scale *= cameraSize.x / spriteSize.x;
+            }
+            else
+            {
+                // Portrait
+                scale *= cameraSize.y / spriteSize.y;
+            }
 
-        private void Update()
-        {
-
+            transform.position = Vector2.zero;
+            transform.localScale = scale;
         }
 
         internal void SetPicture(int pictureId)

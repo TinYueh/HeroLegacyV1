@@ -17,7 +17,7 @@ public class RoleCsvData
     public int _name;
     public int _attribute;
     public int _talent;
-    public int _life;
+    public int _health;
     public int _attack;
     public int _defence;
     public int _ai;

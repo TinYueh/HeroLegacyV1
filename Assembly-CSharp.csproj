@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\Combat\View\ViewCombatRole.cs" />
+    <Compile Include="Assets\Script\Combat\Model\CombatTeam.cs" />
     <Compile Include="Assets\Script\Define\GameEnum.cs" />
     <Compile Include="Assets\Script\Environment\FullScreenSprite.cs" />
     <Compile Include="Assets\Script\Combat\CombatAI.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Assets\Script\Combat\CombatFormula.cs" />
     <Compile Include="Assets\Script\Combat\Model\CombatRole.cs" />
     <Compile Include="Assets\Script\Define\GameConst.cs" />
+    <Compile Include="Assets\Script\Combat\Model\CircleSocket.cs" />
     <Compile Include="Assets\Script\Combat\CombatCore.cs" />
     <Compile Include="Assets\Script\System\Manager\AudioManager.cs" />
     <Compile Include="Assets\Script\System\Manager\UIManager.cs" />
@@ -80,8 +82,7 @@
     <Compile Include="Assets\Script\Combat\View\ViewCombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\View\ViewEnergyBar.cs" />
     <Compile Include="Assets\Script\Combat\View\ViewMember.cs" />
-    <Compile Include="Assets\Script\Combat\Model\CombatTeam.cs" />
-    <Compile Include="Assets\Script\Combat\Model\CombatCircleSocket.cs" />
+    <Compile Include="Assets\Script\Combat\View\ViewCircleSocket.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
