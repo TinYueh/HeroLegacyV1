@@ -39,13 +39,13 @@ public class GameEnum
         E_COMBAT_ROUND_STATE_LIMIT,
     }
 
-    public enum eCombatMatchResult
+    public enum eCombatAttributeMatchResult
     {
-        E_COMBAT_MATCH_RESULT_NA = 0,
-        E_COMBAT_MATCH_RESULT_WIN,      // 勝
-        E_COMBAT_MATCH_RESULT_LOSE,     // 負
-        E_COMBAT_MATCH_RESULT_DRAW,     // 平
-        E_COMBAT_MATCH_RESULT_LIMIT,
+        E_COMBAT_ATTRIBUTE_MATCH_NA = 0,
+        E_COMBAT_ATTRIBUTE_MATCH_WIN,      // 勝
+        E_COMBAT_ATTRIBUTE_MATCH_LOSE,     // 負
+        E_COMBAT_ATTRIBUTE_MATCH_DRAW,     // 平
+        E_COMBAT_ATTRIBUTE_MATCH_LIMIT,
     }
 
     public enum eCombatRoleState

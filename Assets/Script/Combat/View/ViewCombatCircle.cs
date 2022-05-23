@@ -107,7 +107,7 @@ namespace GameCombat
 
         internal void SetSocket(int posId, ref CombatRole refCombatRole)
         {
-            ViewCircleSocket vwSocket;
+            ViewCircleSocket vwSocket = null;
             if (_dicVwCircleSocket.TryGetValue(posId , out vwSocket) == false)
             {
                 Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);

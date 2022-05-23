@@ -35,6 +35,25 @@ namespace GameCombat
             _combatRole = refCombatRole;
         }
 
+        internal bool GetCombatRole(out CombatRole outCombatRole)
+        {
+            outCombatRole = null;
+
+            if (Type != GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE)
+            {
+                return false;
+            }
+
+            if (_combatRole == null)
+            {
+                return false;
+            }
+
+            outCombatRole = _combatRole;
+
+            return true;
+        }
+
         internal bool Exec(ref CombatTeam refTarget)
         {
             DlgExecFunc dlgFunc;

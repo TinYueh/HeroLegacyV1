@@ -6,6 +6,45 @@ namespace GameCombat
 {
     public class CombatFormula
     {
+        internal GameEnum.eCombatAttributeMatchResult CheckAttributeMatch(GameEnum.eRoleAttribute player, GameEnum.eRoleAttribute opponent)
+        {
+            if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
+            {
+                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
+                }
+                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
+                }
+            }
+            else if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
+            {
+                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
+                }
+                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
+                }
+            }
+            else if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
+            {
+                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
+                }
+                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
+                }
+            }
+
+            return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW;
+        }
+
         internal void GetNormalDamage(CombatRole attacker, CombatRole defender, bool isCriticalHit, out int outValue)
         {
             outValue = attacker.Role.Attack - defender.Role.Defence;

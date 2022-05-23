@@ -6,7 +6,6 @@ namespace GameCombat
 {
     public class CombatRole
     {
-        internal ViewCombatRole _viewCombatRole;    // Todo: 移到CombatTeam控管
         internal int MemberId { get; set; } = 0;
         internal Role Role { get; set; } = new Role();
         internal GameEnum.eCombatRoleState State { get; set; } = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NA;
@@ -26,46 +25,6 @@ namespace GameCombat
             State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
 
             return true;
-        }
-
-        internal void ChangeHealth(int deltaHealth)
-        {
-            int tmpHealth = Health + deltaHealth;
-
-            SetHealth(tmpHealth);
-        }
-
-        internal void SetHealth(int health)
-        {
-            if (health < 0)
-            {
-                Health = 0;
-            }
-            else if (health > Role.Health)
-            {
-                Health = Role.Health;
-            }
-            else
-            {
-                Health = health;
-            }
-
-            _viewCombatRole.SetHealthBar(Health, Role.Health);
-
-            if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL
-                && Health == 0)
-            {
-                State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
-
-                _viewCombatRole.SetStateDying();
-            }
-            else if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
-                && Health > 0)
-            {
-                State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
-
-                _viewCombatRole.SetStateNormal();
-            }
         }
     }
 }

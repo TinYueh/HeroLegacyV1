@@ -11,7 +11,7 @@ namespace GameCombat
 
         private ViewCombatTeam _vwCombatTeam = null;
         private int _energyPoint = 0;
-        private int _matchPosId = 0;
+        internal int MatchPosId { get; private set; } = 0;
         internal GameEnum.eRotateDirection RotateDirection { get; private set; } = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
 
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // 隊伍成員 <memberId, CombatRole>
@@ -82,24 +82,13 @@ namespace GameCombat
             CombatRole combatRole = new CombatRole();
             combatRole.Init(memberId, ref csvData);
 
-            _dicCombatRole.Add(posId, combatRole);
-
-            _vwCombatTeam.SetCombatRole(posId, memberId, ref combatRole);
+            _dicCombatRole.Add(memberId, combatRole);
 
             SetCircleSocket(posId, ref combatRole);
 
+            _vwCombatTeam.SetCombatRole(posId, memberId, ref combatRole);
+
             return true;
-        }
-
-        internal bool ExecMatchCombatCircle(ref CombatTeam refTarget)
-        {
-            CircleSocket socket;
-            if (_dicCircleSocket.TryGetValue(_matchPosId, out socket) == false)
-            {
-                Debug.Log("Not found CircleSocket, PosId: " + _matchPosId);
-            }
-
-            return socket.Exec(ref refTarget);
         }
 
         internal bool IsStandby()
@@ -109,7 +98,7 @@ namespace GameCombat
 
         private void SetCircleSocket(int posId, ref CombatRole refCombatRole)
         {
-            CircleSocket socket;
+            CircleSocket socket = null;
             if (_dicCircleSocket.TryGetValue(posId, out socket) == false)
             {
                 Debug.Log("Not found CircleSocket, PosId: " + posId);
@@ -162,7 +151,7 @@ namespace GameCombat
 
         private void ChangeMatchPosId(GameEnum.eRotateDirection direction)
         {
-            int tmpMatchPosId = _matchPosId;
+            int tmpMatchPosId = MatchPosId;
 
             if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT)
             {
@@ -196,7 +185,83 @@ namespace GameCombat
                 }
             }
 
-            _matchPosId = posId;
+            MatchPosId = posId;
         }
+
+        internal bool ExecMatchCombatCircle(ref CombatTeam refTarget)
+        {
+            CircleSocket socket;
+            if (_dicCircleSocket.TryGetValue(MatchPosId, out socket) == false)
+            {
+                Debug.Log("Not found CircleSocket, PosId: " + MatchPosId);
+            }
+
+            return socket.Exec(ref refTarget);
+        }
+
+        internal bool GetCombatRoleByMember(int memberId, out CombatRole outCombatRole)
+        {
+            return _dicCombatRole.TryGetValue(memberId, out outCombatRole);
+        }
+
+        internal bool GetCombatRoleByPos(int posId, out CombatRole outCombatRole)
+        {
+            outCombatRole = null;
+
+            CircleSocket socket = null;
+            if (_dicCircleSocket.TryGetValue(posId, out socket) == false)
+            {
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
+                return false;
+            }
+
+            if (socket.GetCombatRole(out outCombatRole) == false)
+            {
+                Debug.LogError("GetCombatRole from CircleSocket failed, PosId: " + posId);
+                return false;
+            }
+
+            return true;
+        }
+
+        //internal void ChangeHealth(int deltaHealth)
+        //{
+        //    int tmpHealth = Health + deltaHealth;
+
+        //    SetHealth(tmpHealth);
+        //}
+
+        //internal void SetHealth(int health)
+        //{
+        //    if (health < 0)
+        //    {
+        //        Health = 0;
+        //    }
+        //    else if (health > Role.Health)
+        //    {
+        //        Health = Role.Health;
+        //    }
+        //    else
+        //    {
+        //        Health = health;
+        //    }
+
+        //    _viewCombatRole.SetHealthBar(Health, Role.Health);
+
+        //    if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL
+        //        && Health == 0)
+        //    {
+        //        State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
+
+        //        _viewCombatRole.SetStateDying();
+        //    }
+        //    else if (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
+        //        && Health > 0)
+        //    {
+        //        State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
+
+        //        _viewCombatRole.SetStateNormal();
+        //    }
+        //}
     }
 }
