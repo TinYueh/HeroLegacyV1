@@ -6,22 +6,55 @@ namespace GameCombat
 {
     public class CircleSocket
     {
-        internal int PosId { get; private set; }
+        internal int PosId { get; private set; } = 0;
 
-        internal GameEnum.eCircleSocketType Type { get; private set; }
+        internal GameEnum.eCircleSocketType Type { get; private set; } = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_NA;
 
-        private CombatRole _combatRole;
+        private CombatRole _combatRole = null;
+
+        private delegate bool DlgExecFunc();
+        private Dictionary<GameEnum.eCircleSocketType, DlgExecFunc> _dicExecFunc = new Dictionary<GameEnum.eCircleSocketType, DlgExecFunc>();
 
         internal void Init(int posId)
         {
             PosId = posId;
             Type = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE;
+
+            RegistExecFunc();
+        }
+
+        private void RegistExecFunc()
+        {
+            _dicExecFunc.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE, ExecSpace);
+            _dicExecFunc.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ExecCombatRole);
         }
 
         internal void Setup(GameEnum.eCircleSocketType socketType, ref CombatRole refCombatRole)
         {
             Type = socketType;
             _combatRole = refCombatRole;
+        }
+
+        internal bool Exec()
+        {
+            DlgExecFunc dlgFunc;
+            if (_dicExecFunc.TryGetValue(Type, out dlgFunc) == false)
+            {
+                Debug.LogError("Not found ExecFunc for " + Type);
+                return false;
+            }
+
+            return dlgFunc();
+        }
+
+        private bool ExecSpace()
+        {
+            return false;
+        }
+
+        private bool ExecCombatRole()
+        {
+            return true;
         }
     }
 }

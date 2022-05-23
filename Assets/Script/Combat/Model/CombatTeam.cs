@@ -8,17 +8,19 @@ namespace GameCombat
     public class CombatTeam
     {
         internal GameEnum.eCombatTeamType TeamType { get; private set; }
-        internal ViewCombatTeam VwCombatTeam { get; private set; }
-        internal int EnergyPoint { get; private set; }
-        internal int MatchSocketId { get; private set; }
+
+        private ViewCombatTeam _vwCombatTeam;
+        private int _energyPoint;
+        private int _matchPosId;
+        internal GameEnum.eRotateDirection RotateDirection { get; private set; } = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
 
         private Dictionary<int, CombatRole> _dicCombatRole;     // ¶¤¥î¦¨­û <memberId, CombatRole>
         private Dictionary<int, CircleSocket> _dicCircleSocket; // <posId, CircleSocket>
 
-        internal void Init(GameEnum.eCombatTeamType teamType, ViewCombatTeam vwCombatTeam)
+        internal void Init(GameEnum.eCombatTeamType teamType, ref ViewCombatTeam ref_vwCombatTeam)
         {
             TeamType = teamType;
-            VwCombatTeam = vwCombatTeam;
+            _vwCombatTeam = ref_vwCombatTeam;
 
             _dicCombatRole = new Dictionary<int, CombatRole>();
             _dicCircleSocket = new Dictionary<int, CircleSocket>();
@@ -62,10 +64,11 @@ namespace GameCombat
                     return false;
                 }
 
-                VwCombatTeam.ShowCombatRole(memberId);
+                _vwCombatTeam.ShowCombatRole(memberId);
             }
 
             SetEnergyPoint(0);
+            SetMatchPosId(1);
 
             return true;
         }
@@ -80,18 +83,55 @@ namespace GameCombat
             }
 
             CombatRole combatRole = new CombatRole();
-            combatRole.Init(memberId, csvData);
+            combatRole.Init(memberId, ref csvData);
 
             _dicCombatRole.Add(posId, combatRole);
 
-            VwCombatTeam.SetCombatRole(posId, memberId, combatRole);
+            _vwCombatTeam.SetCombatRole(posId, memberId, ref combatRole);
+
+            SetCircleSocket(posId, ref combatRole);
 
             return true;
         }
 
+        internal bool ExecMatchCombatCircle()
+        {
+            CircleSocket socket;
+            if (_dicCircleSocket.TryGetValue(_matchPosId, out socket) == false)
+            {
+                Debug.Log("Not found CircleSocket, PosId: " + _matchPosId);
+            }
+
+            return socket.Exec();
+        }
+
+        internal bool IsStandby()
+        {
+            return _vwCombatTeam.IsStandby();
+        }
+
+        private void SetCircleSocket(int posId, ref CombatRole refCombatRole)
+        {
+            CircleSocket socket;
+            if (_dicCircleSocket.TryGetValue(posId, out socket) == false)
+            {
+                Debug.Log("Not found CircleSocket, PosId: " + posId);
+            }
+
+            socket.Setup(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ref refCombatRole);
+        }
+
+        internal void SetRotation(GameEnum.eRotateDirection direction)
+        {
+            RotateDirection = direction;
+
+            ChangeMatchPosId(RotateDirection);
+            _vwCombatTeam.SetRotation(RotateDirection);
+        }
+
         internal void ChangeEnergyPoint(int deltaPoint)
         {
-            int tmpPoint = EnergyPoint + deltaPoint;
+            int tmpPoint = _energyPoint + deltaPoint;
 
             SetEnergyPoint(tmpPoint);
         }
@@ -100,52 +140,66 @@ namespace GameCombat
         {
             if (point < 0)
             {
-                EnergyPoint = 0;
+                _energyPoint = 0;
             }
             else if (point > GameConst.MAX_ENERGY_POINT)
             {
-                EnergyPoint = GameConst.MAX_ENERGY_POINT;
+                _energyPoint = GameConst.MAX_ENERGY_POINT;
             }
             else
             {
-                EnergyPoint = point;
+                _energyPoint = point;
             }
 
-            int vwPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
-            int vwOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
+            int vwPoint = _energyPoint % GameConst.BAR_ENERGY_POINT;
+            int vwOrb = _energyPoint / GameConst.BAR_ENERGY_POINT;
 
-            VwCombatTeam.SetEnergyBar(vwPoint);
-            VwCombatTeam.SetEnergyOrb(vwOrb);
+            _vwCombatTeam.SetEnergyBar(vwPoint);
+            _vwCombatTeam.SetEnergyOrb(vwOrb);
 
-            if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
+            if (_energyPoint == GameConst.MAX_ENERGY_POINT)
             {
                 // Todo: Lock EnergyBar
             }
         }
 
-        //internal int ConvertFormalSlotId(int informalId)
-        //{
-        //    int slotId = 0;
+        private void ChangeMatchPosId(GameEnum.eRotateDirection direction)
+        {
+            int tmpMatchPosId = _matchPosId;
 
-        //    if (informalId > GameConst.MAX_TEAM_MEMBER)
-        //    {
-        //        slotId = informalId % GameConst.MAX_TEAM_MEMBER;
-        //    }
-        //    else if (informalId < 0)
-        //    {
-        //        slotId = GameConst.MAX_TEAM_MEMBER - (informalId % GameConst.MAX_TEAM_MEMBER);
-        //    }
-        //    else
-        //    {
-        //        slotId = informalId;
-        //    }
+            if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT)
+            {
+                tmpMatchPosId -= 1;
+            }
+            else if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT)
+            {
+                tmpMatchPosId += 1;
+            }
+            else
+            {
+                return;
+            }
 
-        //    if (slotId == 0)
-        //    {
-        //        slotId = GameConst.MAX_TEAM_MEMBER;
-        //    }
+            SetMatchPosId(tmpMatchPosId);
+        }
 
-        //    return slotId;
-        //}
+        private void SetMatchPosId(int posId)
+        {
+            if (posId <= 0)
+            {
+                posId = GameConst.MAX_TEAM_MEMBER - (posId % GameConst.MAX_TEAM_MEMBER);
+            }
+            else if (posId > GameConst.MAX_TEAM_MEMBER)
+            {
+                posId = posId % GameConst.MAX_TEAM_MEMBER;
+
+                if (posId == 0)
+                {
+                    posId = GameConst.MAX_TEAM_MEMBER;
+                }
+            }
+
+            _matchPosId = posId;
+        }
     }
 }

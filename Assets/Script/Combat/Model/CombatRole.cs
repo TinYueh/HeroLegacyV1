@@ -6,19 +6,19 @@ namespace GameCombat
 {
     public class CombatRole
     {
-        internal ViewCombatRole _viewCombatRole = null;
-        internal int MemberId { get; set; } = 0;
-        internal Role Role { get; set; } = null;
-        internal GameEnum.eCombatRoleState State { get; set; } = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NA;
-        internal int Health { get; private set; } = 0;
-        internal int NormalDamage { get; set; } = 0;
+        internal ViewCombatRole _viewCombatRole;    // Todo: ≤æ®ÏCombatTeam±±∫ﬁ
+        internal int MemberId { get; set; }
+        internal Role Role { get; set; }
+        internal GameEnum.eCombatRoleState State { get; set; }
+        internal int Health { get; private set; }
+        internal int NormalDamage { get; set; }
 
-        internal bool Init(int memberId, RoleCsvData csvData)
+        internal bool Init(int memberId, ref RoleCsvData refCsvData)
         {
             Role = new Role();
-            if (Role.Init(csvData) == false)
+            if (Role.Init(ref refCsvData) == false)
             {
-                Debug.LogError("Init Role failed, Id: " + csvData._id);
+                Debug.LogError("Init Role failed, Id: " + refCsvData._id);
                 return false;
             }
 

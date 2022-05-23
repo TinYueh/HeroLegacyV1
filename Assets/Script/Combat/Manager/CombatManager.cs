@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameSystem;
+using GameSystem.Audio;
 
 namespace GameCombat
 {
@@ -10,9 +10,7 @@ namespace GameCombat
         private CombatAI _combatAI;
         private CombatFormula _combatFormula;
 
-        // View
-        private ViewCombatTeam _vwCombatPlayer;
-        private ViewCombatTeam _vwCombatOpponent;
+        private int _rotateSfxId = 201;
 
         // Model
         private CombatTeam _combatPlayer;
@@ -28,17 +26,17 @@ namespace GameCombat
             _combatAI = new CombatAI();
             _combatFormula = new CombatFormula();
 
-            _vwCombatPlayer = GameObject.Find("UIPlayer").GetComponent<ViewCombatTeam>();
-            _vwCombatPlayer.Init();
-            
-            _vwCombatOpponent = GameObject.Find("UIOpponent").GetComponent<ViewCombatTeam>();
-            _vwCombatOpponent.Init();
+            ViewCombatTeam vwCombatPlayer = GameObject.Find("UIPlayer").GetComponent<ViewCombatTeam>();
+            vwCombatPlayer.Init();
+
+            ViewCombatTeam vwCombatOpponent = GameObject.Find("UIOpponent").GetComponent<ViewCombatTeam>();
+            vwCombatOpponent.Init();
 
             _combatPlayer = new CombatTeam();
-            _combatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER, _vwCombatPlayer);
+            _combatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER, ref vwCombatPlayer);
 
             _combatOpponent = new CombatTeam();
-            _combatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT, _vwCombatOpponent);
+            _combatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT, ref vwCombatOpponent);
 
             _dicStartActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc>();
 
@@ -74,14 +72,73 @@ namespace GameCombat
         internal void StartRoundAction(GameEnum.eCombatRoundAction action)
         {
             DlgStartActionFunc dlgFunc;
-            _dicStartActionFunc.TryGetValue(action, out dlgFunc);
-            if (dlgFunc == null)
+            if (_dicStartActionFunc.TryGetValue(action, out dlgFunc) == false)
             {
                 Debug.LogError("Not found StartActionFunc for " + action);
                 return;
             }
 
             dlgFunc();
+        }
+
+        private void StartActionRotateRight()
+        {
+            _combatPlayer.SetRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
+
+            GameEnum.eRotateDirection direction = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
+            _combatAI.GetNextAction(out direction);
+            _combatOpponent.SetRotation(direction);
+
+            AudioManager.Instance.PlaySfx(_rotateSfxId);
+
+            CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+        }
+
+        private void StartActionRotateLeft()
+        {
+            _combatPlayer.SetRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
+
+            GameEnum.eRotateDirection direction = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
+            _combatAI.GetNextAction(out direction);
+            _combatOpponent.SetRotation(direction);
+
+            AudioManager.Instance.PlaySfx(_rotateSfxId);
+
+            CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
+        }
+
+        private void StartActionCast()
+        {
+
+        }
+
+        internal bool CheckRoundAction()
+        {
+            if (_combatPlayer.IsStandby() == false || _combatOpponent.IsStandby() == false)
+            {
+                return false;
+            }
+
+            bool isReady = true;
+
+            if (_combatPlayer.ExecMatchCombatCircle() == false)
+            {
+                _combatPlayer.SetRotation(_combatPlayer.RotateDirection);
+                isReady = false;
+            }
+
+            if (_combatOpponent.ExecMatchCombatCircle() == false)
+            {
+                _combatOpponent.SetRotation(_combatOpponent.RotateDirection);
+                isReady = false;
+            }
+
+            if (isReady == false)
+            {
+                AudioManager.Instance.PlaySfx(_rotateSfxId);
+            }
+
+            return isReady;
         }
 
         internal void ExecRoundAction()
@@ -139,65 +196,6 @@ namespace GameCombat
             //_combatFormula.GetNormalDamage(opponentCombatRole, playerCombatRole, (result == GameEnum.eCombatMatchResult.E_COMBAT_MATCH_RESULT_DRAW), out damageValue);
             //opponentCombatRole.NormalDamage = damageValue;
             //playerCombatRole.ChangeHealth(-damageValue);
-        }
-
-        private void StartActionRotateRight()
-        {
-            //RotateCombatCircle(ref _combatPlayer._vwCombatCircle, true, 1);
-            //_combatPlayer.ChangeMatchSlotId(true);
-
-            //bool isDirectionRight = _combatAI.GetNextAction();
-            //RotateCombatCircle(ref _combatOpponent._vwCombatCircle, isDirectionRight, 1);
-            //_combatOpponent.ChangeMatchSlotId(isDirectionRight);
-
-            //AudioManager.Instance.PlaySfx(201);
-
-            //CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
-        }
-
-        private void StartActionRotateLeft()
-        {
-            //RotateCombatCircle(ref _combatPlayer._vwCombatCircle, false, 1);
-            //_combatPlayer.ChangeMatchSlotId(false);
-
-            //bool isDirectionRight = _combatAI.GetNextAction();
-            //RotateCombatCircle(ref _combatOpponent._vwCombatCircle, isDirectionRight, 1);
-            //_combatOpponent.ChangeMatchSlotId(isDirectionRight);
-
-            //AudioManager.Instance.PlaySfx(201);
-
-            //CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
-        }
-
-        private void StartActionCast()
-        {
-
-        }
-
-        private void RotateCombatCircle(ref CombatTeam refCombatTeam, bool isDirectionRight, int deltaSlot)
-        {
-            //if (isDirectionRight)
-            //{
-            //    refUICombatCircle.RotateAnglePerFrameActual = -refUICombatCircle.RotateAnglePerFrame;
-            //}
-            //else
-            //{
-            //    refUICombatCircle.RotateAnglePerFrameActual = refUICombatCircle.RotateAnglePerFrame;
-            //}
-
-            //refUICombatCircle.RotateAnglePerTime = GameConst.COMBAT_CIRCLE_SLOT_ANGLE * deltaSlot;
-
-            //refUICombatCircle.EnableRotate();
-        }
-
-        internal bool IsCombatCircleStandby()
-        {
-            //if (_combatPlayer._vwCombatCircle.IsStandby() && _combatOpponent._vwCombatCircle.IsStandby())
-            //{
-            //    return true;
-            //}
-
-            return false;
         }
 
         private GameEnum.eCombatMatchResult GetMatchResult(GameEnum.eRoleAttribute playerAttribute, GameEnum.eRoleAttribute opponentAttribute)

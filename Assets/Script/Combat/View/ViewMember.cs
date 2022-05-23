@@ -39,17 +39,17 @@ namespace GameCombat
             return true;
         }
 
-        internal void SetCombatRole(int memberId, CombatRole combatRole)
+        internal void SetCombatRole(int memberId, ref CombatRole refCombatRole)
         {
-            ViewCombatRole vwCombatRole = _dicVwCombatRole[memberId];
-            if (vwCombatRole == null)
+            ViewCombatRole vwCombatRole;
+            if (_dicVwCombatRole.TryGetValue(memberId, out vwCombatRole) == false)
             {
                 Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
                 return;
             }
 
-            vwCombatRole.SetPortrait(combatRole.Role.Portrait);
-            vwCombatRole.SetEmblem(combatRole.Role.Emblem);
+            vwCombatRole.SetPortrait(refCombatRole.Role.Portrait);
+            vwCombatRole.SetEmblem(refCombatRole.Role.Emblem);
         }
 
         internal void ShowCombatRole(int memberId)

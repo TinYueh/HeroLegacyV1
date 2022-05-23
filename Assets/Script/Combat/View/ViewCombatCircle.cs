@@ -21,9 +21,8 @@ namespace GameCombat
         private float _initAngle;               // 45f 和 225f 戰鬥開始時的起始角度
 
         internal float RotateAnglePerFrame { get; set; }    // 每個 frame 的旋轉角度
-        internal float RotateAnglePerTime { get; set; }     // 每次指令的旋轉角度
         internal float RotateAnglePerFrameActual { get; set; }
-        private float RotateAngleRemaining { get; set; }
+        internal float RotateAngleRemaining { get; set; }
 
         private eCombatCircleState _combatCircleState;
         private Dictionary<int, ViewCircleSocket> _dicVwCircleSocket;
@@ -97,7 +96,6 @@ namespace GameCombat
 
         internal void EnableRotate()
         {
-            RotateAngleRemaining = RotateAnglePerTime;
             _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
         }
 
@@ -111,17 +109,17 @@ namespace GameCombat
             }
         }
 
-        internal void SetSocket(int posId, CombatRole combatRole)
+        internal void SetSocket(int posId, ref CombatRole refCombatRole)
         {
-            ViewCircleSocket vwSocket = _dicVwCircleSocket[posId];
-            if (vwSocket == null)
+            ViewCircleSocket vwSocket;
+            if (_dicVwCircleSocket.TryGetValue(posId , out vwSocket) == false)
             {
                 Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);
                 return;
             }
 
-            vwSocket.SetSocket(combatRole.Role.Attribute);
-            vwSocket.SetEmblem(combatRole.Role.Emblem);
+            vwSocket.SetSocket(refCombatRole.Role.Attribute);
+            vwSocket.SetEmblem(refCombatRole.Role.Emblem);
             vwSocket.ShowEmblem();
         }
     }

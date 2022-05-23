@@ -21,6 +21,15 @@ public class GameEnum
         E_COMBAT_ROUND_ACTION_ROTATE_LIMIT,
     }
 
+    public enum eRotateDirection
+    {
+        E_ROTATE_DIRECTION_NA = 0,
+        E_ROTATE_DIRECTION_RIGHT,   // 順時鐘移動
+        E_ROTATE_DIRECTION_LEFT,    // 逆時鐘移動
+        E_ROTATE_DIRECTION_STAY,    // 停留
+        E_ROTATE_DIRECTION_LIMIT,
+    }
+
     public enum eCombatRoundState
     {
         E_COMBAT_ROUND_STATE_NA = 0,

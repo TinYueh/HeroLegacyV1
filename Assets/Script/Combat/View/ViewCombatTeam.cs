@@ -37,10 +37,15 @@ namespace GameCombat
             return true;
         }
 
-        internal void SetCombatRole(int posId, int memberId, CombatRole combatRole)
+        internal bool IsStandby()
         {
-            _vwCombatCircle.SetSocket(posId, combatRole);
-            _vwMember.SetCombatRole(memberId, combatRole);
+            return _vwCombatCircle.IsStandby();
+        }
+
+        internal void SetCombatRole(int posId, int memberId, ref CombatRole refCombatRole)
+        {
+            _vwCombatCircle.SetSocket(posId, ref refCombatRole);
+            _vwMember.SetCombatRole(memberId, ref refCombatRole);
         }
 
         internal void SetEnergyBar(int point)
@@ -51,6 +56,26 @@ namespace GameCombat
         internal void SetEnergyOrb(int orb)
         {
             _vwEnergyBar.SetEnergyOrb(orb);
+        }
+
+        internal void SetRotation(GameEnum.eRotateDirection direction)
+        {
+            if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT)
+            {
+                _vwCombatCircle.RotateAnglePerFrameActual = -_vwCombatCircle.RotateAnglePerFrame;
+            }
+            else if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT)
+            {
+                _vwCombatCircle.RotateAnglePerFrameActual = _vwCombatCircle.RotateAnglePerFrame;
+            }
+            else
+            {
+                return;
+            }
+
+            _vwCombatCircle.RotateAngleRemaining = GameConst.COMBAT_CIRCLE_SLOT_ANGLE;
+            
+            _vwCombatCircle.EnableRotate();
         }
 
         internal void ShowCombatRole(int memberId)
