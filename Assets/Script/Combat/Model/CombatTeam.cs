@@ -7,23 +7,20 @@ namespace GameCombat
 {
     public class CombatTeam
     {
-        internal GameEnum.eCombatTeamType TeamType { get; private set; }
+        internal GameEnum.eCombatTeamType TeamType { get; private set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
 
-        private ViewCombatTeam _vwCombatTeam;
-        private int _energyPoint;
-        private int _matchPosId;
+        private ViewCombatTeam _vwCombatTeam = null;
+        private int _energyPoint = 0;
+        private int _matchPosId = 0;
         internal GameEnum.eRotateDirection RotateDirection { get; private set; } = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
 
-        private Dictionary<int, CombatRole> _dicCombatRole;     // ∂§•Ó¶®≠˚ <memberId, CombatRole>
-        private Dictionary<int, CircleSocket> _dicCircleSocket; // <posId, CircleSocket>
+        private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // Èöä‰ºçÊàêÂì° <memberId, CombatRole>
+        private Dictionary<int, CircleSocket> _dicCircleSocket = new Dictionary<int, CircleSocket>();   // <posId, CircleSocket>
 
-        internal void Init(GameEnum.eCombatTeamType teamType, ref ViewCombatTeam ref_vwCombatTeam)
+        internal void Init(GameEnum.eCombatTeamType teamType, ref ViewCombatTeam refVwCombatTeam)
         {
             TeamType = teamType;
-            _vwCombatTeam = ref_vwCombatTeam;
-
-            _dicCombatRole = new Dictionary<int, CombatRole>();
-            _dicCircleSocket = new Dictionary<int, CircleSocket>();
+            _vwCombatTeam = refVwCombatTeam;
 
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
             {
@@ -94,7 +91,7 @@ namespace GameCombat
             return true;
         }
 
-        internal bool ExecMatchCombatCircle()
+        internal bool ExecMatchCombatCircle(ref CombatTeam refTarget)
         {
             CircleSocket socket;
             if (_dicCircleSocket.TryGetValue(_matchPosId, out socket) == false)
@@ -102,7 +99,7 @@ namespace GameCombat
                 Debug.Log("Not found CircleSocket, PosId: " + _matchPosId);
             }
 
-            return socket.Exec();
+            return socket.Exec(ref refTarget);
         }
 
         internal bool IsStandby()

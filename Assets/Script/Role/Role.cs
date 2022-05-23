@@ -5,17 +5,17 @@ using GameSystem.Table;
 
 public class Role
 {
-    public int Id { get; protected set; }
-    public GameEnum.eCombatTeamType TeamType { get; protected set; }
-    public int Portrait { get; protected set; }
-    public int Emblem { get; protected set; }
-    public int Name { get; protected set; }
-    public GameEnum.eRoleAttribute Attribute { get; protected set; }
-    public int Talent { get; protected set; }
-    public int Health { get; protected set; }
-    public int Attack { get; protected set; }
-    public int Defence { get; protected set; }
-    public int Ai { get; protected set; }
+    public int Id { get; protected set; } = 0;
+    public GameEnum.eCombatTeamType TeamType { get; protected set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+    public int Portrait { get; protected set; } = 0;
+    public int Emblem { get; protected set; } = 0;
+    public int Name { get; protected set; } = 0;
+    public GameEnum.eRoleAttribute Attribute { get; protected set; } = GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_NA;
+    public int Talent { get; protected set; } = 0;
+    public int Health { get; protected set; } = 0;
+    public int Attack { get; protected set; } = 0;
+    public int Defence { get; protected set; } = 0;
+    public int Ai { get; protected set; } = 0;
 
     public bool Init(ref RoleCsvData refCsvData)
     {

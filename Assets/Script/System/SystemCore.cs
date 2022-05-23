@@ -30,11 +30,6 @@ namespace GameSystem
             SceneManager.Instance.Init();
         }
 
-        private void Start()
-        {
-
-        }
-
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.S))

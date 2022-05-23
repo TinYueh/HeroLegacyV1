@@ -7,16 +7,14 @@ namespace GameCombat
     public class ViewMember : MonoBehaviour
     {
         [SerializeField]
-        private float initPosX;
+        private float initPosX = 0;
         [SerializeField]
-        private float deltaPosX;
+        private float deltaPosX = 0;
 
-        private Dictionary<int, ViewCombatRole> _dicVwCombatRole;  // <memberId, ViewCombatRole>
+        private Dictionary<int, ViewCombatRole> _dicVwCombatRole = new Dictionary<int, ViewCombatRole>();   // <memberId, ViewCombatRole>
 
         internal bool Init()
         {
-            _dicVwCombatRole = new Dictionary<int, ViewCombatRole>();
-
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
             {
                 int memberId = i + 1;

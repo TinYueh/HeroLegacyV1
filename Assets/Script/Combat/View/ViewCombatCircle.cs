@@ -16,23 +16,19 @@ namespace GameCombat
         }
 
         [SerializeField]
-        private float _adjustRadiusForSocket;   // -70f 微調 CircleSocket 與圓心的距離
+        private float _adjustRadiusForSocket = 0f;  // -70f 微調 CircleSocket 與圓心的距離
         [SerializeField]
-        private float _initAngle;               // 45f 和 225f 戰鬥開始時的起始角度
+        private float _initAngle = 0f;              // 45f 和 225f 戰鬥開始時的起始角度
 
-        internal float RotateAnglePerFrame { get; set; }    // 每個 frame 的旋轉角度
-        internal float RotateAnglePerFrameActual { get; set; }
-        internal float RotateAngleRemaining { get; set; }
+        internal float RotateAnglePerFrame { get; set; } = 2f;  // 每個 frame 的旋轉角度
+        internal float RotateAnglePerFrameActual { get; set; } = 0f;
+        internal float RotateAngleRemaining { get; set; } = 0f;
 
-        private eCombatCircleState _combatCircleState;
-        private Dictionary<int, ViewCircleSocket> _dicVwCircleSocket;
+        private eCombatCircleState _combatCircleState = eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
+        private Dictionary<int, ViewCircleSocket> _dicVwCircleSocket = new Dictionary<int, ViewCircleSocket>();
 
         internal bool Init()
         {
-            RotateAnglePerFrame = 2f;
-
-            _dicVwCircleSocket = new Dictionary<int, ViewCircleSocket>();
-
             float radius = (this.transform.GetComponent<RectTransform>().sizeDelta.x + _adjustRadiusForSocket) / 2;
 
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)

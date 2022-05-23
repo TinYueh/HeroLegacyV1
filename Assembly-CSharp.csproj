@@ -59,7 +59,6 @@
     <Compile Include="Assets\Script\Combat\View\ViewCombatRole.cs" />
     <Compile Include="Assets\Script\Combat\Model\CombatTeam.cs" />
     <Compile Include="Assets\Script\Define\GameEnum.cs" />
-    <Compile Include="Assets\Script\Environment\FullScreenSprite.cs" />
     <Compile Include="Assets\Script\Combat\CombatAI.cs" />
     <Compile Include="Assets\Script\Define\Singleton.cs" />
     <Compile Include="Assets\Script\System\Controller\BackgroundController.cs" />

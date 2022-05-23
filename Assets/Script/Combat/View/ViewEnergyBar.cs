@@ -7,10 +7,10 @@ namespace GameCombat
 {
     public class ViewEnergyBar : MonoBehaviour
     {
-        private Image _imgBar;
-        private Image _imgOrb;
-        private float _barInitLen;
-        private float _barLenPerUnit;
+        private Image _imgBar = null;
+        private Image _imgOrb = null;
+        private float _barInitLen = 0f;
+        private float _barLenPerUnit = 0f;
 
         internal bool Init()
         {

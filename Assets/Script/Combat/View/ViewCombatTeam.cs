@@ -8,11 +8,11 @@ namespace GameCombat
     public class ViewCombatTeam : MonoBehaviour
     {
         [SerializeField]
-        private ViewCombatCircle _vwCombatCircle;
+        private ViewCombatCircle _vwCombatCircle = null;
         [SerializeField]
-        private ViewEnergyBar _vwEnergyBar;
+        private ViewEnergyBar _vwEnergyBar = null;
         [SerializeField]
-        private ViewMember _vwMember;
+        private ViewMember _vwMember = null;
 
         internal bool Init()
         {

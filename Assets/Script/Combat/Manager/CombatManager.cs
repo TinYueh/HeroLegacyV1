@@ -7,38 +7,31 @@ namespace GameCombat
 {
     public class CombatManager : Singleton<CombatManager>
     {
-        private CombatAI _combatAI;
-        private CombatFormula _combatFormula;
+        private CombatAI _combatAI = new CombatAI();
+        private CombatFormula _combatFormula = new CombatFormula();
 
         private int _rotateSfxId = 201;
 
         // Model
-        private CombatTeam _combatPlayer;
-        private CombatTeam _combatOpponent;
+        private CombatTeam _combatPlayer = new CombatTeam();
+        private CombatTeam _combatOpponent = new CombatTeam();
 
         private delegate void DlgStartActionFunc();
-        private Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc> _dicStartActionFunc;
+        private Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc> _dicStartActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc>();
 
         internal GameEnum.eCombatRoundState CombatRoundState { get; set; }
 
         public override void Init()
         {
-            _combatAI = new CombatAI();
-            _combatFormula = new CombatFormula();
-
             ViewCombatTeam vwCombatPlayer = GameObject.Find("UIPlayer").GetComponent<ViewCombatTeam>();
             vwCombatPlayer.Init();
 
             ViewCombatTeam vwCombatOpponent = GameObject.Find("UIOpponent").GetComponent<ViewCombatTeam>();
             vwCombatOpponent.Init();
 
-            _combatPlayer = new CombatTeam();
             _combatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER, ref vwCombatPlayer);
 
-            _combatOpponent = new CombatTeam();
             _combatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT, ref vwCombatOpponent);
-
-            _dicStartActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc>();
 
             RegistStartActionFunc();
 
@@ -121,13 +114,13 @@ namespace GameCombat
 
             bool isReady = true;
 
-            if (_combatPlayer.ExecMatchCombatCircle() == false)
+            if (_combatPlayer.ExecMatchCombatCircle(ref _combatOpponent) == false)
             {
                 _combatPlayer.SetRotation(_combatPlayer.RotateDirection);
                 isReady = false;
             }
 
-            if (_combatOpponent.ExecMatchCombatCircle() == false)
+            if (_combatOpponent.ExecMatchCombatCircle(ref _combatPlayer) == false)
             {
                 _combatOpponent.SetRotation(_combatOpponent.RotateDirection);
                 isReady = false;

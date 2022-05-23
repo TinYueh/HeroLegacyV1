@@ -7,8 +7,8 @@ namespace GameCombat
 {
     public class ViewCircleSocket : MonoBehaviour
     {
-        private Image _imgSocket;
-        private Image _imgEmblem;
+        private Image _imgSocket = null;
+        private Image _imgEmblem = null;
 
         internal bool Init()
         {

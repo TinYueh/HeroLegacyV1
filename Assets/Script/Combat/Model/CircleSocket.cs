@@ -12,7 +12,7 @@ namespace GameCombat
 
         private CombatRole _combatRole = null;
 
-        private delegate bool DlgExecFunc();
+        private delegate bool DlgExecFunc(ref CombatTeam refTarget);
         private Dictionary<GameEnum.eCircleSocketType, DlgExecFunc> _dicExecFunc = new Dictionary<GameEnum.eCircleSocketType, DlgExecFunc>();
 
         internal void Init(int posId)
@@ -35,7 +35,7 @@ namespace GameCombat
             _combatRole = refCombatRole;
         }
 
-        internal bool Exec()
+        internal bool Exec(ref CombatTeam refTarget)
         {
             DlgExecFunc dlgFunc;
             if (_dicExecFunc.TryGetValue(Type, out dlgFunc) == false)
@@ -44,15 +44,17 @@ namespace GameCombat
                 return false;
             }
 
-            return dlgFunc();
+            return dlgFunc(ref refTarget);
         }
 
-        private bool ExecSpace()
+        private bool ExecSpace(ref CombatTeam refTarget)
         {
+            refTarget.ChangeEnergyPoint(1);
+
             return false;
         }
 
-        private bool ExecCombatRole()
+        private bool ExecCombatRole(ref CombatTeam refTarget)
         {
             return true;
         }

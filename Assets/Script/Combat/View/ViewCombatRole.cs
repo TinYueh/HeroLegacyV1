@@ -7,10 +7,10 @@ namespace GameCombat
 {
     public class ViewCombatRole : MonoBehaviour
     {
-        private Image _imgPortrait;
-        private Image _imgEmblem;
-        private Image _imgHealthBar;
-        private float _barInitLen;
+        private Image _imgPortrait = null;
+        private Image _imgEmblem = null;
+        private Image _imgHealthBar = null;
+        private float _barInitLen = 0f;
 
         internal bool Init()
         {

@@ -21,7 +21,7 @@ namespace GameSystem
             return true;
         }
 
-        private void FullScreenSprite()
+        internal void FullScreenSprite()
         {
             float cameraHeight = Camera.main.orthographicSize * 2;
             Vector2 cameraSize = new Vector2(Camera.main.aspect * cameraHeight, cameraHeight);

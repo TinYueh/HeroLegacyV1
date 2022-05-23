@@ -8,24 +8,18 @@ namespace GameSystem.Table
     public class TableManager : Singleton<TableManager>
     {
         // CsvData dictionary
-        private Dictionary<int, TeamCsvData> _dicTeamCsvData;
-        private Dictionary<int, RoleCsvData> _dicRoleCsvData;
+        private Dictionary<int, TeamCsvData> _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
+        private Dictionary<int, RoleCsvData> _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
         // 新增 Table: 定義 dictionary
 
         // LoadCsvData delegate
         private delegate bool DlgLoadCsvData(string[] rowData, out int outIndex);
 
         // LoadCsvData delegate dictionary
-        private Dictionary<string, DlgLoadCsvData> _dicLoadCsvFunc;
+        private Dictionary<string, DlgLoadCsvData> _dicLoadCsvFunc = new Dictionary<string, DlgLoadCsvData>();
 
         public override void Init()
         {
-            _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
-            _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
-            // 新增 Table: new Dictionary
-
-            _dicLoadCsvFunc = new Dictionary<string, DlgLoadCsvData>();
-
             // 註冊 Load function
             RegistLoadFunc();
 
