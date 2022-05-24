@@ -247,16 +247,25 @@ namespace GameCombat
                     }
             }
 
+            if (first.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
+                || second.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING)
+            {
+                return true;
+            }
+
             _combatFormula.GetNormalDamage(ref first, ref second, out damageValue);
             first.NormalDamage = damageValue;
             second.ChangeHealth(-damageValue);
 
-            if (second.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL)
+            if (first.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
+                || second.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING)
             {
-                _combatFormula.GetNormalDamage(ref second, ref first, out damageValue);
-                second.NormalDamage = damageValue;
-                first.ChangeHealth(-damageValue);
+                return true;
             }
+
+            _combatFormula.GetNormalDamage(ref second, ref first, out damageValue);
+            second.NormalDamage = damageValue;
+            first.ChangeHealth(-damageValue);
 
             return true;
         }
