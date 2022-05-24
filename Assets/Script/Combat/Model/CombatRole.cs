@@ -58,10 +58,12 @@ namespace GameCombat
 
             if (Health == 0)
             {
+                State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
                 _vwCombatRole.SetStateDying();
             }
             else
             {
+                State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
                 _vwCombatRole.SetStateNormal();
             }
         }

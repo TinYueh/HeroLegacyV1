@@ -45,14 +45,15 @@ namespace GameCombat
             return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW;
         }
 
-        internal void GetNormalDamage(CombatRole source, CombatRole target, bool isCriticalHit, out int outValue)
+        internal void GetNormalDamage(ref CombatRole refSource, ref CombatRole refTarget, out int outValue)
         {
-            outValue = source.Role.Attack - target.Role.Defence;
+            outValue = refSource.Role.Attack - refTarget.Role.Defence;
             outValue = (outValue < 1) ? 1 : outValue;
-            if (isCriticalHit)
-            {
-                outValue *= GameConst.CRITICAL_HIT_DAMAGE_RATIO;
-            }
+
+            //if (isCriticalHit)
+            //{
+            //    outValue *= GameConst.CRITICAL_HIT_DAMAGE_RATIO;
+            //}
         }
     }
 }

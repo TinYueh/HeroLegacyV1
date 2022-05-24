@@ -21,6 +21,8 @@ namespace GameCombat
 
         internal GameEnum.eCombatRoundState CombatRoundState { get; set; } = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
 
+        private bool HasToken { get; set; } = false;    // зPиMе¤дт
+
         public override bool Init()
         {
             ViewCombatTeam vwCombatPlayer = GameObject.Find("UIPlayer").GetComponent<ViewCombatTeam>();
@@ -75,6 +77,8 @@ namespace GameCombat
                 Debug.LogError("Setup CombatOpponent failed, TeamId: " + opponentTeamId);
                 return false;
             }
+
+            HasToken = (Random.Range(0, 2) == 1);
 
             return true;
         }
@@ -175,7 +179,6 @@ namespace GameCombat
             {
                 Debug.LogError("HandleNormalAttack failed");
             }
-
         }
 
         private  bool HandleAttributeMatch(ref CombatRole refPlayer, ref CombatRole refOpponent, ref GameEnum.eCombatAttributeMatchResult refResult)
@@ -185,28 +188,28 @@ namespace GameCombat
             switch (refResult)
             {
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN:
-                {
-                    _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
-                    _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
-                    break;
-                }
+                    {
+                        _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
+                        _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
+                        break;
+                    }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE:
-                {
-                    _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
-                    _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
-                    break;
-                }
+                    {
+                        _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
+                        _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
+                        break;
+                    }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW:
-                {
-                    _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
-                    _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
-                    break;
-                }
+                    {
+                        _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
+                        _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
+                        break;
+                    }
                 default:
-                {
-                    Debug.LogError("Unknown CombatAttributeMatchResult: " + refResult);
-                    return false;
-                }
+                    {
+                        Debug.LogError("Unknown CombatAttributeMatchResult: " + refResult);
+                        return false;
+                    }
             }
 
             return true;
@@ -216,13 +219,45 @@ namespace GameCombat
         {
             int damageValue = 0;
 
-            _combatFormula.GetNormalDamage(refPlayer, refOpponent, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN), out damageValue);
-            refPlayer.NormalDamage = damageValue;
-            refOpponent.ChangeHealth(-damageValue);
+            CombatRole first = null;
+            CombatRole second = null;
 
-            _combatFormula.GetNormalDamage(refOpponent, refPlayer, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE), out damageValue);
-            refOpponent.NormalDamage = damageValue;
-            refPlayer.ChangeHealth(-damageValue);
+            switch (result)
+            {
+                case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN:
+                    {
+                        first = refPlayer;
+                        second = refOpponent;
+                        break;
+                    }
+                case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE:
+                    {
+                        first = refOpponent;
+                        second = refPlayer;
+                        break;
+                    }
+                case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW:
+                    {
+                        first = (HasToken == true) ? refPlayer : refOpponent;
+                        second = (HasToken == false) ? refPlayer : refOpponent;
+                        break;
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
+
+            _combatFormula.GetNormalDamage(ref first, ref second, out damageValue);
+            first.NormalDamage = damageValue;
+            second.ChangeHealth(-damageValue);
+
+            if (second.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL)
+            {
+                _combatFormula.GetNormalDamage(ref second, ref first, out damageValue);
+                second.NormalDamage = damageValue;
+                first.ChangeHealth(-damageValue);
+            }
 
             return true;
         }
