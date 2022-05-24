@@ -1,7 +1,6 @@
-using System.Collections;
+using GameSystem.Audio;
 using System.Collections.Generic;
 using UnityEngine;
-using GameSystem.Audio;
 
 namespace GameCombat
 {
@@ -10,7 +9,7 @@ namespace GameCombat
         private CombatAI _combatAI = new CombatAI();
         private CombatFormula _combatFormula = new CombatFormula();
 
-        // Todo: ≤Œ§@∫ﬁ≤z≠µÆƒ
+        // Todo: Áµ±‰∏ÄÁÆ°ÁêÜÈü≥Êïà
         private int _rotateSfxId = 201;
 
         private CombatTeam _combatPlayer = new CombatTeam();
@@ -21,7 +20,7 @@ namespace GameCombat
 
         internal GameEnum.eCombatRoundState CombatRoundState { get; set; } = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
 
-        private bool HasToken { get; set; } = false;    // ßP®M•˝§‚
+        private bool HasToken { get; set; } = false;    // Âà§Ê±∫ÂÖàÊâã
 
         public override bool Init()
         {
@@ -58,7 +57,7 @@ namespace GameCombat
         }
 
         private void RegistStartActionFunc()
-        {           
+        {
             _dicStartActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT, StartActionRotateRight);
             _dicStartActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT, StartActionRotateLeft);
             _dicStartActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST, StartActionCast);
@@ -71,7 +70,7 @@ namespace GameCombat
                 Debug.LogError("Setup CombatPlayer failed, TeamId: " + playerTeamId);
                 return false;
             }
-            
+
             if (_combatOpponent.Setup(opponentTeamId) == false)
             {
                 Debug.LogError("Setup CombatOpponent failed, TeamId: " + opponentTeamId);
@@ -167,24 +166,24 @@ namespace GameCombat
                 return;
             }
 
-            // ƒ›© πÔæ‘
+            // Â±¨ÊÄßÂ∞çÊà∞
             GameEnum.eCombatAttributeMatchResult result = GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_NA;
             if (HandleAttributeMatch(ref combatPlayer, ref combatOpponent, ref result) == false)
             {
                 Debug.LogError("HandleAttributeMatch failed");
             }
 
-            // ¥∂ß
+            // ÊôÆÊîª
             if (HandleNormalAttack(ref combatPlayer, ref combatOpponent, result) == false)
             {
                 Debug.LogError("HandleNormalAttack failed");
             }
         }
 
-        private  bool HandleAttributeMatch(ref CombatRole refPlayer, ref CombatRole refOpponent, ref GameEnum.eCombatAttributeMatchResult refResult)
+        private bool HandleAttributeMatch(ref CombatRole refPlayer, ref CombatRole refOpponent, ref GameEnum.eCombatAttributeMatchResult refResult)
         {
             refResult = _combatFormula.CheckAttributeMatch(refPlayer.Role.Attribute, refOpponent.Role.Attribute);
-            
+
             switch (refResult)
             {
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN:
