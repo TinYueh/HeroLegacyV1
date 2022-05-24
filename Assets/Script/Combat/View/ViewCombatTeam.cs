@@ -42,11 +42,20 @@ namespace GameCombat
             return _vwCombatCircle.IsStandby();
         }
 
-        internal void SetCombatRole(int posId, int memberId, ref CombatRole refCombatRole)
+        internal bool GetCircleSocket(int posId, out ViewCircleSocket outVwCircleSocket)
         {
-            _vwCombatCircle.SetSocket(posId, ref refCombatRole);
-            _vwMember.SetCombatRole(memberId, ref refCombatRole);
+            return _vwCombatCircle.GetCircleSocket(posId, out outVwCircleSocket);
         }
+
+        internal bool GetCombatRole(int memberId, out ViewCombatRole outVwCombatRole)
+        {
+            return _vwMember.GetCombatRole(memberId, out outVwCombatRole);
+        }
+
+        internal void SetCombatRole(int memberId, ref CombatRole refCombatRole)
+        {
+            _vwMember.SetCombatRole(memberId, ref refCombatRole);
+        }        
 
         internal void SetEnergyBar(int point)
         {
@@ -58,7 +67,7 @@ namespace GameCombat
             _vwEnergyBar.SetEnergyOrb(orb);
         }
 
-        internal void SetRotation(GameEnum.eRotateDirection direction)
+        internal void HandleRotation(GameEnum.eRotateDirection direction)
         {
             if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT)
             {
@@ -75,7 +84,7 @@ namespace GameCombat
 
             _vwCombatCircle.RotateAngleRemaining = GameConst.COMBAT_CIRCLE_SLOT_ANGLE;
             
-            _vwCombatCircle.EnableRotate();
+            _vwCombatCircle.EnableRotation();
         }
 
         internal void ShowCombatRole(int memberId)
@@ -86,26 +95,6 @@ namespace GameCombat
         internal void HideCombatRole(int memberId)
         {
             _vwMember.HideCombatRole(memberId);
-        }
-
-        internal void SetHealthBar(int memberId, int value, int max)
-        {
-            ViewCombatRole vwCombatRole = null;
-            if (_vwMember.GetCombatRole(memberId, out vwCombatRole) == false)
-            {
-                return;
-            }
-
-            vwCombatRole.SetHealthBar(value, max);
-
-            if (value == 0)
-            {
-                vwCombatRole.SetStateDying();
-            }
-            else
-            {
-                vwCombatRole.SetStateNormal();
-            }
         }
     }
 }

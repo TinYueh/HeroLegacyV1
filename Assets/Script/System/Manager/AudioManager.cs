@@ -11,21 +11,24 @@ namespace GameSystem.Audio
         private AudioSource _bgmSource = null;
         private AudioSource _sfxSource = null;
 
-        public override void Init()
+        public override bool Init()
         {
             _bgmSource = GameObject.Find("BgmSource").GetComponent<AudioSource>();
             if (_bgmSource == null)
             {
                 Debug.LogError("Not found Bgm AudioSource");
+                return false;
             }
 
             _sfxSource = GameObject.Find("SfxSource").GetComponent<AudioSource>();
             if (_sfxSource == null)
             {
                 Debug.LogError("Not found Sfx AudioSource");
+                return false;
             }
 
             Debug.Log("AudioManager Init OK");
+            return true;
         }
 
         public void PlayBgm(int id, bool isLoop)

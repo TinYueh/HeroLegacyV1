@@ -6,9 +6,10 @@ namespace GameSystem.UI
 {
     public class UIManager : Singleton<UIManager>
     {
-        public override void Init()
+        public override bool Init()
         {
             Debug.Log("UIManager Init OK");
+            return true;
         }
     }
 }

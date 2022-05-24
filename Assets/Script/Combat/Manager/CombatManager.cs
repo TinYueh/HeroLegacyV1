@@ -10,32 +10,49 @@ namespace GameCombat
         private CombatAI _combatAI = new CombatAI();
         private CombatFormula _combatFormula = new CombatFormula();
 
+        // Todo: 統一管理音效
         private int _rotateSfxId = 201;
 
-        // Model
         private CombatTeam _combatPlayer = new CombatTeam();
         private CombatTeam _combatOpponent = new CombatTeam();
 
         private delegate void DlgStartActionFunc();
         private Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc> _dicStartActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartActionFunc>();
 
-        internal GameEnum.eCombatRoundState CombatRoundState { get; set; }
+        internal GameEnum.eCombatRoundState CombatRoundState { get; set; } = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
 
-        public override void Init()
+        public override bool Init()
         {
             ViewCombatTeam vwCombatPlayer = GameObject.Find("UIPlayer").GetComponent<ViewCombatTeam>();
-            vwCombatPlayer.Init();
+            if (vwCombatPlayer.Init() == false)
+            {
+                Debug.LogError("Init ViewCombatPlayer failed");
+                return false;
+            }
 
             ViewCombatTeam vwCombatOpponent = GameObject.Find("UIOpponent").GetComponent<ViewCombatTeam>();
-            vwCombatOpponent.Init();
+            if (vwCombatOpponent.Init() == false)
+            {
+                Debug.LogError("Init ViewCombatOpponent failed");
+                return false;
+            }
 
-            _combatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER, ref vwCombatPlayer);
+            if (_combatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER, ref vwCombatPlayer) == false)
+            {
+                Debug.LogError("Init CombatPlayer failed");
+                return false;
+            }
 
-            _combatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT, ref vwCombatOpponent);
+            if (_combatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT, ref vwCombatOpponent) == false)
+            {
+                Debug.LogError("Init CombatOpponent failed");
+                return false;
+            }
 
             RegistStartActionFunc();
 
             Debug.Log("CombatManager Init OK");
+            return true;
         }
 
         private void RegistStartActionFunc()
@@ -64,7 +81,7 @@ namespace GameCombat
 
         internal void StartRoundAction(GameEnum.eCombatRoundAction action)
         {
-            DlgStartActionFunc dlgFunc;
+            DlgStartActionFunc dlgFunc = null;
             if (_dicStartActionFunc.TryGetValue(action, out dlgFunc) == false)
             {
                 Debug.LogError("Not found StartActionFunc for " + action);
@@ -76,22 +93,22 @@ namespace GameCombat
 
         private void StartActionRotateRight()
         {
-            _combatPlayer.SetRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
+            _combatPlayer.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
 
             GameEnum.eRotateDirection direction = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
             _combatAI.GetNextAction(out direction);
-            _combatOpponent.SetRotation(direction);
+            _combatOpponent.HandleRotation(direction);
 
             AudioManager.Instance.PlaySfx(_rotateSfxId);
         }
 
         private void StartActionRotateLeft()
         {
-            _combatPlayer.SetRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
+            _combatPlayer.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
 
             GameEnum.eRotateDirection direction = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
             _combatAI.GetNextAction(out direction);
-            _combatOpponent.SetRotation(direction);
+            _combatOpponent.HandleRotation(direction);
 
             AudioManager.Instance.PlaySfx(_rotateSfxId);
         }
@@ -103,22 +120,22 @@ namespace GameCombat
 
         internal bool ProcessRoundAction()
         {
-            if (_combatPlayer.IsStandby() == false || _combatOpponent.IsStandby() == false)
+            if (_combatPlayer.VwCombatTeam.IsStandby() == false || _combatOpponent.VwCombatTeam.IsStandby() == false)
             {
                 return false;
             }
 
             bool isReady = true;
 
-            if (_combatPlayer.ExecMatchCombatCircle(ref _combatOpponent) == false)
+            if (_combatPlayer.ExecCircleSocket(_combatPlayer.MatchPosId, ref _combatOpponent) == false)
             {
-                _combatPlayer.SetRotation(_combatPlayer.RotateDirection);
+                _combatPlayer.HandleRotation(_combatPlayer.RotateDirection);
                 isReady = false;
             }
 
-            if (_combatOpponent.ExecMatchCombatCircle(ref _combatPlayer) == false)
+            if (_combatOpponent.ExecCircleSocket(_combatOpponent.MatchPosId, ref _combatPlayer) == false)
             {
-                _combatOpponent.SetRotation(_combatOpponent.RotateDirection);
+                _combatOpponent.HandleRotation(_combatOpponent.RotateDirection);
                 isReady = false;
             }
 
@@ -201,11 +218,11 @@ namespace GameCombat
 
             _combatFormula.GetNormalDamage(refPlayer, refOpponent, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN), out damageValue);
             refPlayer.NormalDamage = damageValue;
-            _combatOpponent.ChangeHealth(refOpponent.MemberId, -damageValue);
+            refOpponent.ChangeHealth(-damageValue);
 
-            _combatFormula.GetNormalDamage(refOpponent, refPlayer, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW), out damageValue);
+            _combatFormula.GetNormalDamage(refOpponent, refPlayer, (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE), out damageValue);
             refOpponent.NormalDamage = damageValue;
-            _combatPlayer.ChangeHealth(refPlayer.MemberId, -damageValue);
+            refPlayer.ChangeHealth(-damageValue);
 
             return true;
         }

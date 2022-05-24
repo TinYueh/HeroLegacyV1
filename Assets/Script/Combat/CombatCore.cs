@@ -25,12 +25,13 @@ namespace GameCombat
         {
             CombatManager.Instance.CreateNewCombat(_playerTeamId, _opponentTeamId);
 
+            // CombatRoundState 保持在 CombatCore 中做切換
             CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
 
         private void Update()
         {
-            DlgCombatRoundStateFunc dlgFunc;
+            DlgCombatRoundStateFunc dlgFunc = null;
             if (_dicCombatRoundStateFunc.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc) == false)
             {
                 Debug.LogError("Not found CombatRoundStateFunc for " + CombatManager.Instance.CombatRoundState);
@@ -63,14 +64,16 @@ namespace GameCombat
 
         private void CombatRoundStateRotate()
         {
+            // 持續旋轉和執行 CircleSocket 直到 CombatCircle 靜止
             if (CombatManager.Instance.ProcessRoundAction())
-            {
+            {                   
                 CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
             }
         }
 
         private void CombatRoundStateMatch()
         {
+            // 進行對戰
             CombatManager.Instance.ExecRoundAction();
             CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }

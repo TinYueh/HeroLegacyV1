@@ -13,7 +13,7 @@ namespace GameSystem.Scene
         // 所有場景
         Dictionary<SystemCore.eGameScene, string> _dicScene = new Dictionary<SystemCore.eGameScene, string>();
 
-        public override void Init()
+        public override bool Init()
         {
             _backgroundController = GameObject.Find("Background").transform.GetComponent<BackgroundController>();
             _backgroundController.Init();
@@ -26,6 +26,7 @@ namespace GameSystem.Scene
             RegistAllScene();
 
             Debug.Log("SceneManager Init OK");
+            return true;
         }
 
         private void RegistAllScene()

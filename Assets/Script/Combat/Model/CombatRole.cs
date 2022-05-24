@@ -6,23 +6,28 @@ namespace GameCombat
 {
     public class CombatRole
     {
-        internal int MemberId { get; set; } = 0;
-        internal Role Role { get; set; } = new Role();
-        internal GameEnum.eCombatRoleState State { get; set; } = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NA;
+        private ViewCombatRole _vwCombatRole = null;    // View
+
+        internal int MemberId { get; private set; } = 0;
+        internal int PosId { get; private set; } = 0;
+        internal Role Role { get; private set; } = new Role();
+        internal GameEnum.eCombatRoleState State { get; private set; } = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NA;
         internal int Health { get; private set; } = 0;
         internal int NormalDamage { get; set; } = 0;
 
-        internal bool Init(int memberId, ref RoleCsvData refCsvData)
+        internal bool Init(int memberId, int posId, ref RoleCsvData refCsvData, ref ViewCombatRole refVwCombatRole)
         {
             if (Role.Init(ref refCsvData) == false)
             {
-                Debug.LogError("Init Role failed, Id: " + refCsvData._id);
+                Debug.LogError("Init Role failed, RoleId: " + refCsvData._id);
                 return false;
             }
 
             MemberId = memberId;
+            PosId = posId;
             Health = Role.Health;
             State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
+            _vwCombatRole = refVwCombatRole;    // Attach View
 
             return true;
         }
@@ -47,6 +52,17 @@ namespace GameCombat
             else
             {
                 Health = health;
+            }
+
+            _vwCombatRole.SetHealthBar(Health, Role.Health);
+
+            if (Health == 0)
+            {
+                _vwCombatRole.SetStateDying();
+            }
+            else
+            {
+                _vwCombatRole.SetStateNormal();
             }
         }
     }

@@ -7,9 +7,9 @@ namespace GameCombat
     public class ViewMember : MonoBehaviour
     {
         [SerializeField]
-        private float initPosX = 0;
+        private float initPosX = 0;     // 0, 750
         [SerializeField]
-        private float deltaPosX = 0;
+        private float deltaPosX = 0;    // 150, -150
 
         private Dictionary<int, ViewCombatRole> _dicVwCombatRole = new Dictionary<int, ViewCombatRole>();   // <memberId, ViewCombatRole>
 
@@ -32,6 +32,17 @@ namespace GameCombat
                 _dicVwCombatRole.Add(memberId, vwCombatRole);
 
                 HideCombatRole(memberId);
+            }
+
+            return true;
+        }
+
+        internal bool GetCombatRole(int memberId, out ViewCombatRole outVwCombatRole)
+        {
+            if (_dicVwCombatRole.TryGetValue(memberId, out outVwCombatRole) == false)
+            {
+                Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
+                return false;
             }
 
             return true;
@@ -69,17 +80,6 @@ namespace GameCombat
             }
 
             vwCombatRole.gameObject.SetActive(false);
-        }
-
-        internal bool GetCombatRole(int memberId, out ViewCombatRole outVwCombatRole)
-        {
-            if (_dicVwCombatRole.TryGetValue(memberId, out outVwCombatRole) == false)
-            {
-                Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
-                return false;
-            }
-
-            return true;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace GameSystem.Table
         // LoadCsvData delegate dictionary
         private Dictionary<string, DlgLoadCsvData> _dicLoadCsvFunc = new Dictionary<string, DlgLoadCsvData>();
 
-        public override void Init()
+        public override bool Init()
         {
             // 註冊 Load function
             RegistLoadFunc();
@@ -27,6 +27,7 @@ namespace GameSystem.Table
             LoadTable();
 
             Debug.Log("TableManager Init OK");
+            return true;
         }
 
         private void LoadTable()
@@ -41,7 +42,7 @@ namespace GameSystem.Table
                 string fileName = t.name.Substring(preIndex + 3);
 
                 // Load function
-                DlgLoadCsvData dlgFunc;
+                DlgLoadCsvData dlgFunc = null;
                 if (_dicLoadCsvFunc.TryGetValue(fileName, out dlgFunc) == false)
                 {
                     Debug.LogError("Not found LoadCsvFunc for " + fileName);

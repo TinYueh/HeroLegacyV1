@@ -90,7 +90,7 @@ namespace GameCombat
             return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
         }
 
-        internal void EnableRotate()
+        internal void EnableRotation()
         {
             _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
         }
@@ -105,18 +105,15 @@ namespace GameCombat
             }
         }
 
-        internal void SetSocket(int posId, ref CombatRole refCombatRole)
+        internal bool GetCircleSocket(int posId, out ViewCircleSocket outVwCircleSocket)
         {
-            ViewCircleSocket vwSocket = null;
-            if (_dicVwCircleSocket.TryGetValue(posId , out vwSocket) == false)
+            if (_dicVwCircleSocket.TryGetValue(posId, out outVwCircleSocket) == false)
             {
                 Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);
-                return;
+                return false;
             }
 
-            vwSocket.SetSocket(refCombatRole.Role.Attribute);
-            vwSocket.SetEmblem(refCombatRole.Role.Emblem);
-            vwSocket.ShowEmblem();
+            return true;
         }
     }
 }
