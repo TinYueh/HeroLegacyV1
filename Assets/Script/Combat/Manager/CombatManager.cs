@@ -20,8 +20,6 @@ namespace GameCombat
 
         internal GameEnum.eCombatRoundState CombatRoundState { get; set; } = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
 
-        private bool HasToken { get; set; } = false;    // 判決先手
-
         public override bool Init()
         {
             ViewCombatTeam vwCombatPlayer = GameObject.Find("UIPlayer").GetComponent<ViewCombatTeam>();
@@ -77,7 +75,7 @@ namespace GameCombat
                 return false;
             }
 
-            HasToken = (Random.Range(0, 2) == 1);
+            HandleFirstToken();
 
             return true;
         }
@@ -237,8 +235,9 @@ namespace GameCombat
                     }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW:
                     {
-                        first = (HasToken == true) ? refPlayer : refOpponent;
-                        second = (HasToken == false) ? refPlayer : refOpponent;
+                        first = (_combatPlayer.HasFirstToken == true) ? refPlayer : refOpponent;
+                        second = (_combatPlayer.HasFirstToken == false) ? refPlayer : refOpponent;
+                        HandleFirstToken();
                         break;
                     }
                 default:
@@ -268,6 +267,24 @@ namespace GameCombat
             first.ChangeHealth(-damageValue);
 
             return true;
+        }
+
+        private void HandleFirstToken()
+        {
+            if (_combatPlayer.HasFirstToken != _combatOpponent.HasFirstToken)
+            {
+                bool getFirstToken = _combatOpponent.HasFirstToken;
+
+                _combatPlayer.SetFirstToken(getFirstToken);
+                _combatOpponent.SetFirstToken(!getFirstToken);
+            }
+            else
+            {
+                bool getFirstToken = (Random.Range(0, 2) == 0);
+
+                _combatPlayer.SetFirstToken(getFirstToken);
+                _combatOpponent.SetFirstToken(!getFirstToken);
+            }
         }
     }
 }

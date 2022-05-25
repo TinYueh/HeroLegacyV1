@@ -17,6 +17,8 @@ namespace GameCombat
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // 隊伍成員 <PosId, CombatRole>
         private Dictionary<int, CircleSocket> _dicCircleSocket = new Dictionary<int, CircleSocket>();   // <PosId, CircleSocket>
 
+        internal bool HasFirstToken { get; private set; } = false;  // 判決平先
+
         internal bool Init(GameEnum.eCombatTeamType teamType, ref ViewCombatTeam refVwCombatTeam)
         {
             TeamType = teamType;            
@@ -227,6 +229,20 @@ namespace GameCombat
             }
 
             return circleSocket.Exec(ref refTarget);
+        }
+
+        internal void SetFirstToken(bool getFirstToken)
+        {
+            HasFirstToken = getFirstToken;
+
+            if (getFirstToken)
+            {
+                VwCombatTeam.ShowFirstToken();
+            }
+            else
+            {
+                VwCombatTeam.HideFirstToken();
+            }
         }
     }
 }

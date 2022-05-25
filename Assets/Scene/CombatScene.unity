@@ -185,6 +185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 196425478}
+  - component: {fileID: 196425479}
   m_Layer: 0
   m_Name: UICombatStats
   m_TagString: Untagged
@@ -213,6 +214,18 @@ RectTransform:
   m_AnchoredPosition: {x: 200, y: 250}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &196425479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196425477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4f0ba375b8a5045b208b3f0f2400c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &226968956
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +314,7 @@ GameObject:
   - component: {fileID: 360615303}
   - component: {fileID: 360615302}
   m_Layer: 0
-  m_Name: Token
+  m_Name: FirstToken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -810,6 +823,7 @@ MonoBehaviour:
   _vwCombatCircle: {fileID: 340459708159595413}
   _vwEnergyBar: {fileID: 1075513756}
   _vwMemberList: {fileID: 570440646}
+  _vwCombatStats: {fileID: 885579873}
 --- !u!1 &885579871
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 885579872}
+  - component: {fileID: 885579873}
   m_Layer: 0
   m_Name: UICombatStats
   m_TagString: Untagged
@@ -847,6 +862,18 @@ RectTransform:
   m_AnchoredPosition: {x: -200, y: -250}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &885579873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885579871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4f0ba375b8a5045b208b3f0f2400c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &946598409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1135,7 @@ MonoBehaviour:
   _vwCombatCircle: {fileID: 190299327947583391}
   _vwEnergyBar: {fileID: 95360954}
   _vwMemberList: {fileID: 1528521996}
+  _vwCombatStats: {fileID: 196425479}
 --- !u!1 &1528521994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,7 +1494,7 @@ GameObject:
   - component: {fileID: 1829435249}
   - component: {fileID: 1829435248}
   m_Layer: 0
-  m_Name: Token
+  m_Name: FirstToken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -13,6 +13,8 @@ namespace GameCombat
         private ViewEnergyBar _vwEnergyBar = null;
         [SerializeField]
         private ViewMemberList _vwMemberList = null;
+        [SerializeField]
+        private ViewCombatStats _vwCombatStats = null;
 
         internal bool Init()
         {
@@ -29,6 +31,12 @@ namespace GameCombat
             }
 
             if (_vwMemberList.Init() == false)
+            {
+                Debug.LogError("Init ViewMemberList failed");
+                return false;
+            }
+
+            if (_vwCombatStats.Init() == false)
             {
                 Debug.LogError("Init ViewMemberList failed");
                 return false;
@@ -95,6 +103,16 @@ namespace GameCombat
         internal void HideCombatRole(int memberId)
         {
             _vwMemberList.HideCombatRole(memberId);
+        }
+
+        internal void ShowFirstToken()
+        {
+            _vwCombatStats.ShowFirstToken();
+        }
+
+        internal void HideFirstToken()
+        {
+            _vwCombatStats.HideFirstToken();
         }
     }
 }
