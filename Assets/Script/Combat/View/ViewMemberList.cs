@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameCombat
 {
-    public class ViewMember : MonoBehaviour
+    public class ViewMemberList : MonoBehaviour
     {
         [SerializeField]
         private float initPosX = 0;     // 0, 750

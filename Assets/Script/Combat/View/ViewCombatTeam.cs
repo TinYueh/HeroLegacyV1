@@ -12,7 +12,7 @@ namespace GameCombat
         [SerializeField]
         private ViewEnergyBar _vwEnergyBar = null;
         [SerializeField]
-        private ViewMember _vwMember = null;
+        private ViewMemberList _vwMemberList = null;
 
         internal bool Init()
         {
@@ -28,9 +28,9 @@ namespace GameCombat
                 return false;
             }
 
-            if (_vwMember.Init() == false)
+            if (_vwMemberList.Init() == false)
             {
-                Debug.LogError("Init ViewMember failed");
+                Debug.LogError("Init ViewMemberList failed");
                 return false;
             }
 
@@ -49,12 +49,12 @@ namespace GameCombat
 
         internal bool GetCombatRole(int memberId, out ViewCombatRole outVwCombatRole)
         {
-            return _vwMember.GetCombatRole(memberId, out outVwCombatRole);
+            return _vwMemberList.GetCombatRole(memberId, out outVwCombatRole);
         }
 
         internal void SetCombatRole(int memberId, ref CombatRole refCombatRole)
         {
-            _vwMember.SetCombatRole(memberId, ref refCombatRole);
+            _vwMemberList.SetCombatRole(memberId, ref refCombatRole);
         }        
 
         internal void SetEnergyBar(int point)
@@ -89,12 +89,12 @@ namespace GameCombat
 
         internal void ShowCombatRole(int memberId)
         {
-            _vwMember.ShowCombatRole(memberId);
+            _vwMemberList.ShowCombatRole(memberId);
         }
 
         internal void HideCombatRole(int memberId)
         {
-            _vwMember.HideCombatRole(memberId);
+            _vwMemberList.HideCombatRole(memberId);
         }
     }
 }

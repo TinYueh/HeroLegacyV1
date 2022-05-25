@@ -81,7 +81,7 @@
     <Compile Include="Assets\Script\Define\AssetsPath.cs" />
     <Compile Include="Assets\Script\Combat\View\ViewCombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\View\ViewEnergyBar.cs" />
-    <Compile Include="Assets\Script\Combat\View\ViewMember.cs" />
+    <Compile Include="Assets\Script\Combat\View\ViewMemberList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
