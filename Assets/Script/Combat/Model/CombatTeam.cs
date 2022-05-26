@@ -29,7 +29,7 @@ namespace GameCombat
                 int posId = i + 1;
 
                 ViewCircleSocket vwCircleSocket = null;
-                if (VwCombatTeam.GetCircleSocket(posId, out vwCircleSocket) == false)
+                if (VwCombatTeam.VwCombatCircle.GetCircleSocket(posId, out vwCircleSocket) == false)
                 {
                     Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);
                     return false;
@@ -73,7 +73,7 @@ namespace GameCombat
                     return false;
                 }
 
-                VwCombatTeam.ShowCombatRole(memberId);
+                VwCombatTeam.VwMemberList.ShowCombatRole(memberId);
             }
 
             SetEnergyPoint(0);
@@ -92,7 +92,7 @@ namespace GameCombat
             }
 
             ViewCombatRole vwCombatRole = null;
-            if (VwCombatTeam.GetCombatRole(memberId, out vwCombatRole) == false)
+            if (VwCombatTeam.VwMemberList.GetCombatRole(memberId, out vwCombatRole) == false)
             {
                 Debug.LogError("Not found RoleCsvData, MemberId: " + memberId);
                 return false;
@@ -107,7 +107,7 @@ namespace GameCombat
 
             _dicCombatRole.Add(posId, combatRole);            
 
-            VwCombatTeam.SetCombatRole(memberId, combatRole);
+            VwCombatTeam.VwMemberList.SetCombatRole(memberId, combatRole);
 
             SetupCircleSocket(posId, combatRole);
 
@@ -158,8 +158,8 @@ namespace GameCombat
             int vwPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
             int vwOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
 
-            VwCombatTeam.SetEnergyBar(vwPoint);
-            VwCombatTeam.SetEnergyOrb(vwOrb);
+            VwCombatTeam.VwEnergyBar.SetEnergyBar(vwPoint);
+            VwCombatTeam.VwEnergyBar.SetEnergyOrb(vwOrb);
 
             if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
             {
@@ -237,11 +237,11 @@ namespace GameCombat
 
             if (getFirstToken)
             {
-                VwCombatTeam.ShowFirstToken();
+                VwCombatTeam.VwCombatStats.ShowFirstToken();
             }
             else
             {
-                VwCombatTeam.HideFirstToken();
+                VwCombatTeam.VwCombatStats.HideFirstToken();
             }
         }
     }
