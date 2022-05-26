@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class TeamCsvData
 {
-    public int _id;
+    public int _id = 0;
     public int[] _arrRoleId = new int[GameConst.MAX_TEAM_MEMBER];
 }
 
 public class RoleCsvData
 {
-    public int _id;
-    public int _team;
-    public int _portrait;
-    public int _emblem;
-    public int _name;
-    public int _attribute;
-    public int _talent;
-    public int _life;
-    public int _attack;
-    public int _defence;
-    public int _ai;
+    public int _id = 0;
+    public int _teamType = 0;
+    public int _portrait = 0;
+    public int _emblem = 0;
+    public int _name = 0;
+    public int _attribute = 0;
+    public int _talent = 0;
+    public int _health = 0;
+    public int _attack = 0;
+    public int _defence = 0;
+    public int _ai = 0;
 }
 
 // 新增 Table: 定義結構

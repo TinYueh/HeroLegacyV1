@@ -2,20 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Combat
+namespace GameCombat
 {
     public class CombatCore : MonoBehaviour
     {
         [SerializeField]
-        private CombatTeam _playerCombatTeam = null;
+        private int _playerTeamId = 0;      // 玩家隊伍 TeamId
         [SerializeField]
-        private CombatTeam _opponentCombatTeam = null;
-        [SerializeField]
-        private int _playerTeamId = 0;                  // 玩家隊伍 TeamId
-        [SerializeField]
-        private int _opponentTeamId = 0;                // 敵對隊伍 TeamId
-        [SerializeField]
-        private int _rotateSfxId = 0;                   // 戰圓旋轉音效
+        private int _opponentTeamId = 0;    // 敵對隊伍 TeamId
 
         private delegate void DlgCombatRoundStateFunc();
         private Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc>();
@@ -24,24 +18,21 @@ namespace Combat
         {
             CombatManager.Instance.Init();
 
-            RegistCombatStateFunc();
+            RegistCombatRoundStateFunc();
         }
 
         private void Start()
         {
-            // 戰圓旋轉音效
-            CombatManager.Instance.RotateSfxId = _rotateSfxId;
+            CombatManager.Instance.CreateNewCombat(_playerTeamId, _opponentTeamId);
 
-            CreateNewCombat();
-
+            // CombatRoundState 保持在 CombatCore 中做切換
             CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
 
         private void Update()
         {
             DlgCombatRoundStateFunc dlgFunc = null;
-            _dicCombatRoundStateFunc.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc);
-            if (dlgFunc == null)
+            if (_dicCombatRoundStateFunc.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc) == false)
             {
                 Debug.LogError("Not found CombatRoundStateFunc for " + CombatManager.Instance.CombatRoundState);
                 return;
@@ -50,17 +41,11 @@ namespace Combat
             dlgFunc();
         }
 
-        private void RegistCombatStateFunc()
+        private void RegistCombatRoundStateFunc()
         {
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY, CombatRoundStateStandby);
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH, CombatRoundStateMatch);
-        }
-
-        private void CreateNewCombat()
-        {
-            CombatManager.Instance.InitCombatTeam(ref _playerCombatTeam, _playerTeamId);
-            CombatManager.Instance.InitCombatTeam(ref _opponentCombatTeam, _opponentTeamId);
         }
 
         private void CombatRoundStateStandby()
@@ -79,14 +64,16 @@ namespace Combat
 
         private void CombatRoundStateRotate()
         {
-            if (CombatManager.Instance.IsCombatCircleStandby())
-            {
+            // 持續旋轉和執行 CircleSocket 直到 CombatCircle 靜止
+            if (CombatManager.Instance.ProcessRoundAction())
+            {                   
                 CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
             }
         }
 
         private void CombatRoundStateMatch()
         {
+            // 進行對戰
             CombatManager.Instance.ExecRoundAction();
             CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
