@@ -319,7 +319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &360615301
 RectTransform:
   m_ObjectHideFlags: 0
@@ -820,10 +820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16f733730db6ac44a569e86db2ce6c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vwCombatCircle: {fileID: 340459708159595413}
-  _vwEnergyBar: {fileID: 1075513756}
-  _vwMemberList: {fileID: 570440646}
-  _vwCombatStats: {fileID: 885579873}
 --- !u!1 &885579871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,10 +1128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16f733730db6ac44a569e86db2ce6c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vwCombatCircle: {fileID: 190299327947583391}
-  _vwEnergyBar: {fileID: 95360954}
-  _vwMemberList: {fileID: 1528521996}
-  _vwCombatStats: {fileID: 196425479}
 --- !u!1 &1528521994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,7 +1491,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1829435247
 RectTransform:
   m_ObjectHideFlags: 0

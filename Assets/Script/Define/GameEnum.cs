@@ -72,4 +72,37 @@ public class GameEnum
         E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE,
         E_CIRCLE_SOCKET_TYPE_LIMIT,
     }
+
+    public enum eSkillPos
+    {
+        E_SKILL_POS_NA = 0,
+        E_SKILL_POS_MATCH,      // 對決位
+        E_SKILL_POS_WING,       // 側翼
+        E_SKILL_POS_FORWARD,    // 前排
+        E_SKILL_POS_LIMIT,
+    }
+
+    public enum eSkillRange
+    {
+        E_SKILL_RANGE_NA = 0,
+
+        E_SKILL_RANGE_SOURCE = 1,               // 自己
+
+        E_SKILL_RANGE_SOURCE_MATCH = 101,       // 已方對決位
+        E_SKILL_RANGE_SOURCE_FORWARD,           // 已方前排
+        E_SKILL_RANGE_SOURCE_GUARD,             // 己方後排
+        E_SKILL_RANGE_SOURCE_ALL,               // 已方全體
+
+        E_SKILL_RANGE_TARGET_MATCH = 201,       // 對方對決位
+        E_SKILL_RANGE_TARGET_FORWARD,           // 對方前排
+        E_SKILL_RANGE_TARGET_GUARD,             // 對方後排
+        E_SKILL_RANGE_TARGET_ALL,               // 對方全體
+
+        E_SKILL_RANGE_BOTH_MATCH = 301,         // 雙方對決位
+        E_SKILL_RANGE_BOTH_FORWARD,             // 雙方前排
+        E_SKILL_RANGE_BOTH_GUARD,               // 雙方後排
+        E_SKILL_RANGE_BOTH_ALL,                 // 雙方全體
+
+        E_SKILL_RANGE_LIMIT,
+    }
 }
