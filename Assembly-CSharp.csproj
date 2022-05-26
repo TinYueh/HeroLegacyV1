@@ -79,10 +79,10 @@
     <Compile Include="Assets\Script\Combat\View\ViewCombatTeam.cs" />
     <Compile Include="Assets\Script\System\SystemCore.cs" />
     <Compile Include="Assets\Script\Define\AssetsPath.cs" />
+    <Compile Include="Assets\Script\Combat\View\ViewCombatStats.cs" />
     <Compile Include="Assets\Script\Combat\View\ViewCombatCircle.cs" />
     <Compile Include="Assets\Script\Combat\View\ViewEnergyBar.cs" />
     <Compile Include="Assets\Script\Combat\View\ViewMemberList.cs" />
-    <Compile Include="Assets\Script\Combat\View\ViewCombatStats.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

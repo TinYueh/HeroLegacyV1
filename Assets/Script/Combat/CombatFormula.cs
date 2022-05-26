@@ -45,9 +45,9 @@ namespace GameCombat
             return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW;
         }
 
-        internal void GetNormalDamage(ref CombatRole refSource, ref CombatRole refTarget, out int outValue)
+        internal void GetNormalDamage(CombatRole source, CombatRole target, out int outValue)
         {
-            outValue = refSource.Role.Attack - refTarget.Role.Defence;
+            outValue = source.Role.Attack - target.Role.Defence;
             outValue = (outValue < 1) ? 1 : outValue;
 
             //if (isCriticalHit)

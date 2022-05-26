@@ -11,14 +11,14 @@ namespace GameCombat
         internal int PosId { get; private set; } = 0;
         internal GameEnum.eCircleSocketType Type { get; private set; } = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_NA;
 
-        private delegate bool DlgExecFunc(ref CombatTeam refTarget);
+        private delegate bool DlgExecFunc(CombatTeam target);
         private Dictionary<GameEnum.eCircleSocketType, DlgExecFunc> _dicExecFunc = new Dictionary<GameEnum.eCircleSocketType, DlgExecFunc>();
 
-        internal void Init(int posId, ref ViewCircleSocket refVwCircleSocket)
+        internal void Init(int posId, ViewCircleSocket vwCircleSocket)
         {
             PosId = posId;
             Type = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE;
-            _vwCircleSocket = refVwCircleSocket;    // Attach View
+            _vwCircleSocket = vwCircleSocket;   // Attach View
 
             RegistExecFunc();
         }
@@ -29,16 +29,16 @@ namespace GameCombat
             _dicExecFunc.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ExecCombatRole);
         }
 
-        internal void Setup(GameEnum.eCircleSocketType socketType, ref CombatRole refCombatRole)
+        internal void Setup(GameEnum.eCircleSocketType socketType, CombatRole combatRole)
         {
             Type = socketType;
 
-            _vwCircleSocket.SetSocket(refCombatRole.Role.Attribute);
-            _vwCircleSocket.SetEmblem(refCombatRole.Role.Emblem);
+            _vwCircleSocket.SetSocket(combatRole.Role.Attribute);
+            _vwCircleSocket.SetEmblem(combatRole.Role.Emblem);
             _vwCircleSocket.ShowEmblem();
         }
 
-        internal bool Exec(ref CombatTeam refTarget)
+        internal bool Exec(CombatTeam target)
         {
             DlgExecFunc dlgFunc = null;
             if (_dicExecFunc.TryGetValue(Type, out dlgFunc) == false)
@@ -47,17 +47,17 @@ namespace GameCombat
                 return false;
             }
 
-            return dlgFunc(ref refTarget);
+            return dlgFunc(target);
         }
 
-        private bool ExecSpace(ref CombatTeam refTarget)
+        private bool ExecSpace(CombatTeam target)
         {
-            refTarget.ChangeEnergyPoint(1);
+            target.ChangeEnergyPoint(1);
 
             return false;
         }
 
-        private bool ExecCombatRole(ref CombatTeam refTarget)
+        private bool ExecCombatRole(CombatTeam target)
         {
             return true;
         }

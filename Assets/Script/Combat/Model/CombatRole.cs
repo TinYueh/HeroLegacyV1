@@ -15,11 +15,11 @@ namespace GameCombat
         internal int Health { get; private set; } = 0;
         internal int NormalDamage { get; set; } = 0;
 
-        internal bool Init(int memberId, int posId, ref RoleCsvData refCsvData, ref ViewCombatRole refVwCombatRole)
+        internal bool Init(int memberId, int posId, RoleCsvData csvData, ViewCombatRole vwCombatRole)
         {
-            if (Role.Init(ref refCsvData) == false)
+            if (Role.Init(csvData) == false)
             {
-                Debug.LogError("Init Role failed, RoleId: " + refCsvData._id);
+                Debug.LogError("Init Role failed, RoleId: " + csvData._id);
                 return false;
             }
 
@@ -27,7 +27,7 @@ namespace GameCombat
             PosId = posId;
             Health = Role.Health;
             State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
-            _vwCombatRole = refVwCombatRole;    // Attach View
+            _vwCombatRole = vwCombatRole;    // Attach View
 
             return true;
         }

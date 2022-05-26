@@ -19,10 +19,10 @@ namespace GameCombat
 
         internal bool HasFirstToken { get; private set; } = false;  // 判決平先
 
-        internal bool Init(GameEnum.eCombatTeamType teamType, ref ViewCombatTeam refVwCombatTeam)
+        internal bool Init(GameEnum.eCombatTeamType teamType, ViewCombatTeam vwCombatTeam)
         {
             TeamType = teamType;            
-            VwCombatTeam = refVwCombatTeam; // Attach View
+            VwCombatTeam = vwCombatTeam; // Attach View
 
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
             {
@@ -36,7 +36,7 @@ namespace GameCombat
                 }
 
                 CircleSocket circleSocket = new CircleSocket();
-                circleSocket.Init(posId, ref vwCircleSocket);
+                circleSocket.Init(posId, vwCircleSocket);
 
                 _dicCircleSocket.Add(posId, circleSocket);
             }
@@ -99,7 +99,7 @@ namespace GameCombat
             }
 
             CombatRole combatRole = new CombatRole();
-            if (combatRole.Init(memberId, posId, ref csvData, ref vwCombatRole) == false)
+            if (combatRole.Init(memberId, posId, csvData, vwCombatRole) == false)
             {
                 Debug.LogError("Init CombatRole failed, RoleId: " + roleId);
                 return false;
@@ -107,9 +107,9 @@ namespace GameCombat
 
             _dicCombatRole.Add(posId, combatRole);            
 
-            VwCombatTeam.SetCombatRole(memberId, ref combatRole);
+            VwCombatTeam.SetCombatRole(memberId, combatRole);
 
-            SetupCircleSocket(posId, ref combatRole);
+            SetupCircleSocket(posId, combatRole);
 
             return true;
         }
@@ -206,7 +206,7 @@ namespace GameCombat
             MatchPosId = posId;
         }
 
-        private bool SetupCircleSocket(int posId, ref CombatRole refCombatRole)
+        private bool SetupCircleSocket(int posId, CombatRole combatRole)
         {
             CircleSocket circleSocket = null;
             if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
@@ -215,12 +215,12 @@ namespace GameCombat
                 return false;
             }
 
-            circleSocket.Setup(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ref refCombatRole);
+            circleSocket.Setup(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, combatRole);
 
             return true;
         }
 
-        internal bool ExecCircleSocket(int posId, ref CombatTeam refTarget)
+        internal bool ExecCircleSocket(int posId, CombatTeam target)
         {
             CircleSocket circleSocket = null;
             if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
@@ -228,7 +228,7 @@ namespace GameCombat
                 Debug.Log("Not found CircleSocket, PosId: " + posId);
             }
 
-            return circleSocket.Exec(ref refTarget);
+            return circleSocket.Exec(target);
         }
 
         internal void SetFirstToken(bool getFirstToken)

@@ -36,13 +36,13 @@ namespace GameCombat
                 return false;
             }
 
-            if (_combatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER, ref vwCombatPlayer) == false)
+            if (_combatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER, vwCombatPlayer) == false)
             {
                 Debug.LogError("Init CombatPlayer failed");
                 return false;
             }
 
-            if (_combatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT, ref vwCombatOpponent) == false)
+            if (_combatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT, vwCombatOpponent) == false)
             {
                 Debug.LogError("Init CombatOpponent failed");
                 return false;
@@ -128,13 +128,13 @@ namespace GameCombat
 
             bool isReady = true;
 
-            if (_combatPlayer.ExecCircleSocket(_combatPlayer.MatchPosId, ref _combatOpponent) == false)
+            if (_combatPlayer.ExecCircleSocket(_combatPlayer.MatchPosId, _combatOpponent) == false)
             {
                 _combatPlayer.HandleRotation(_combatPlayer.RotateDirection);
                 isReady = false;
             }
 
-            if (_combatOpponent.ExecCircleSocket(_combatOpponent.MatchPosId, ref _combatPlayer) == false)
+            if (_combatOpponent.ExecCircleSocket(_combatOpponent.MatchPosId, _combatPlayer) == false)
             {
                 _combatOpponent.HandleRotation(_combatOpponent.RotateDirection);
                 isReady = false;
@@ -166,21 +166,21 @@ namespace GameCombat
 
             // 屬性對戰
             GameEnum.eCombatAttributeMatchResult result = GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_NA;
-            if (HandleAttributeMatch(ref combatPlayer, ref combatOpponent, ref result) == false)
+            if (HandleAttributeMatch(combatPlayer, combatOpponent, ref result) == false)
             {
                 Debug.LogError("HandleAttributeMatch failed");
             }
 
             // 普攻
-            if (HandleNormalAttack(ref combatPlayer, ref combatOpponent, result) == false)
+            if (HandleNormalAttack(combatPlayer, combatOpponent, result) == false)
             {
                 Debug.LogError("HandleNormalAttack failed");
             }
         }
 
-        private bool HandleAttributeMatch(ref CombatRole refPlayer, ref CombatRole refOpponent, ref GameEnum.eCombatAttributeMatchResult refResult)
+        private bool HandleAttributeMatch(CombatRole player, CombatRole opponent, ref GameEnum.eCombatAttributeMatchResult refResult)
         {
-            refResult = _combatFormula.CheckAttributeMatch(refPlayer.Role.Attribute, refOpponent.Role.Attribute);
+            refResult = _combatFormula.CheckAttributeMatch(player.Role.Attribute, opponent.Role.Attribute);
 
             switch (refResult)
             {
@@ -212,7 +212,7 @@ namespace GameCombat
             return true;
         }
 
-        private bool HandleNormalAttack(ref CombatRole refPlayer, ref CombatRole refOpponent, GameEnum.eCombatAttributeMatchResult result)
+        private bool HandleNormalAttack(CombatRole player, CombatRole opponent, GameEnum.eCombatAttributeMatchResult result)
         {
             int damageValue = 0;
 
@@ -223,20 +223,20 @@ namespace GameCombat
             {
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN:
                     {
-                        first = refPlayer;
-                        second = refOpponent;
+                        first = player;
+                        second = opponent;
                         break;
                     }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE:
                     {
-                        first = refOpponent;
-                        second = refPlayer;
+                        first = opponent;
+                        second = player;
                         break;
                     }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW:
                     {
-                        first = (_combatPlayer.HasFirstToken == true) ? refPlayer : refOpponent;
-                        second = (_combatPlayer.HasFirstToken == false) ? refPlayer : refOpponent;
+                        first = (_combatPlayer.HasFirstToken == true) ? player : opponent;
+                        second = (_combatPlayer.HasFirstToken == false) ? player : opponent;
                         HandleFirstToken();
                         break;
                     }
@@ -246,13 +246,14 @@ namespace GameCombat
                     }
             }
 
+            // Todo: 重複 code 拆 func
             if (first.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
                 || second.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING)
             {
                 return true;
             }
 
-            _combatFormula.GetNormalDamage(ref first, ref second, out damageValue);
+            _combatFormula.GetNormalDamage(first, second, out damageValue);
             first.NormalDamage = damageValue;
             second.ChangeHealth(-damageValue);
 
@@ -262,7 +263,7 @@ namespace GameCombat
                 return true;
             }
 
-            _combatFormula.GetNormalDamage(ref second, ref first, out damageValue);
+            _combatFormula.GetNormalDamage(second, first, out damageValue);
             second.NormalDamage = damageValue;
             first.ChangeHealth(-damageValue);
 

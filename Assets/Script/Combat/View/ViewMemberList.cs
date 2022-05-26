@@ -48,7 +48,7 @@ namespace GameCombat
             return true;
         }
 
-        internal void SetCombatRole(int memberId, ref CombatRole refCombatRole)
+        internal void SetCombatRole(int memberId, CombatRole combatRole)
         {
             ViewCombatRole vwCombatRole = null;
             if (GetCombatRole(memberId, out vwCombatRole) == false)
@@ -56,8 +56,8 @@ namespace GameCombat
                 return;
             }
 
-            vwCombatRole.SetPortrait(refCombatRole.Role.Portrait);
-            vwCombatRole.SetEmblem(refCombatRole.Role.Emblem);
+            vwCombatRole.SetPortrait(combatRole.Role.Portrait);
+            vwCombatRole.SetEmblem(combatRole.Role.Emblem);
         }
 
         internal void ShowCombatRole(int memberId)

@@ -17,19 +17,19 @@ public class Role
     public int Defence { get; protected set; } = 0;
     public int Ai { get; protected set; } = 0;
 
-    public bool Init(ref RoleCsvData refCsvData)
+    public bool Init(RoleCsvData csvData)
     {
-        Id = refCsvData._id;
-        TeamType = (GameEnum.eCombatTeamType)refCsvData._teamType;
-        Portrait = refCsvData._portrait;
-        Emblem = refCsvData._emblem;
-        Name = refCsvData._name;
-        Attribute = (GameEnum.eRoleAttribute)refCsvData._attribute;
-        Talent = refCsvData._talent;
-        Health = refCsvData._health;
-        Attack = refCsvData._attack;
-        Defence = refCsvData._defence;
-        Ai = refCsvData._ai;
+        Id = csvData._id;
+        TeamType = (GameEnum.eCombatTeamType)csvData._teamType;
+        Portrait = csvData._portrait;
+        Emblem = csvData._emblem;
+        Name = csvData._name;
+        Attribute = (GameEnum.eRoleAttribute)csvData._attribute;
+        Talent = csvData._talent;
+        Health = csvData._health;
+        Attack = csvData._attack;
+        Defence = csvData._defence;
+        Ai = csvData._ai;
 
         return true;
     }

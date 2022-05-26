@@ -60,9 +60,9 @@ namespace GameCombat
             return _vwMemberList.GetCombatRole(memberId, out outVwCombatRole);
         }
 
-        internal void SetCombatRole(int memberId, ref CombatRole refCombatRole)
+        internal void SetCombatRole(int memberId, CombatRole combatRole)
         {
-            _vwMemberList.SetCombatRole(memberId, ref refCombatRole);
+            _vwMemberList.SetCombatRole(memberId, combatRole);
         }        
 
         internal void SetEnergyBar(int point)
