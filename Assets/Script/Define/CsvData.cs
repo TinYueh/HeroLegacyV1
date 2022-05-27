@@ -23,4 +23,24 @@ public class RoleCsvData
     public int _ai = 0;
 }
 
+public class SkillCsvData
+{
+    public static readonly int _maxEffect = 2;
+
+    public int _id = 0;
+    public int _name = 0;
+    public int _pos = 0;
+    public int _cost = 0;
+    public int _cd = 0;
+    public SkillEffectCsvData[] _effect = new SkillEffectCsvData[_maxEffect];
+}
+
+public class SkillEffectCsvData
+{
+    public int _effect = 0;
+    public int _range = 0;
+    public int _effectValueType = 0;
+    public int _effectValue = 0;
+}
+
 // 新增 Table: 定義結構
