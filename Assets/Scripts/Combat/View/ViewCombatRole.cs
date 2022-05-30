@@ -10,14 +10,22 @@ namespace GameCombat
         private Image _imgPortrait = null;
         private Image _imgEmblem = null;
         private Image _imgHealthBar = null;
+        private Button _btnPortrait = null;
         private float _barInitLen = 0f;
 
         internal bool Init()
         {
-            _imgPortrait = GetComponent<Image>();
+            _imgPortrait = transform.Find("PortraitButton").GetComponent<Image>();
             if (_imgPortrait == null)
             {
                 Debug.LogError("Not found ImgPortrait");
+                return false;
+            }
+
+            _btnPortrait = transform.Find("PortraitButton").GetComponent<Button>();
+            if (_btnPortrait == null)
+            {
+                Debug.LogError("Not found BtnPortrait");
                 return false;
             }
 

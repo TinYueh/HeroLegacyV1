@@ -17,6 +17,8 @@ public class Role
     public int Defence { get; internal set; } = 0;
     public int Ai { get; internal set; } = 0;
 
+    internal readonly List<int> _listSkill = new List<int>();
+
     public bool Init(RoleCsvData csvData)
     {
         Id = csvData._id;
@@ -30,6 +32,16 @@ public class Role
         Attack = csvData._attack;
         Defence = csvData._defence;
         Ai = csvData._ai;
+
+        foreach (var skillId in csvData._skillId)
+        {
+            if (skillId == 0)
+            {
+                break;
+            }
+            
+            _listSkill.Add(skillId);
+        }
 
         return true;
     }
