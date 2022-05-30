@@ -8,9 +8,9 @@ namespace GameSystem.Table
     public class TableManager : Singleton<TableManager>
     {
         // CsvData dictionary
-        private Dictionary<int, TeamCsvData> _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
-        private Dictionary<int, RoleCsvData> _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
-        private Dictionary<int, SkillCsvData> _dicSkillCsvData = new Dictionary<int, SkillCsvData>();
+        internal readonly Dictionary<int, TeamCsvData> _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
+        internal readonly Dictionary<int, RoleCsvData> _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
+        internal readonly Dictionary<int, SkillCsvData> _dicSkillCsvData = new Dictionary<int, SkillCsvData>();
         // 新增 Table: 定義 dictionary
 
         // LoadCsvData delegate
@@ -134,15 +134,14 @@ namespace GameSystem.Table
             int.TryParse(rowData[++outIndex], out data._pos);
             int.TryParse(rowData[++outIndex], out data._cost);
             int.TryParse(rowData[++outIndex], out data._cd);
-
-            SkillEffectCsvData effect = new SkillEffectCsvData();
+            int.TryParse(rowData[++outIndex], out data._range);
+            
             for (int i = 0; i < GameConst.MAX_SKILL_EFFECT; ++i)
             {
-                int.TryParse(rowData[++outIndex], out effect._effect);
-                int.TryParse(rowData[++outIndex], out effect._range);
-                int.TryParse(rowData[++outIndex], out effect._effectValueType);
-                int.TryParse(rowData[++outIndex], out effect._effectValue);
-                data._effect[i] = effect;
+                data._effect[i] = new SkillEffectCsvData();
+                int.TryParse(rowData[++outIndex], out data._effect[i]._type);
+                int.TryParse(rowData[++outIndex], out data._effect[i]._effectValueType);
+                int.TryParse(rowData[++outIndex], out data._effect[i]._effectValue);
             }
 
             _dicSkillCsvData.Add(data._id, data);
@@ -172,7 +171,7 @@ namespace GameSystem.Table
             return false;
         }
 
-        public bool GetSkillsvData(int id, out SkillCsvData outCsvData)
+        public bool GetSkillCsvData(int id, out SkillCsvData outCsvData)
         {
             if (_dicSkillCsvData.TryGetValue(id, out outCsvData))
             {

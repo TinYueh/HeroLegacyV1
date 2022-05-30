@@ -5,6 +5,7 @@ using GameSystem.Audio;
 using GameSystem.Scene;
 using GameSystem.Table;
 using GameSystem.UI;
+using GameSkill;
 
 namespace GameSystem
 {
@@ -28,6 +29,7 @@ namespace GameSystem
             UIManager.Instance.Init();
             AudioManager.Instance.Init();
             SceneManager.Instance.Init();
+            SkillManager.Instance.Init();
         }
 
         private void Update()

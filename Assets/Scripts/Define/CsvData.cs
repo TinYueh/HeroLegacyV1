@@ -11,11 +11,11 @@ public class TeamCsvData
 public class RoleCsvData
 {
     public int _id = 0;
-    public int _teamType = 0;
+    public int _teamType = 0;   // eCombatTeamType
     public int _portrait = 0;
     public int _emblem = 0;
     public int _name = 0;
-    public int _attribute = 0;
+    public int _attribute = 0;  // eRoleAttribute
     public int _talent = 0;
     public int _health = 0;
     public int _attack = 0;
@@ -28,17 +28,17 @@ public class SkillCsvData
 {
     public int _id = 0;
     public int _name = 0;
-    public int _pos = 0;
+    public int _pos = 0;    // eSkillPos
     public int _cost = 0;
     public int _cd = 0;
+    public int _range = 0;  // eSkillRange
     public SkillEffectCsvData[] _effect = new SkillEffectCsvData[GameConst.MAX_SKILL_EFFECT];
 }
 
 public class SkillEffectCsvData
 {
-    public int _effect = 0;
-    public int _range = 0;
-    public int _effectValueType = 0;
+    public int _type = 0;               // eSkillEffectType
+    public int _effectValueType = 0;    // eSkillEffectValueType
     public int _effectValue = 0;
 }
 

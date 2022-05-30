@@ -6,14 +6,14 @@ namespace GameSkill
 {
     public class Effect
     {
-        public int Id { get; internal set; } = 0;
-        public GameEnum.eSkillEffectValueType Type { get; internal set; } = GameEnum.eSkillEffectValueType.E_SKILL_EFFECT_NA;
-        public int Value { get; internal set; } = 0;
+        internal GameEnum.eSkillEffectType Type { get; private set; } = GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_NA;
+        internal GameEnum.eSkillEffectValueType ValueType { get; private set; } = GameEnum.eSkillEffectValueType.E_SKILL_EFFECT_VALUE_TYPE_NA;
+        internal int Value { get; private set; } = 0;
 
         internal bool Init(SkillEffectCsvData csvData)
         {
-            Id = csvData._effect;
-            Type = (GameEnum.eSkillEffectValueType)csvData._effectValueType;
+            Type = (GameEnum.eSkillEffectType)csvData._type;
+            ValueType = (GameEnum.eSkillEffectValueType)csvData._effectValueType;
             Value = csvData._effectValue;
 
             return true;

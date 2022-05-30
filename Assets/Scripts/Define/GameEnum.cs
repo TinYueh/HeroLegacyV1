@@ -101,17 +101,17 @@ public class GameEnum
         E_SKILL_RANGE_LIMIT,
     }
 
-    public enum eSkillEffect
+    public enum eSkillEffectType
     {
-        E_SKILL_EFFECT_NA = 0,
-        E_SKILL_EFFECT_HEAL     = 1,    // 治療
-        E_SKILL_EFFECT_DAMAGE   = 2,    // 傷害
-        E_SKILL_EFFECT_LIMIT,
+        E_SKILL_EFFECT_TYPE_NA = 0,
+        E_SKILL_EFFECT_TYPE_HEAL    = 1,    // 治療
+        E_SKILL_EFFECT_TYPE_DAMAGE  = 2,    // 傷害
+        E_SKILL_EFFECT_TYPE_LIMIT,
     }
 
     public enum eSkillEffectValueType
     {
-        E_SKILL_EFFECT_NA = 0,
+        E_SKILL_EFFECT_VALUE_TYPE_NA = 0,
         E_SKILL_EFFECT_VALUE_TYPE_ACTUAL    = 1,    // 實值
         E_SKILL_EFFECT_VALUE_TYPE_PERCENT   = 2,    // 比例
         E_SKILL_EFFECT_VALUE_TYPE_LIMIT,
