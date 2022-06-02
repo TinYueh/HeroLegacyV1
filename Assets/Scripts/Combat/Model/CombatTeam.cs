@@ -211,7 +211,7 @@ namespace GameCombat
             CircleSocket circleSocket = null;
             if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
             {
-                Debug.Log("Not found CircleSocket, PosId: " + posId);
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
                 return false;
             }
 
@@ -225,7 +225,7 @@ namespace GameCombat
             CircleSocket circleSocket = null;
             if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
             {
-                Debug.Log("Not found CircleSocket, PosId: " + posId);
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
             }
 
             return circleSocket.Exec(target);
