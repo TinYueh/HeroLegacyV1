@@ -11,10 +11,13 @@ namespace GameCombat
         [SerializeField]
         private float deltaPosX = 0;    // 150, -150
 
+        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         private Dictionary<int, ViewCombatRole> _dicViewCombatRole = new Dictionary<int, ViewCombatRole>();   // <memberId, ViewCombatRole>
 
-        internal bool Init()
+        internal bool Init(GameEnum.eCombatTeamType teamType)
         {
+            _teamType = teamType;
+
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
             {
                 int memberId = i + 1;
@@ -24,7 +27,7 @@ namespace GameCombat
                 obj.transform.SetParent(gameObject.transform, false);
 
                 ViewCombatRole viewCombatRole = obj.GetComponent<ViewCombatRole>();
-                if (viewCombatRole.Init() == false)
+                if (viewCombatRole.Init(_teamType, memberId) == false)
                 {
                     Debug.LogError("Init ViewCombatRole failed, MemberId: " + memberId);
                 }

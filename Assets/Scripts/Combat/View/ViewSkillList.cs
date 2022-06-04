@@ -11,10 +11,13 @@ namespace GameCombat
         [SerializeField]
         private float deltaPosX = 0;    // 150, -150
 
+        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         private List<ViewSkill> _listViewSkill = new List<ViewSkill>();
 
-        internal bool Init()
+        internal bool Init(GameEnum.eCombatTeamType teamType)
         {
+            _teamType = teamType;
+
             for (int i = 0; i < GameConst.MAX_ROLE_SKILL; ++i)
             {
                 float posX = initPosX + (deltaPosX * i);
@@ -30,19 +33,42 @@ namespace GameCombat
                 _listViewSkill.Add(viewSkill);
             }
 
-            //SetHide();
+            SetHide();
 
             return true;
         }
 
+        internal void SetSkill(List<int> listSkill)
+        {
+            for (int i = 0; i < _listViewSkill.Count; ++i)
+            {
+                ViewSkill viewSkill = _listViewSkill[i];
+
+                if (i < listSkill.Count)
+                {
+                    viewSkill.Set(listSkill[i]);
+                    viewSkill.SetShow();
+                }
+                else
+                {
+                    viewSkill.SetHide();
+                }
+            }
+        }
+
+        internal bool IsShow()
+        {
+            return gameObject.activeInHierarchy;
+        }
+
         internal void SetShow()
         {
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
         }
 
         internal void SetHide()
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

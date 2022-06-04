@@ -29,7 +29,7 @@ namespace GameCombat
             _dicExecFunc.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ExecCombatRole);
         }
 
-        internal void Setup(GameEnum.eCircleSocketType socketType, CombatRole combatRole)
+        internal void Set(GameEnum.eCircleSocketType socketType, CombatRole combatRole)
         {
             Type = socketType;
 

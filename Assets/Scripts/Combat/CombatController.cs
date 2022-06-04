@@ -7,11 +7,11 @@ namespace GameCombat
 {
     public class CombatController
     {
-        private CombatTeam _combatPlayer = new CombatTeam();
-        private CombatTeam _combatOpponent = new CombatTeam();
-
         private ViewCombatTeam _viewCombatPlayer = null;
         private ViewCombatTeam _viewCombatOpponent = null;
+
+        private CombatTeam _combatPlayer = new CombatTeam();
+        private CombatTeam _combatOpponent = new CombatTeam();
 
         private int _sfxRotate = 201;
 
@@ -21,14 +21,14 @@ namespace GameCombat
         internal bool Init()
         {
             _viewCombatPlayer = GameObject.Find("UIPlayer").GetComponent<ViewCombatTeam>();
-            if (_viewCombatPlayer.Init() == false)
+            if (_viewCombatPlayer.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER) == false)
             {
                 Debug.LogError("Init ViewCombatPlayer failed");
                 return false;
             }
 
             _viewCombatOpponent = GameObject.Find("UIOpponent").GetComponent<ViewCombatTeam>();
-            if (_viewCombatOpponent.Init() == false)
+            if (_viewCombatOpponent.Init(GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT) == false)
             {
                 Debug.LogError("Init ViewCombatOpponent failed");
                 return false;
@@ -60,13 +60,13 @@ namespace GameCombat
 
         internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)
         {
-            if (_combatPlayer.Setup(playerTeamId) == false)
+            if (_combatPlayer.Set(playerTeamId) == false)
             {
                 Debug.LogError("Setup CombatPlayer failed, TeamId: " + playerTeamId);
                 return false;
             }
 
-            if (_combatOpponent.Setup(opponentTeamId) == false)
+            if (_combatOpponent.Set(opponentTeamId) == false)
             {
                 Debug.LogError("Setup CombatOpponent failed, TeamId: " + opponentTeamId);
                 return false;
@@ -75,6 +75,38 @@ namespace GameCombat
             FlipFirstToken();
 
             return true;
+        }
+
+        internal void OnClickPortrait(GameEnum.eCombatTeamType teamType, int memberId)
+        {
+            CombatTeam combatTeam = null;
+            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            {
+                combatTeam = _combatPlayer;
+            }
+            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
+            {
+                combatTeam = _combatOpponent;
+            }
+
+            CombatRole CombatRole = null;
+            if (combatTeam.GetCombatRoleByMember(memberId, out CombatRole) == false)
+            {
+                Debug.LogError("Not found CombatRole, MemberId: " + memberId);
+                return;
+            }
+
+            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
+            {
+                combatTeam.CastPosId = 0;
+                combatTeam.ViewCombatTeam.ViewSkillList.SetHide();
+            }
+            else
+            {
+                combatTeam.CastPosId = CombatRole.PosId;
+                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
+                combatTeam.ViewCombatTeam.ViewSkillList.SetShow();
+            }
         }
 
         private void FlipFirstToken()

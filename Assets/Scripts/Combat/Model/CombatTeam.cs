@@ -12,6 +12,7 @@ namespace GameCombat
         internal GameEnum.eCombatTeamType TeamType { get; private set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         internal int EnergyPoint { get; private set; } = 0;
         internal int MatchPosId { get; private set; } = 0;
+        internal int CastPosId { get; set; } = 0;
         internal GameEnum.eRotateDirection RotateDirection { get; private set; } = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
 
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // 隊伍成員 <PosId, CombatRole>
@@ -44,7 +45,7 @@ namespace GameCombat
             return true;
         }
 
-        internal bool Setup(int teamId)
+        internal bool Set(int teamId)
         {
             TeamCsvData teamCsvData = null;
             if (TableManager.Instance.GetTeamCsvData(teamId, out teamCsvData) == false)
@@ -123,6 +124,22 @@ namespace GameCombat
             }
 
             return true;
+        }
+
+        internal bool GetCombatRoleByMember(int memberId, out CombatRole outCombatRole)
+        {
+            outCombatRole = null;
+
+            foreach (var combatRole in _dicCombatRole)
+            {
+                if (combatRole.Value.MemberId == memberId)
+                {
+                    outCombatRole = combatRole.Value;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         internal void HandleRotation(GameEnum.eRotateDirection direction)
@@ -215,7 +232,7 @@ namespace GameCombat
                 return false;
             }
 
-            circleSocket.Setup(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, combatRole);
+            circleSocket.Set(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, combatRole);
 
             return true;
         }

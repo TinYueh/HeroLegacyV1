@@ -8,38 +8,46 @@ namespace GameCombat
     public class ViewCombatRole : MonoBehaviour
     {
         private Image _imgPortrait = null;
+        private Button _btnPortrait = null;
+
         private Image _imgEmblem = null;
         private Image _imgHealthBar = null;
-        private Button _btnPortrait = null;
         private float _barInitLen = 0f;
 
-        internal bool Init()
+        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        private int _memberId = 0;
+
+        internal bool Init(GameEnum.eCombatTeamType teamType, int memberId)
         {
+            _teamType = teamType;
+            _memberId = memberId;
+
             _imgPortrait = transform.Find("PortraitButton").GetComponent<Image>();
             if (_imgPortrait == null)
             {
-                Debug.LogError("Not found ImgPortrait");
+                Debug.LogError("Not found ImagePortrait");
                 return false;
             }
 
             _btnPortrait = transform.Find("PortraitButton").GetComponent<Button>();
             if (_btnPortrait == null)
             {
-                Debug.LogError("Not found BtnPortrait");
+                Debug.LogError("Not found ButtonPortrait");
                 return false;
             }
+            _btnPortrait.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickPortrait(_teamType, _memberId));
 
             _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
             if (_imgEmblem == null)
             {
-                Debug.LogError("Not found ImgEmblem");
+                Debug.LogError("Not found ImageEmblem");
                 return false;
             }
 
             _imgHealthBar = transform.Find("HealthBar").transform.Find("Bar").GetComponent<Image>();
             if (_imgHealthBar == null)
             {
-                Debug.LogError("Not found ImgHealthBar");
+                Debug.LogError("Not found ImageHealthBar");
                 return false;
             }
 

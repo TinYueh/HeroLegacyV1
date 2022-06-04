@@ -24,12 +24,16 @@ namespace GameCombat
         internal float RotateAnglePerFrameActual { get; set; } = 0f;
         internal float RotateAngleRemaining { get; set; } = 0f;
 
+        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+
         private eCombatCircleState _combatCircleState = eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
         private Dictionary<int, ViewCircleSocket> _dicViewCircleSocket = new Dictionary<int, ViewCircleSocket>();
 
-        internal bool Init()
+        internal bool Init(GameEnum.eCombatTeamType teamType)
         {
-            float radius = (this.transform.GetComponent<RectTransform>().sizeDelta.x + _adjustRadiusForSocket) / 2;
+            _teamType = teamType;
+
+            float radius = (transform.GetComponent<RectTransform>().sizeDelta.x + _adjustRadiusForSocket) / 2;
 
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
             {
@@ -39,7 +43,7 @@ namespace GameCombat
                 float posY = radius * Mathf.Sin(-60 * i * Mathf.Deg2Rad);
 
                 GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_CIRCLE_SOCKET), new Vector2(posX, posY), Quaternion.identity);
-                obj.transform.SetParent(this.transform, false);
+                obj.transform.SetParent(transform, false);
 
                 ViewCircleSocket viewCircleSocket = obj.GetComponent<ViewCircleSocket>();
                 if (viewCircleSocket.Init() == false)
@@ -102,7 +106,7 @@ namespace GameCombat
 
         internal void Rotate(float angle)
         {
-            this.transform.Rotate(0, 0, angle);
+            transform.Rotate(0, 0, angle);
 
             foreach (var viewSocket in _dicViewCircleSocket)
             {

@@ -13,38 +13,42 @@ namespace GameCombat
         internal ViewCombatStats ViewCombatStats { get; private set; } = null;
         internal ViewSkillList ViewSkillList { get; private set; } = null;
 
-        internal bool Init()
+        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+
+        internal bool Init(GameEnum.eCombatTeamType teamType)
         {
+            _teamType = teamType;
+
             ViewCombatCircle = transform.Find("UICombatCircle").GetComponent<ViewCombatCircle>();
-            if (ViewCombatCircle.Init() == false)
+            if (ViewCombatCircle.Init(_teamType) == false)
             {
                 Debug.LogError("Init ViewCombatCircle failed");
                 return false;
             }
 
             ViewEnergyBar = transform.Find("UIEnergyBar").GetComponent<ViewEnergyBar>();
-            if (ViewEnergyBar.Init() == false)
+            if (ViewEnergyBar.Init(_teamType) == false)
             {
                 Debug.LogError("Init ViewEnergyBar failed");
                 return false;
             }
 
             ViewMemberList = transform.Find("UIMemberList").GetComponent<ViewMemberList>();
-            if (ViewMemberList.Init() == false)
+            if (ViewMemberList.Init(_teamType) == false)
             {
                 Debug.LogError("Init ViewMemberList failed");
                 return false;
             }
 
             ViewCombatStats = transform.Find("UICombatStats").GetComponent<ViewCombatStats>();
-            if (ViewCombatStats.Init() == false)
+            if (ViewCombatStats.Init(_teamType) == false)
             {
                 Debug.LogError("Init ViewMemberList failed");
                 return false;
             }
 
             ViewSkillList = transform.Find("UISkillList").GetComponent<ViewSkillList>();
-            if (ViewSkillList.Init() == false)
+            if (ViewSkillList.Init(_teamType) == false)
             {
                 Debug.LogError("Init ViewSkillList failed");
                 return false;

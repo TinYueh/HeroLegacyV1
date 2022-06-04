@@ -15,14 +15,14 @@ namespace GameCombat
             _imgSocket = GetComponent<Image>();
             if (_imgSocket == null)
             {
-                Debug.LogError("Not found ImgSocket");
+                Debug.LogError("Not found ImageSocket");
                 return false;
             }
 
             _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
             if (_imgEmblem == null)
             {
-                Debug.LogError("Not found ImgEmblem");
+                Debug.LogError("Not found ImageEmblem");
                 return false;
             }
 

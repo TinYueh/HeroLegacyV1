@@ -11,20 +11,23 @@ namespace GameCombat
         private Image _imgOrb = null;
         private float _barInitLen = 0f;
         private float _barLenPerUnit = 0f;
+        GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
 
-        internal bool Init()
+        internal bool Init(GameEnum.eCombatTeamType teamType)
         {
+            _teamType = teamType;
+
             _imgBar =  transform.Find("Bar").GetComponent<Image>();
             if (_imgBar == null)
             {
-                Debug.LogError("Not found ImgBar");
+                Debug.LogError("Not found ImageBar");
                 return false;
             }
 
             _imgOrb = transform.Find("Orb").GetComponent<Image>();
             if (_imgOrb == null)
             {
-                Debug.LogError("Not found ImgOrb");
+                Debug.LogError("Not found ImageOrb");
                 return false;
             }
 
