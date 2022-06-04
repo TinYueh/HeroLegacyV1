@@ -11,7 +11,7 @@ namespace GameCombat
         [SerializeField]
         private float deltaPosX = 0;    // 150, -150
 
-        private List<ViewSkill> _listVwSkill = new List<ViewSkill>();
+        private List<ViewSkill> _listViewSkill = new List<ViewSkill>();
 
         internal bool Init()
         {
@@ -21,13 +21,13 @@ namespace GameCombat
                 GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_SKILL), new Vector2(posX, 0), Quaternion.identity);
                 obj.transform.SetParent(gameObject.transform, false);
 
-                ViewSkill vwSkill = obj.GetComponent<ViewSkill>();
-                if (vwSkill.Init() == false)
+                ViewSkill viewSkill = obj.GetComponent<ViewSkill>();
+                if (viewSkill.Init() == false)
                 {
                     Debug.LogError("Init ViewSkill failed, Index: " + i);
                 }
 
-                _listVwSkill.Add(vwSkill);
+                _listViewSkill.Add(viewSkill);
             }
 
             //SetHide();

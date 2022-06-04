@@ -1808,7 +1808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTeamId: 1
-  _opponentTeamId: 3
+  _opponentTeamId: 4
 --- !u!1 &2033012963
 GameObject:
   m_ObjectHideFlags: 0

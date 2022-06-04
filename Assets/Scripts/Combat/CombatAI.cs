@@ -6,17 +6,17 @@ namespace GameCombat
 {
     public class CombatAI
     {
-        internal void GetNextAction(out GameEnum.eRotateDirection outDirection)
+        internal void GetRoundAction(out GameEnum.eCombatRoundAction outAction)
         {
             int rand = Random.Range(0, 2);
 
             if (rand == 0)
             {
-                outDirection = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT;
+                outAction = GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT;
             }
             else
             {
-                outDirection = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT;
+                outAction = GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT;
             }
         }
     }

@@ -6,7 +6,7 @@ namespace GameCombat
 {
     public class CombatRole
     {
-        private ViewCombatRole _vwCombatRole = null;    // View
+        private ViewCombatRole _viewCombatRole = null;    // View
 
         internal int MemberId { get; private set; } = 0;
         internal int PosId { get; private set; } = 0;
@@ -15,7 +15,7 @@ namespace GameCombat
         internal int Health { get; private set; } = 0;
         internal int NormalDamage { get; set; } = 0;
 
-        internal bool Init(int memberId, int posId, RoleCsvData csvData, ViewCombatRole vwCombatRole)
+        internal bool Init(int memberId, int posId, RoleCsvData csvData, ViewCombatRole viewCombatRole)
         {
             if (Role.Init(csvData) == false)
             {
@@ -27,7 +27,7 @@ namespace GameCombat
             PosId = posId;
             Health = Role.Health;
             State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
-            _vwCombatRole = vwCombatRole;    // Attach View
+            _viewCombatRole = viewCombatRole;    // Attach View
 
             return true;
         }
@@ -54,17 +54,17 @@ namespace GameCombat
                 Health = health;
             }
 
-            _vwCombatRole.SetHealthBar(Health, Role.Health);
+            _viewCombatRole.SetHealthBar(Health, Role.Health);
 
             if (Health == 0)
             {
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
-                _vwCombatRole.SetStateDying();
+                _viewCombatRole.SetStateDying();
             }
             else
             {
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
-                _vwCombatRole.SetStateNormal();
+                _viewCombatRole.SetStateNormal();
             }
         }
     }

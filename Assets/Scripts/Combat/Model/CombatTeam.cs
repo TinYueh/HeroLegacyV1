@@ -7,7 +7,7 @@ namespace GameCombat
 {
     public class CombatTeam
     {        
-        internal ViewCombatTeam VwCombatTeam { get; private set; } = null;  // View
+        internal ViewCombatTeam ViewCombatTeam { get; private set; } = null;  // View
 
         internal GameEnum.eCombatTeamType TeamType { get; private set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         internal int EnergyPoint { get; private set; } = 0;
@@ -19,24 +19,24 @@ namespace GameCombat
 
         internal bool HasFirstToken { get; private set; } = false;  // 判決平先
 
-        internal bool Init(GameEnum.eCombatTeamType teamType, ViewCombatTeam vwCombatTeam)
+        internal bool Init(GameEnum.eCombatTeamType teamType, ViewCombatTeam viewCombatTeam)
         {
             TeamType = teamType;            
-            VwCombatTeam = vwCombatTeam; // Attach View
+            ViewCombatTeam = viewCombatTeam; // Attach View
 
             for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
             {
                 int posId = i + 1;
 
-                ViewCircleSocket vwCircleSocket = null;
-                if (VwCombatTeam.VwCombatCircle.GetCircleSocket(posId, out vwCircleSocket) == false)
+                ViewCircleSocket viewCircleSocket = null;
+                if (ViewCombatTeam.ViewCombatCircle.GetCircleSocket(posId, out viewCircleSocket) == false)
                 {
                     Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);
                     return false;
                 }
 
                 CircleSocket circleSocket = new CircleSocket();
-                circleSocket.Init(posId, vwCircleSocket);
+                circleSocket.Init(posId, viewCircleSocket);
 
                 _dicCircleSocket.Add(posId, circleSocket);
             }
@@ -73,7 +73,7 @@ namespace GameCombat
                     return false;
                 }
 
-                VwCombatTeam.VwMemberList.ShowCombatRole(memberId);
+                ViewCombatTeam.ViewMemberList.ShowCombatRole(memberId);
             }
 
             SetEnergyPoint(0);
@@ -91,15 +91,15 @@ namespace GameCombat
                 return false;
             }
 
-            ViewCombatRole vwCombatRole = null;
-            if (VwCombatTeam.VwMemberList.GetCombatRole(memberId, out vwCombatRole) == false)
+            ViewCombatRole viewCombatRole = null;
+            if (ViewCombatTeam.ViewMemberList.GetCombatRole(memberId, out viewCombatRole) == false)
             {
                 Debug.LogError("Not found RoleCsvData, MemberId: " + memberId);
                 return false;
             }
 
             CombatRole combatRole = new CombatRole();
-            if (combatRole.Init(memberId, posId, csvData, vwCombatRole) == false)
+            if (combatRole.Init(memberId, posId, csvData, viewCombatRole) == false)
             {
                 Debug.LogError("Init CombatRole failed, RoleId: " + roleId);
                 return false;
@@ -107,7 +107,7 @@ namespace GameCombat
 
             _dicCombatRole.Add(posId, combatRole);            
 
-            VwCombatTeam.VwMemberList.SetCombatRole(memberId, combatRole);
+            ViewCombatTeam.ViewMemberList.SetCombatRole(memberId, combatRole);
 
             SetupCircleSocket(posId, combatRole);
 
@@ -130,7 +130,7 @@ namespace GameCombat
             RotateDirection = direction;
 
             ChangeMatchPosId(RotateDirection);
-            VwCombatTeam.HandleRotation(RotateDirection);
+            ViewCombatTeam.HandleRotation(RotateDirection);
         }
 
         internal void ChangeEnergyPoint(int deltaPoint)
@@ -155,11 +155,11 @@ namespace GameCombat
                 EnergyPoint = point;
             }
 
-            int vwPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
-            int vwOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
+            int viewPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
+            int viewOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
 
-            VwCombatTeam.VwEnergyBar.SetEnergyBar(vwPoint);
-            VwCombatTeam.VwEnergyBar.SetEnergyOrb(vwOrb);
+            ViewCombatTeam.ViewEnergyBar.SetEnergyBar(viewPoint);
+            ViewCombatTeam.ViewEnergyBar.SetEnergyOrb(viewOrb);
 
             if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
             {
@@ -237,11 +237,11 @@ namespace GameCombat
 
             if (getFirstToken)
             {
-                VwCombatTeam.VwCombatStats.ShowFirstToken();
+                ViewCombatTeam.ViewCombatStats.ShowFirstToken();
             }
             else
             {
-                VwCombatTeam.VwCombatStats.HideFirstToken();
+                ViewCombatTeam.ViewCombatStats.HideFirstToken();
             }
         }
     }

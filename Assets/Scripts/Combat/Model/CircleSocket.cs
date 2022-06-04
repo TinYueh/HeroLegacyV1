@@ -6,7 +6,7 @@ namespace GameCombat
 {
     public class CircleSocket
     {
-        private ViewCircleSocket _vwCircleSocket = null;    // View
+        private ViewCircleSocket _viewCircleSocket = null;    // View
 
         internal int PosId { get; private set; } = 0;
         internal GameEnum.eCircleSocketType Type { get; private set; } = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_NA;
@@ -14,11 +14,11 @@ namespace GameCombat
         private delegate bool DlgExecFunc(CombatTeam target);
         private Dictionary<GameEnum.eCircleSocketType, DlgExecFunc> _dicExecFunc = new Dictionary<GameEnum.eCircleSocketType, DlgExecFunc>();
 
-        internal void Init(int posId, ViewCircleSocket vwCircleSocket)
+        internal void Init(int posId, ViewCircleSocket viewCircleSocket)
         {
             PosId = posId;
             Type = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE;
-            _vwCircleSocket = vwCircleSocket;   // Attach View
+            _viewCircleSocket = viewCircleSocket;   // Attach View
 
             RegistExecFunc();
         }
@@ -33,9 +33,9 @@ namespace GameCombat
         {
             Type = socketType;
 
-            _vwCircleSocket.SetSocket(combatRole.Role.Attribute);
-            _vwCircleSocket.SetEmblem(combatRole.Role.Emblem);
-            _vwCircleSocket.ShowEmblem();
+            _viewCircleSocket.SetSocket(combatRole.Role.Attribute);
+            _viewCircleSocket.SetEmblem(combatRole.Role.Emblem);
+            _viewCircleSocket.ShowEmblem();
         }
 
         internal bool Exec(CombatTeam target)

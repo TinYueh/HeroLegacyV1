@@ -65,7 +65,7 @@
     <Compile Include="Assets\Scripts\Combat\CombatAI.cs" />
     <Compile Include="Assets\Scripts\Define\Singleton.cs" />
     <Compile Include="Assets\Scripts\System\Controller\BackgroundController.cs" />
-    <Compile Include="Assets\Scripts\Combat\Manager\CombatManager.cs" />
+    <Compile Include="Assets\Scripts\Combat\CombatManager.cs" />
     <Compile Include="Assets\Scripts\System\Manager\TableManager.cs" />
     <Compile Include="Assets\Scripts\Define\CsvData.cs" />
     <Compile Include="Assets\Scripts\System\Manager\SceneManager.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\System\Manager\AudioManager.cs" />
     <Compile Include="Assets\Scripts\System\Manager\UIManager.cs" />
     <Compile Include="Assets\Scripts\System\Controller\CoverController.cs" />
+    <Compile Include="Assets\Scripts\Combat\CombatController.cs" />
     <Compile Include="Assets\Scripts\Skill\SkillManager.cs" />
     <Compile Include="Assets\Scripts\Role\Role.cs" />
     <Compile Include="Assets\Scripts\Combat\View\ViewCombatTeam.cs" />

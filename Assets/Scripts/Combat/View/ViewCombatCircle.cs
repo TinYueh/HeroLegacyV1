@@ -10,8 +10,8 @@ namespace GameCombat
         private enum eCombatCircleState
         {
             E_COMBAT_CIRCLE_STATE_NA = 0,
-            E_COMBAT_CIRCLE_STATE_STANDBY,  // 待機
-            E_COMBAT_CIRCLE_STATE_ROTATE,   // 旋轉
+            E_COMBAT_CIRCLE_STATE_STATIONARY,   // 靜止
+            E_COMBAT_CIRCLE_STATE_ROTATE,       // 旋轉
             E_COMBAT_CIRCLE_STATE_LIMIT,
         }
 
@@ -25,7 +25,7 @@ namespace GameCombat
         internal float RotateAngleRemaining { get; set; } = 0f;
 
         private eCombatCircleState _combatCircleState = eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
-        private Dictionary<int, ViewCircleSocket> _dicVwCircleSocket = new Dictionary<int, ViewCircleSocket>();
+        private Dictionary<int, ViewCircleSocket> _dicViewCircleSocket = new Dictionary<int, ViewCircleSocket>();
 
         internal bool Init()
         {
@@ -41,18 +41,18 @@ namespace GameCombat
                 GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_CIRCLE_SOCKET), new Vector2(posX, posY), Quaternion.identity);
                 obj.transform.SetParent(this.transform, false);
 
-                ViewCircleSocket vwCircleSocket = obj.GetComponent<ViewCircleSocket>();
-                if (vwCircleSocket.Init() == false)
+                ViewCircleSocket viewCircleSocket = obj.GetComponent<ViewCircleSocket>();
+                if (viewCircleSocket.Init() == false)
                 {
                     Debug.LogError("Init ViewCircleSocket failed, PosId: " + posId);
                 }
 
-                _dicVwCircleSocket.Add(posId, vwCircleSocket);
+                _dicViewCircleSocket.Add(posId, viewCircleSocket);
             }
 
             Rotate(_initAngle);
 
-            _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
+            _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STATIONARY;
 
             return true;
         }
@@ -80,14 +80,19 @@ namespace GameCombat
                 {
                     RotateAnglePerFrameActual = 0;
                     RotateAngleRemaining = 0;
-                    _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
+                    _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STATIONARY;
                 }
             }
         }
 
-        internal bool IsStandby()
+        internal bool IsStationary()
         {
-            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STANDBY;
+            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STATIONARY;
+        }
+
+        internal bool IsRotate()
+        {
+            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
         }
 
         internal void EnableRotation()
@@ -99,15 +104,15 @@ namespace GameCombat
         {
             this.transform.Rotate(0, 0, angle);
 
-            foreach (var vwSocket in _dicVwCircleSocket)
+            foreach (var viewSocket in _dicViewCircleSocket)
             {
-                vwSocket.Value.transform.Rotate(0, 0, -angle);
+                viewSocket.Value.transform.Rotate(0, 0, -angle);
             }
         }
 
-        internal bool GetCircleSocket(int posId, out ViewCircleSocket outVwCircleSocket)
+        internal bool GetCircleSocket(int posId, out ViewCircleSocket outViewCircleSocket)
         {
-            if (_dicVwCircleSocket.TryGetValue(posId, out outVwCircleSocket) == false)
+            if (_dicViewCircleSocket.TryGetValue(posId, out outViewCircleSocket) == false)
             {
                 Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);
                 return false;

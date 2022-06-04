@@ -11,7 +11,7 @@ namespace GameCombat
         [SerializeField]
         private float deltaPosX = 0;    // 150, -150
 
-        private Dictionary<int, ViewCombatRole> _dicVwCombatRole = new Dictionary<int, ViewCombatRole>();   // <memberId, ViewCombatRole>
+        private Dictionary<int, ViewCombatRole> _dicViewCombatRole = new Dictionary<int, ViewCombatRole>();   // <memberId, ViewCombatRole>
 
         internal bool Init()
         {
@@ -23,13 +23,13 @@ namespace GameCombat
                 GameObject obj = GameObject.Instantiate(Resources.Load<GameObject>(AssetsPath.PREFAB_UI_COMBAT_ROLE), new Vector2(posX, 0), Quaternion.identity);
                 obj.transform.SetParent(gameObject.transform, false);
 
-                ViewCombatRole vwCombatRole = obj.GetComponent<ViewCombatRole>();
-                if (vwCombatRole.Init() == false)
+                ViewCombatRole viewCombatRole = obj.GetComponent<ViewCombatRole>();
+                if (viewCombatRole.Init() == false)
                 {
                     Debug.LogError("Init ViewCombatRole failed, MemberId: " + memberId);
                 }
 
-                _dicVwCombatRole.Add(memberId, vwCombatRole);
+                _dicViewCombatRole.Add(memberId, viewCombatRole);
 
                 HideCombatRole(memberId);
             }
@@ -37,9 +37,9 @@ namespace GameCombat
             return true;
         }
 
-        internal bool GetCombatRole(int memberId, out ViewCombatRole outVwCombatRole)
+        internal bool GetCombatRole(int memberId, out ViewCombatRole outViewCombatRole)
         {
-            if (_dicVwCombatRole.TryGetValue(memberId, out outVwCombatRole) == false)
+            if (_dicViewCombatRole.TryGetValue(memberId, out outViewCombatRole) == false)
             {
                 Debug.LogError("Not found ViewCombatRole, MemberId: " + memberId);
                 return false;
@@ -50,36 +50,36 @@ namespace GameCombat
 
         internal void SetCombatRole(int memberId, CombatRole combatRole)
         {
-            ViewCombatRole vwCombatRole = null;
-            if (GetCombatRole(memberId, out vwCombatRole) == false)
+            ViewCombatRole viewCombatRole = null;
+            if (GetCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;
             }
 
-            vwCombatRole.SetPortrait(combatRole.Role.Portrait);
-            vwCombatRole.SetEmblem(combatRole.Role.Emblem);
+            viewCombatRole.SetPortrait(combatRole.Role.Portrait);
+            viewCombatRole.SetEmblem(combatRole.Role.Emblem);
         }
 
         internal void ShowCombatRole(int memberId)
         {
-            ViewCombatRole vwCombatRole = null;
-            if (GetCombatRole(memberId, out vwCombatRole) == false)
+            ViewCombatRole viewCombatRole = null;
+            if (GetCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;
             }
 
-            vwCombatRole.gameObject.SetActive(true);
+            viewCombatRole.gameObject.SetActive(true);
         }
 
         internal void HideCombatRole(int memberId)
         {
-            ViewCombatRole vwCombatRole = null;
-            if (GetCombatRole(memberId, out vwCombatRole) == false)
+            ViewCombatRole viewCombatRole = null;
+            if (GetCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;   
             }
 
-            vwCombatRole.gameObject.SetActive(false);
+            viewCombatRole.gameObject.SetActive(false);
         }
     }
 }

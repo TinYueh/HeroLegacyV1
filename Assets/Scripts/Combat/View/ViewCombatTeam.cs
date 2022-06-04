@@ -7,44 +7,44 @@ namespace GameCombat
 {
     public class ViewCombatTeam : MonoBehaviour
     {
-        internal ViewCombatCircle VwCombatCircle { get; private set ; } = null;
-        internal ViewEnergyBar VwEnergyBar { get; private set; } = null;
-        internal ViewMemberList VwMemberList { get; private set; } = null;
-        internal ViewCombatStats VwCombatStats { get; private set; } = null;
-        internal ViewSkillList VwSkillList { get; private set; } = null;
+        internal ViewCombatCircle ViewCombatCircle { get; private set ; } = null;
+        internal ViewEnergyBar ViewEnergyBar { get; private set; } = null;
+        internal ViewMemberList ViewMemberList { get; private set; } = null;
+        internal ViewCombatStats ViewCombatStats { get; private set; } = null;
+        internal ViewSkillList ViewSkillList { get; private set; } = null;
 
         internal bool Init()
         {
-            VwCombatCircle = transform.Find("UICombatCircle").GetComponent<ViewCombatCircle>();
-            if (VwCombatCircle.Init() == false)
+            ViewCombatCircle = transform.Find("UICombatCircle").GetComponent<ViewCombatCircle>();
+            if (ViewCombatCircle.Init() == false)
             {
                 Debug.LogError("Init ViewCombatCircle failed");
                 return false;
             }
 
-            VwEnergyBar = transform.Find("UIEnergyBar").GetComponent<ViewEnergyBar>();
-            if (VwEnergyBar.Init() == false)
+            ViewEnergyBar = transform.Find("UIEnergyBar").GetComponent<ViewEnergyBar>();
+            if (ViewEnergyBar.Init() == false)
             {
                 Debug.LogError("Init ViewEnergyBar failed");
                 return false;
             }
 
-            VwMemberList = transform.Find("UIMemberList").GetComponent<ViewMemberList>();
-            if (VwMemberList.Init() == false)
+            ViewMemberList = transform.Find("UIMemberList").GetComponent<ViewMemberList>();
+            if (ViewMemberList.Init() == false)
             {
                 Debug.LogError("Init ViewMemberList failed");
                 return false;
             }
 
-            VwCombatStats = transform.Find("UICombatStats").GetComponent<ViewCombatStats>();
-            if (VwCombatStats.Init() == false)
+            ViewCombatStats = transform.Find("UICombatStats").GetComponent<ViewCombatStats>();
+            if (ViewCombatStats.Init() == false)
             {
                 Debug.LogError("Init ViewMemberList failed");
                 return false;
             }
 
-            VwSkillList = transform.Find("UISkillList").GetComponent<ViewSkillList>();
-            if (VwSkillList.Init() == false)
+            ViewSkillList = transform.Find("UISkillList").GetComponent<ViewSkillList>();
+            if (ViewSkillList.Init() == false)
             {
                 Debug.LogError("Init ViewSkillList failed");
                 return false;
@@ -53,29 +53,24 @@ namespace GameCombat
             return true;
         }
 
-        internal bool IsStandby()
-        {
-            return VwCombatCircle.IsStandby();
-        }   
-
         internal void HandleRotation(GameEnum.eRotateDirection direction)
         {
             if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT)
             {
-                VwCombatCircle.RotateAnglePerFrameActual = -VwCombatCircle.RotateAnglePerFrame;
+                ViewCombatCircle.RotateAnglePerFrameActual = -ViewCombatCircle.RotateAnglePerFrame;
             }
             else if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT)
             {
-                VwCombatCircle.RotateAnglePerFrameActual = VwCombatCircle.RotateAnglePerFrame;
+                ViewCombatCircle.RotateAnglePerFrameActual = ViewCombatCircle.RotateAnglePerFrame;
             }
             else
             {
                 return;
             }
 
-            VwCombatCircle.RotateAngleRemaining = GameConst.COMBAT_CIRCLE_SLOT_ANGLE;
+            ViewCombatCircle.RotateAngleRemaining = GameConst.COMBAT_CIRCLE_SLOT_ANGLE;
             
-            VwCombatCircle.EnableRotation();
+            ViewCombatCircle.EnableRotation();
         }
     }
 }
