@@ -55,9 +55,9 @@ namespace GameCombat
             CombatController.ExecRoundAction();
         }
 
-        internal void FinishRoundAction()
+        internal bool FinishRoundAction()
         {
-            CombatController.FinishRoundAction();
+            return CombatController.FinishRoundAction();
         }
     }
 }

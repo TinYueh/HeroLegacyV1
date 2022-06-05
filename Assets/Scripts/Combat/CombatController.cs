@@ -260,18 +260,24 @@ namespace GameCombat
             }
         }
 
-        internal void FinishRoundAction()
+        internal bool FinishRoundAction()
         {
             if (_combatPlayer.CheckTeamLiving() == false)
             {
                 // Game Over
                 Debug.Log("Game Over");
+
+                return true;
             }
             else if (_combatOpponent.CheckTeamLiving() == false)
             {
                 // Accomplish
                 Debug.Log("Accomplish");
+
+                return true;
             }
+
+            return false;
         }
 
         private bool HandleAttributeMatch(CombatRole player, CombatRole opponent, out GameEnum.eCombatAttributeMatchResult outResult)

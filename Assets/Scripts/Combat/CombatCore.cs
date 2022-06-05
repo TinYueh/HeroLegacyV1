@@ -47,6 +47,7 @@ namespace GameCombat
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH, CombatRoundStateMatch);
             _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_FINAL, CombatRoundStateFinal);
+            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_LEAVE, CombatRoundStateLeave);
         }
 
         private void CombatRoundStateStandby()
@@ -81,8 +82,20 @@ namespace GameCombat
 
         private void CombatRoundStateFinal()
         {
-            CombatManager.Instance.FinishRoundAction();
-            CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
+            if (CombatManager.Instance.FinishRoundAction())
+            {
+                // 戰鬥結束
+                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_LEAVE;
+            }
+            else
+            {
+                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
+            }
+        }
+
+        private void CombatRoundStateLeave()
+        {
+
         }
     }
 }
