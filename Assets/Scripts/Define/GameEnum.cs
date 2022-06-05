@@ -36,6 +36,7 @@ public class GameEnum
         E_COMBAT_ROUND_STATE_STANDBY,
         E_COMBAT_ROUND_STATE_ROTATE,
         E_COMBAT_ROUND_STATE_MATCH,
+        E_COMBAT_ROUND_STATE_FINAL,
         E_COMBAT_ROUND_STATE_LIMIT,
     }
 
@@ -51,7 +52,7 @@ public class GameEnum
     public enum eCombatRoleState
     {
         E_COMBAT_ROLE_STATE_NA = 0,
-        E_COMBAT_ROLE_STATE_NORMAL,     // 正常
+        E_COMBAT_ROLE_STATE_LIVING,     // 正常
         E_COMBAT_ROLE_STATE_DYING,      // 瀕死
         E_COMBAT_ROLE_STATE_LIMIT,
     }

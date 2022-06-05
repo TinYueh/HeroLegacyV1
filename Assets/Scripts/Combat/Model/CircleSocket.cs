@@ -38,6 +38,14 @@ namespace GameCombat
             _viewCircleSocket.ShowEmblem();
         }
 
+        internal void Clear()
+        {
+            Type = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE;
+
+            _viewCircleSocket.SetSocket(GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_NA);
+            _viewCircleSocket.HideEmblem();
+        }
+
         internal bool Exec(CombatTeam target)
         {
             DlgExecFunc dlgFunc = null;

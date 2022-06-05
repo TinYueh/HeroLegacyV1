@@ -35,7 +35,7 @@ namespace GameCombat
                 Debug.LogError("Not found ButtonPortrait");
                 return false;
             }
-            _btnPortrait.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickPortrait(_teamType, _memberId));
+            _btnPortrait.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickCombatRolePortrait(_teamType, _memberId));
 
             _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
             if (_imgEmblem == null)
@@ -79,7 +79,7 @@ namespace GameCombat
             _imgEmblem.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
         }
 
-        internal void SetStateNormal()
+        internal void SetStateLiving()
         {
             _imgPortrait.color = new Color(1f, 1f, 1f, 1f);
             _imgEmblem.color = new Color(1f, 1f, 1f, 1f);

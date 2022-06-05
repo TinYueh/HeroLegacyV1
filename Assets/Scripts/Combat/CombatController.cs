@@ -62,13 +62,13 @@ namespace GameCombat
         {
             if (_combatPlayer.Set(playerTeamId) == false)
             {
-                Debug.LogError("Setup CombatPlayer failed, TeamId: " + playerTeamId);
+                Debug.LogError("Set CombatPlayer failed, TeamId: " + playerTeamId);
                 return false;
             }
 
             if (_combatOpponent.Set(opponentTeamId) == false)
             {
-                Debug.LogError("Setup CombatOpponent failed, TeamId: " + opponentTeamId);
+                Debug.LogError("Set CombatOpponent failed, TeamId: " + opponentTeamId);
                 return false;
             }
 
@@ -77,7 +77,7 @@ namespace GameCombat
             return true;
         }
 
-        internal void OnClickPortrait(GameEnum.eCombatTeamType teamType, int memberId)
+        internal void OnClickCombatRolePortrait(GameEnum.eCombatTeamType teamType, int memberId)
         {
             CombatTeam combatTeam = null;
             if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
@@ -88,11 +88,51 @@ namespace GameCombat
             {
                 combatTeam = _combatOpponent;
             }
+            else
+            {
+                return;
+            }
 
             CombatRole CombatRole = null;
             if (combatTeam.GetCombatRoleByMember(memberId, out CombatRole) == false)
             {
                 Debug.LogError("Not found CombatRole, MemberId: " + memberId);
+                return;
+            }
+
+            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
+            {
+                combatTeam.CastPosId = 0;
+                combatTeam.ViewCombatTeam.ViewSkillList.SetHide();
+            }
+            else
+            {
+                combatTeam.CastPosId = CombatRole.PosId;
+                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
+                combatTeam.ViewCombatTeam.ViewSkillList.SetShow();
+            }
+        }
+
+        internal void OnClickCircleSocketEmblem(GameEnum.eCombatTeamType teamType, int posId)
+        {
+            CombatTeam combatTeam = null;
+            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            {
+                combatTeam = _combatPlayer;
+            }
+            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
+            {
+                combatTeam = _combatOpponent;
+            }
+            else
+            {
+                return;
+            }
+
+            CombatRole CombatRole = null;
+            if (combatTeam.GetCombatRoleByPos(posId, out CombatRole) == false)
+            {
+                Debug.LogError("Not found CombatRole, PosId: " + posId);
                 return;
             }
 
@@ -220,6 +260,20 @@ namespace GameCombat
             }
         }
 
+        internal void FinishRoundAction()
+        {
+            if (_combatPlayer.CheckTeamLiving() == false)
+            {
+                // Game Over
+                Debug.Log("Game Over");
+            }
+            else if (_combatOpponent.CheckTeamLiving() == false)
+            {
+                // Accomplish
+                Debug.Log("Accomplish");
+            }
+        }
+
         private bool HandleAttributeMatch(CombatRole player, CombatRole opponent, out GameEnum.eCombatAttributeMatchResult outResult)
         {
             outResult = CombatManager.Instance.CombatFormula.CheckAttributeMatch(player.Role.Attribute, opponent.Role.Attribute);
@@ -336,5 +390,25 @@ namespace GameCombat
 
             return true;
         }
+
+        internal bool GetCircleSocket(GameEnum.eCombatTeamType teamType, int posId, out CircleSocket outCircleSocket)
+        {
+            outCircleSocket = null;
+
+            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            {
+                _combatPlayer.GetCircleSocket(posId, out outCircleSocket);
+            }
+            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
+            {
+                _combatOpponent.GetCircleSocket(posId, out outCircleSocket);
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+         }
     }
 }

@@ -46,7 +46,7 @@ namespace GameCombat
                 obj.transform.SetParent(transform, false);
 
                 ViewCircleSocket viewCircleSocket = obj.GetComponent<ViewCircleSocket>();
-                if (viewCircleSocket.Init() == false)
+                if (viewCircleSocket.Init(teamType, posId) == false)
                 {
                     Debug.LogError("Init ViewCircleSocket failed, PosId: " + posId);
                 }

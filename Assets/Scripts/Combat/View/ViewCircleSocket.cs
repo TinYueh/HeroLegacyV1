@@ -8,10 +8,18 @@ namespace GameCombat
     public class ViewCircleSocket : MonoBehaviour
     {
         private Image _imgSocket = null;
-        private Image _imgEmblem = null;
 
-        internal bool Init()
+        private Image _imgEmblem = null;
+        private Button _btnEmblem = null;
+
+        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        private int _posId = 0;
+
+        internal bool Init(GameEnum.eCombatTeamType teamType, int posId)
         {
+            _teamType = teamType;
+            _posId = posId;
+
             _imgSocket = GetComponent<Image>();
             if (_imgSocket == null)
             {
@@ -19,12 +27,22 @@ namespace GameCombat
                 return false;
             }
 
-            _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
+            _imgEmblem = transform.Find("EmblemButton").GetComponent<Image>();
             if (_imgEmblem == null)
             {
                 Debug.LogError("Not found ImageEmblem");
                 return false;
             }
+
+            _btnEmblem = transform.Find("EmblemButton").GetComponent<Button>();
+            if (_btnEmblem == null)
+            {
+                Debug.LogError("Not found ButtonEmblem");
+                return false;
+            }
+            _btnEmblem.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickCircleSocketEmblem(_teamType, _posId));
+
+            HideEmblem();
 
             return true;
         }

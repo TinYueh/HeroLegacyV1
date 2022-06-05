@@ -8,6 +8,7 @@ namespace GameCombat
     {
         private ViewCombatRole _viewCombatRole = null;    // View
 
+        internal GameEnum.eCombatTeamType TeamType { get; private set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         internal int MemberId { get; private set; } = 0;
         internal int PosId { get; private set; } = 0;
         internal Role Role { get; private set; } = new Role();
@@ -15,7 +16,7 @@ namespace GameCombat
         internal int Health { get; private set; } = 0;
         internal int NormalDamage { get; set; } = 0;
 
-        internal bool Init(int memberId, int posId, RoleCsvData csvData, ViewCombatRole viewCombatRole)
+        internal bool Init(GameEnum.eCombatTeamType teamType, int memberId, int posId, RoleCsvData csvData, ViewCombatRole viewCombatRole)
         {
             if (Role.Init(csvData) == false)
             {
@@ -23,10 +24,11 @@ namespace GameCombat
                 return false;
             }
 
+            TeamType = teamType;
             MemberId = memberId;
             PosId = posId;
             Health = Role.Health;
-            State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
+            State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING;
             _viewCombatRole = viewCombatRole;    // Attach View
 
             return true;
@@ -58,14 +60,22 @@ namespace GameCombat
 
             if (Health == 0)
             {
+                // Todo: 整個區塊移到 CombatController
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
                 _viewCombatRole.SetStateDying();
+
+                CircleSocket circleSocket = null;
+                if (CombatManager.Instance.CombatController.GetCircleSocket(TeamType, PosId, out circleSocket))
+                {
+                    circleSocket.Clear();
+                }
             }
-            else
-            {
-                State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NORMAL;
-                _viewCombatRole.SetStateNormal();
-            }
+            //else
+            //{
+            //    // 實作復活時需要
+            //    State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING;
+            //    _viewCombatRole.SetStateLiving();
+            //}
         }
     }
 }

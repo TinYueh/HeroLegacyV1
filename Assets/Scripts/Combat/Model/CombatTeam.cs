@@ -100,7 +100,7 @@ namespace GameCombat
             }
 
             CombatRole combatRole = new CombatRole();
-            if (combatRole.Init(memberId, posId, csvData, viewCombatRole) == false)
+            if (combatRole.Init(TeamType, memberId, posId, csvData, viewCombatRole) == false)
             {
                 Debug.LogError("Init CombatRole failed, RoleId: " + roleId);
                 return false;
@@ -110,7 +110,7 @@ namespace GameCombat
 
             ViewCombatTeam.ViewMemberList.SetCombatRole(memberId, combatRole);
 
-            SetupCircleSocket(posId, combatRole);
+            SetCircleSocket(posId, combatRole);
 
             return true;
         }
@@ -223,7 +223,18 @@ namespace GameCombat
             MatchPosId = posId;
         }
 
-        private bool SetupCircleSocket(int posId, CombatRole combatRole)
+        internal bool GetCircleSocket(int posId, out CircleSocket outCircleSocket)
+        {
+            if (_dicCircleSocket.TryGetValue(posId, out outCircleSocket) == false)
+            {
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool SetCircleSocket(int posId, CombatRole combatRole)
         {
             CircleSocket circleSocket = null;
             if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
@@ -233,7 +244,6 @@ namespace GameCombat
             }
 
             circleSocket.Set(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, combatRole);
-
             return true;
         }
 
@@ -260,6 +270,19 @@ namespace GameCombat
             {
                 ViewCombatTeam.ViewCombatStats.HideFirstToken();
             }
+        }
+
+        internal bool CheckTeamLiving()
+        {
+            foreach (var combatRole in _dicCombatRole)
+            {
+                if (combatRole.Value.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
