@@ -77,95 +77,7 @@ namespace GameCombat
             return true;
         }
 
-        internal void OnClickCombatRolePortrait(GameEnum.eCombatTeamType teamType, int memberId)
-        {
-            CombatTeam combatTeam = null;
-            if (GetCombatTeam(teamType, out combatTeam) == false)
-            {
-                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
-                return;
-            }
-
-            CombatRole CombatRole = null;
-            if (combatTeam.GetCombatRoleByMember(memberId, out CombatRole) == false)
-            {
-                Debug.LogError("Not found CombatRole, MemberId: " + memberId);
-                return;
-            }
-
-            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
-            {
-                combatTeam.CastPosId = 0;
-                combatTeam.ViewCombatTeam.ViewSkillList.Hide();
-            }
-            else
-            {
-                combatTeam.CastPosId = CombatRole.PosId;
-                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
-                combatTeam.ViewCombatTeam.ViewSkillList.Show();
-            }
-        }
-
-        internal void OnClickCircleSocketEmblem(GameEnum.eCombatTeamType teamType, int posId)
-        {
-            CombatTeam combatTeam = null;
-            if (GetCombatTeam(teamType, out combatTeam) == false)
-            {
-                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
-                return;
-            }
-
-            CombatRole CombatRole = null;
-            if (combatTeam.GetCombatRoleByPos(posId, out CombatRole) == false)
-            {
-                Debug.LogError("Not found CombatRole, PosId: " + posId);
-                return;
-            }
-
-            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
-            {
-                combatTeam.CastPosId = 0;
-                combatTeam.ViewCombatTeam.ViewSkillList.Hide();
-            }
-            else
-            {
-                combatTeam.CastPosId = CombatRole.PosId;
-                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
-                combatTeam.ViewCombatTeam.ViewSkillList.Show();
-            }
-        }
-
-        internal void OnClickSkill(GameEnum.eCombatTeamType teamType, int skillId)
-        {
-            CombatTeam combatTeam = null;
-            if (GetCombatTeam(teamType, out combatTeam) == false)
-            {
-                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
-                return;
-            }
-
-            combatTeam.CastSkillId = skillId;
-
-            CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST);
-        }
-
-        private void FlipFirstToken()
-        {
-            if (_combatPlayer.HasFirstToken != _combatOpponent.HasFirstToken)
-            {
-                bool hasFirstToken = _combatOpponent.HasFirstToken;
-
-                _combatPlayer.SetFirstToken(hasFirstToken);
-                _combatOpponent.SetFirstToken(!hasFirstToken);
-            }
-            else
-            {
-                bool hasFirstToken = (Random.Range(0, 2) == 0);
-
-                _combatPlayer.SetFirstToken(hasFirstToken);
-                _combatOpponent.SetFirstToken(!hasFirstToken);
-            }
-        }
+        #region RoundAction
 
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
@@ -202,11 +114,6 @@ namespace GameCombat
         private void StartRoundActionCast(CombatTeam combatTeam)
         {
             
-        }
-
-        internal bool IsCombatCircleRotate()
-        {
-            return (_viewCombatPlayer.ViewCombatCircle.IsRotate() || _viewCombatOpponent.ViewCombatCircle.IsRotate());
         }
 
         internal bool ProcessRoundAction()
@@ -282,6 +189,175 @@ namespace GameCombat
             }
 
             return false;
+        }
+
+        #endregion
+
+        #region OnClick
+
+        internal void OnClickCombatRolePortrait(GameEnum.eCombatTeamType teamType, int memberId)
+        {
+            CombatTeam combatTeam = null;
+            if (GetCombatTeam(teamType, out combatTeam) == false)
+            {
+                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
+                return;
+            }
+
+            CombatRole CombatRole = null;
+            if (combatTeam.GetCombatRoleByMember(memberId, out CombatRole) == false)
+            {
+                Debug.LogError("Not found CombatRole, MemberId: " + memberId);
+                return;
+            }
+
+            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
+            {
+                combatTeam.CastPosId = 0;
+                combatTeam.ViewCombatTeam.ViewSkillList.Hide();
+            }
+            else
+            {
+                combatTeam.CastPosId = CombatRole.PosId;
+                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
+                combatTeam.ViewCombatTeam.ViewSkillList.Show();
+            }
+        }
+
+        internal void OnClickCircleSocketEmblem(GameEnum.eCombatTeamType teamType, int posId)
+        {
+            CombatTeam combatTeam = null;
+            if (GetCombatTeam(teamType, out combatTeam) == false)
+            {
+                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
+                return;
+            }
+
+            CombatRole CombatRole = null;
+            if (combatTeam.GetCombatRoleByPos(posId, out CombatRole) == false)
+            {
+                Debug.LogError("Not found CombatRole, PosId: " + posId);
+                return;
+            }
+
+            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
+            {
+                combatTeam.CastPosId = 0;
+                combatTeam.ViewCombatTeam.ViewSkillList.Hide();
+            }
+            else
+            {
+                combatTeam.CastPosId = CombatRole.PosId;
+                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
+                combatTeam.ViewCombatTeam.ViewSkillList.Show();
+            }
+        }
+
+        internal void OnClickSkill(GameEnum.eCombatTeamType teamType, int skillId)
+        {
+            CombatTeam combatTeam = null;
+            if (GetCombatTeam(teamType, out combatTeam) == false)
+            {
+                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
+                return;
+            }
+
+            combatTeam.CastSkillId = skillId;
+
+            CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST);
+        }
+
+        #endregion
+
+        #region Check
+
+        private bool CheckAbortNormalAttack(CombatRole source, CombatRole target)
+        {
+            // 立即中止普攻的條件
+
+            if (source.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
+                || target.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool CheckExecNormalAttack(CombatRole source, CombatRole target)
+        {
+            // 排除不能普攻的條件
+
+            return true;
+        }
+
+        #endregion
+
+        #region Get
+
+        internal bool GetCombatTeam(GameEnum.eCombatTeamType teamType, out CombatTeam outCombatTeam)
+        {
+            outCombatTeam = null;
+
+            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            {
+                outCombatTeam = _combatPlayer;
+            }
+            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
+            {
+                outCombatTeam = _combatOpponent;
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        internal bool GetCircleSocket(GameEnum.eCombatTeamType teamType, int posId, out CircleSocket outCircleSocket)
+        {
+            outCircleSocket = null;
+
+            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            {
+                _combatPlayer.GetCircleSocket(posId, out outCircleSocket);
+            }
+            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
+            {
+                _combatOpponent.GetCircleSocket(posId, out outCircleSocket);
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        private void FlipFirstToken()
+        {
+            if (_combatPlayer.HasFirstToken != _combatOpponent.HasFirstToken)
+            {
+                bool hasFirstToken = _combatOpponent.HasFirstToken;
+
+                _combatPlayer.SetFirstToken(hasFirstToken);
+                _combatOpponent.SetFirstToken(!hasFirstToken);
+            }
+            else
+            {
+                bool hasFirstToken = (Random.Range(0, 2) == 0);
+
+                _combatPlayer.SetFirstToken(hasFirstToken);
+                _combatOpponent.SetFirstToken(!hasFirstToken);
+            }
+        }
+
+        internal bool IsCombatCircleRotate()
+        {
+            return (_viewCombatPlayer.ViewCombatCircle.IsRotate() || _viewCombatOpponent.ViewCombatCircle.IsRotate());
         }
 
         private bool HandleAttributeMatch(CombatRole player, CombatRole opponent, out GameEnum.eCombatAttributeMatchResult outResult)
@@ -381,64 +457,6 @@ namespace GameCombat
             return true;
         }
 
-        private bool CheckAbortNormalAttack(CombatRole source, CombatRole target)
-        {
-            // 立即中止普攻的條件
 
-            if (source.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
-                || target.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool CheckExecNormalAttack(CombatRole source, CombatRole target)
-        {
-            // 排除不能普攻的條件
-
-            return true;
-        }
-
-        internal bool GetCombatTeam(GameEnum.eCombatTeamType teamType, out CombatTeam outCombatTeam)
-        {
-            outCombatTeam = null;
-
-            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
-            {
-                outCombatTeam = _combatPlayer;
-            }
-            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
-            {
-                outCombatTeam = _combatOpponent;
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        internal bool GetCircleSocket(GameEnum.eCombatTeamType teamType, int posId, out CircleSocket outCircleSocket)
-        {
-            outCircleSocket = null;
-
-            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
-            {
-                _combatPlayer.GetCircleSocket(posId, out outCircleSocket);
-            }
-            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
-            {
-                _combatOpponent.GetCircleSocket(posId, out outCircleSocket);
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
-         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameSystem.Table;
+using GameCombat;
 
 namespace GameSkill
 {
@@ -21,6 +22,17 @@ namespace GameSkill
                 }
 
                 _dicSkill.Add(skill.Id, skill);
+            }
+
+            return true;
+        }
+
+        public bool GetSkill(int skillId, out Skill outSkill)
+        {
+            if (_dicSkill.TryGetValue(skillId, out outSkill) == false)
+            {
+                Debug.LogError("Not found Skill, SkillId: " + skillId);
+                return false;
             }
 
             return true;

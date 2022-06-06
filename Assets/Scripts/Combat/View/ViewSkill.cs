@@ -52,5 +52,16 @@ namespace GameCombat
         {
             gameObject.SetActive(false);
         }
+
+        internal void Enable()
+        {
+            _btnSkill.interactable = true;
+        }
+
+        internal void Disable()
+        {
+            _btnSkill.interactable = false;
+        }
+
     }
 }
