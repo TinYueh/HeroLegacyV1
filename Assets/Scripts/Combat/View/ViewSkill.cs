@@ -7,9 +7,10 @@ namespace GameCombat
 {
     public class ViewSkill : MonoBehaviour
     {
-        internal int SkillId { get; private set; } = 0;
-
         private Image _imgSkill = null;
+        private Button _btnSkill = null;
+
+        private int _skillId = 0;
 
         internal bool Init()
         {
@@ -20,14 +21,22 @@ namespace GameCombat
                 return false;
             }
 
+            _btnSkill = GetComponent<Button>();
+            if (_btnSkill == null)
+            {
+                Debug.LogError("Not found ButtonSkill");
+                return false;
+            }
+            _btnSkill.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickSkill(_skillId));
+
             return true;
         }
 
         internal void Set(int skillId)
         {
-            SkillId = skillId;
+            _skillId = skillId;
 
-            string path = AssetsPath.SPRITE_SKILL_PATH + SkillId.ToString().PadLeft(5, '0');
+            string path = AssetsPath.SPRITE_SKILL_PATH + _skillId.ToString().PadLeft(5, '0');
             _imgSkill.sprite = Resources.Load<Sprite>(path);
         }
 

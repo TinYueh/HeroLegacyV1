@@ -55,47 +55,34 @@ namespace GameCombat
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow))
             {
                 CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT);
-                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
             else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.DownArrow))
             {
                 CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT);
-                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
             }
         }
 
         private void CombatRoundStateRotate()
         {
             // 持續旋轉和執行 CircleSocket 直到 CombatCircle 靜止
-            if (CombatManager.Instance.ProcessRoundAction())
-            {                   
-                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
-            }
+            CombatManager.Instance.ProcessRoundAction();
         }
 
         private void CombatRoundStateMatch()
         {
             // 進行對戰
             CombatManager.Instance.ExecRoundAction();
-            CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_FINAL;
         }
 
         private void CombatRoundStateFinal()
         {
-            if (CombatManager.Instance.FinishRoundAction())
-            {
-                // 戰鬥結束
-                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_LEAVE;
-            }
-            else
-            {
-                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
-            }
+            // 結算
+            CombatManager.Instance.FinishRoundAction();
         }
 
         private void CombatRoundStateLeave()
         {
-
+            // 戰鬥結束
         }
     }
 }

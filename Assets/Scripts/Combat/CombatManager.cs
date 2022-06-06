@@ -55,29 +55,47 @@ namespace GameCombat
             ShowBlock();
 
             CombatController.StartRoundAction(playerAction);
+
+            CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
         }
 
-        internal bool ProcessRoundAction()
+        internal void ProcessRoundAction()
         {
             if (CombatController.IsCombatCircleRotate())
             {
                 // 正在轉
-                return false;
+                return;
             }
 
-            return CombatController.ProcessRoundAction();
+
+            if (CombatController.ProcessRoundAction() == false)
+            {
+                return;
+            }
+
+            CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
         }
 
         internal void ExecRoundAction()
         {
             CombatController.ExecRoundAction();
+
+            CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_FINAL;
         }
 
-        internal bool FinishRoundAction()
+        internal void FinishRoundAction()
         {
             HideBlock();
 
-            return CombatController.FinishRoundAction();
+            if (CombatController.FinishRoundAction())
+            {
+                // 戰鬥結束
+                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_LEAVE;
+            }
+            else
+            {
+                CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
+            }
         }
     }
 }

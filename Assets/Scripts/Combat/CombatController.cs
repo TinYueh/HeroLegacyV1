@@ -149,6 +149,11 @@ namespace GameCombat
             }
         }
 
+        internal void OnClickSkill(int skillId)
+        {
+            CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST);
+        }
+
         private void FlipFirstToken()
         {
             if (_combatPlayer.HasFirstToken != _combatOpponent.HasFirstToken)
@@ -201,7 +206,7 @@ namespace GameCombat
 
         private void StartRoundActionCast(CombatTeam combatTeam)
         {
-
+            
         }
 
         internal bool IsCombatCircleRotate()
