@@ -10,10 +10,13 @@ namespace GameCombat
         private Image _imgSkill = null;
         private Button _btnSkill = null;
 
+        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         private int _skillId = 0;
 
-        internal bool Init()
+        internal bool Init(GameEnum.eCombatTeamType teamType)
         {
+            _teamType = teamType;
+
             _imgSkill = GetComponent<Image>();
             if (_imgSkill == null)
             {
@@ -27,7 +30,7 @@ namespace GameCombat
                 Debug.LogError("Not found ButtonSkill");
                 return false;
             }
-            _btnSkill.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickSkill(_skillId));
+            _btnSkill.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickSkill(_teamType, _skillId));
 
             return true;
         }

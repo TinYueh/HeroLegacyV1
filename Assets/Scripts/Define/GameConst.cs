@@ -10,9 +10,9 @@ public static class GameConst
     public const int COMBAT_MATCH_WIN_ENERGY_POINT = 5;         // 屬性勝獲得能量點 
     public const int COMBAT_MATCH_LOSE_ENERGY_POINT = 1;        // 屬性敗獲得能量點 
     public const int COMBAT_MATCH_DRAW_ENERGY_POINT = 3;        // 屬性平獲得能量點
-    public const int CRITICAL_HIT_DAMAGE_RATIO = 2;             // 爆擊傷害倍率
     public const int MAX_ROLE_SKILL = 5;                        // 角色技能數
     public const int MAX_SKILL_EFFECT = 2;                      // 技能效果數
 
+    public const float CRITICAL_HIT_DAMAGE_RATIO = 1.5f;        // 爆擊傷害倍率
     public const float COMBAT_CIRCLE_SLOT_ANGLE = 60f;          // 戰圓每個 slot 間距角度
 }

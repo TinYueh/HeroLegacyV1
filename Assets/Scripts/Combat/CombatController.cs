@@ -80,16 +80,9 @@ namespace GameCombat
         internal void OnClickCombatRolePortrait(GameEnum.eCombatTeamType teamType, int memberId)
         {
             CombatTeam combatTeam = null;
-            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            if (GetCombatTeam(teamType, out combatTeam) == false)
             {
-                combatTeam = _combatPlayer;
-            }
-            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
-            {
-                combatTeam = _combatOpponent;
-            }
-            else
-            {
+                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
                 return;
             }
 
@@ -116,16 +109,9 @@ namespace GameCombat
         internal void OnClickCircleSocketEmblem(GameEnum.eCombatTeamType teamType, int posId)
         {
             CombatTeam combatTeam = null;
-            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            if (GetCombatTeam(teamType, out combatTeam) == false)
             {
-                combatTeam = _combatPlayer;
-            }
-            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
-            {
-                combatTeam = _combatOpponent;
-            }
-            else
-            {
+                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
                 return;
             }
 
@@ -149,8 +135,17 @@ namespace GameCombat
             }
         }
 
-        internal void OnClickSkill(int skillId)
+        internal void OnClickSkill(GameEnum.eCombatTeamType teamType, int skillId)
         {
+            CombatTeam combatTeam = null;
+            if (GetCombatTeam(teamType, out combatTeam) == false)
+            {
+                Debug.LogError("Not found CombatTeam, TeamType: " + teamType);
+                return;
+            }
+
+            combatTeam.CastSkillId = skillId;
+
             CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST);
         }
 
@@ -365,7 +360,7 @@ namespace GameCombat
 
             if (CheckExecNormalAttack(first, second))
             {
-                CombatManager.Instance.CombatFormula.GetNormalDamage(first, second, out damageValue);
+                CombatManager.Instance.CombatFormula.GetNormalAttackDamage(first, second, true, out damageValue);
                 first.NormalDamage = damageValue;
                 second.ChangeHealth(-damageValue);
             }
@@ -378,7 +373,7 @@ namespace GameCombat
 
             if (CheckExecNormalAttack(second, first))
             {
-                CombatManager.Instance.CombatFormula.GetNormalDamage(second, first, out damageValue);
+                CombatManager.Instance.CombatFormula.GetNormalAttackDamage(second, first, false, out damageValue);
                 second.NormalDamage = damageValue;
                 first.ChangeHealth(-damageValue);
             }
@@ -402,6 +397,26 @@ namespace GameCombat
         private bool CheckExecNormalAttack(CombatRole source, CombatRole target)
         {
             // 排除不能普攻的條件
+
+            return true;
+        }
+
+        internal bool GetCombatTeam(GameEnum.eCombatTeamType teamType, out CombatTeam outCombatTeam)
+        {
+            outCombatTeam = null;
+
+            if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER)
+            {
+                outCombatTeam = _combatPlayer;
+            }
+            else if (teamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_OPPONENT)
+            {
+                outCombatTeam = _combatOpponent;
+            }
+            else
+            {
+                return false;
+            }
 
             return true;
         }

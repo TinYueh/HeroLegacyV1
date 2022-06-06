@@ -77,12 +77,14 @@ namespace GameCombat
         {
             _imgPortrait.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
             _imgEmblem.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
+            _btnPortrait.enabled = false;
         }
 
         internal void SetStateLiving()
         {
             _imgPortrait.color = new Color(1f, 1f, 1f, 1f);
             _imgEmblem.color = new Color(1f, 1f, 1f, 1f);
+            _btnPortrait.enabled = true;
         }
     }
 }

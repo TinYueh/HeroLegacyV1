@@ -25,7 +25,7 @@ namespace GameCombat
                 obj.transform.SetParent(gameObject.transform, false);
 
                 ViewSkill viewSkill = obj.GetComponent<ViewSkill>();
-                if (viewSkill.Init() == false)
+                if (viewSkill.Init(_teamType) == false)
                 {
                     Debug.LogError("Init ViewSkill failed, Index: " + i);
                 }

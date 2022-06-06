@@ -13,6 +13,7 @@ namespace GameCombat
         internal int EnergyPoint { get; private set; } = 0;
         internal int MatchPosId { get; private set; } = 0;
         internal int CastPosId { get; set; } = 0;
+        internal int CastSkillId { get; set; } = 0;
         internal GameEnum.eRotateDirection RotateDirection { get; private set; } = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
 
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // 隊伍成員 <PosId, CombatRole>
