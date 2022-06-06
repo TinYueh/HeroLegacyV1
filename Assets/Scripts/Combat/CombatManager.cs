@@ -11,6 +11,8 @@ namespace GameCombat
         internal CombatController CombatController { get; private set; } = new CombatController();
         internal GameEnum.eCombatRoundState CombatRoundState { get; set; } = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
 
+        private GameObject _panelBlock = null;
+
         public override bool Init()
         {
             if (CombatController.Init() == false)
@@ -19,8 +21,20 @@ namespace GameCombat
                 return false;
             }
 
+            _panelBlock = GameObject.Find("BlockPanel");
+
             Debug.Log("CombatManager Init OK");
             return true;
+        }
+
+        private void ShowBlock()
+        {
+            _panelBlock.SetActive(true);
+        }
+
+        private void HideBlock()
+        {
+            _panelBlock.SetActive(false);
         }
 
         internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)
@@ -31,11 +45,15 @@ namespace GameCombat
                 return false;
             }
 
+            HideBlock();
+
             return true;
         }
 
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
+            ShowBlock();
+
             CombatController.StartRoundAction(playerAction);
         }
 
@@ -57,6 +75,8 @@ namespace GameCombat
 
         internal bool FinishRoundAction()
         {
+            HideBlock();
+
             return CombatController.FinishRoundAction();
         }
     }

@@ -75,6 +75,6 @@ namespace GameCombat
             ViewCombatCircle.RotateAngleRemaining = GameConst.COMBAT_CIRCLE_SLOT_ANGLE;
             
             ViewCombatCircle.EnableRotation();
-        }
+        }           
     }
 }

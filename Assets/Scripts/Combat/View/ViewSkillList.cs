@@ -33,7 +33,7 @@ namespace GameCombat
                 _listViewSkill.Add(viewSkill);
             }
 
-            SetHide();
+            Hide();
 
             return true;
         }
@@ -47,11 +47,11 @@ namespace GameCombat
                 if (i < listSkill.Count)
                 {
                     viewSkill.Set(listSkill[i]);
-                    viewSkill.SetShow();
+                    viewSkill.Show();
                 }
                 else
                 {
-                    viewSkill.SetHide();
+                    viewSkill.Hide();
                 }
             }
         }
@@ -61,12 +61,12 @@ namespace GameCombat
             return gameObject.activeInHierarchy;
         }
 
-        internal void SetShow()
+        internal void Show()
         {
             gameObject.SetActive(true);
         }
 
-        internal void SetHide()
+        internal void Hide()
         {
             gameObject.SetActive(false);
         }

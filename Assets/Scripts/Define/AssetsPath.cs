@@ -18,7 +18,7 @@ public static class AssetsPath
     // Sprite Background
     public static string SPRITE_PICTURE_PATH = "Sprites/Pictures/Bg_";
     // Sprite Skill
-    public static string SPRITE_SKILL_PATH = "Sprites/Skills/skill_";
+    public static string SPRITE_SKILL_PATH = "Sprites/Skills/Skill_";
     // Prefab
     public static string PREFAB_UI_CIRCLE_SOCKET = "Prefabs/Combat/UICircleSocket";
     public static string PREFAB_UI_COMBAT_ROLE = "Prefabs/Combat/UICombatRole";

@@ -31,12 +31,12 @@ namespace GameCombat
             _imgSkill.sprite = Resources.Load<Sprite>(path);
         }
 
-        internal void SetShow()
+        internal void Show()
         {
             gameObject.SetActive(true);
         }
 
-        internal void SetHide()
+        internal void Hide()
         {
             gameObject.SetActive(false);
         }

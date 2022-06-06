@@ -103,13 +103,13 @@ namespace GameCombat
             if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
             {
                 combatTeam.CastPosId = 0;
-                combatTeam.ViewCombatTeam.ViewSkillList.SetHide();
+                combatTeam.ViewCombatTeam.ViewSkillList.Hide();
             }
             else
             {
                 combatTeam.CastPosId = CombatRole.PosId;
                 combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
-                combatTeam.ViewCombatTeam.ViewSkillList.SetShow();
+                combatTeam.ViewCombatTeam.ViewSkillList.Show();
             }
         }
 
@@ -139,13 +139,13 @@ namespace GameCombat
             if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
             {
                 combatTeam.CastPosId = 0;
-                combatTeam.ViewCombatTeam.ViewSkillList.SetHide();
+                combatTeam.ViewCombatTeam.ViewSkillList.Hide();
             }
             else
             {
                 combatTeam.CastPosId = CombatRole.PosId;
                 combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
-                combatTeam.ViewCombatTeam.ViewSkillList.SetShow();
+                combatTeam.ViewCombatTeam.ViewSkillList.Show();
             }
         }
 
@@ -169,6 +169,10 @@ namespace GameCombat
 
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
+            // 進行中關閉 UI
+            _combatOpponent.ViewCombatTeam.ViewSkillList.Hide();
+            _combatPlayer.ViewCombatTeam.ViewSkillList.Hide();
+
             // Player
             _dicStartRoundActionFunc[playerAction](_combatPlayer);
 
