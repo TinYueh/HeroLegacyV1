@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameSystem.Audio;
+using GameSkill;
 
 namespace GameCombat
 {
@@ -204,22 +205,27 @@ namespace GameCombat
                 return;
             }
 
-            CombatRole CombatRole = null;
-            if (combatTeam.GetCombatRoleByMember(memberId, out CombatRole) == false)
+            CombatRole combatRole = null;
+            if (combatTeam.GetCombatRoleByMember(memberId, out combatRole) == false)
             {
                 Debug.LogError("Not found CombatRole, MemberId: " + memberId);
                 return;
             }
 
-            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
+            if (CheckPos(GameEnum.ePosType.E_POS_TYPE_FORWARD, combatTeam, combatRole.PosId) == false)
+            {
+                return;
+            }
+
+            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == combatRole.PosId)
             {
                 combatTeam.CastPosId = 0;
                 combatTeam.ViewCombatTeam.ViewSkillList.Hide();
             }
             else
             {
-                combatTeam.CastPosId = CombatRole.PosId;
-                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
+                combatTeam.CastPosId = combatRole.PosId;
+                SetViewSkillList(combatTeam, combatRole);
                 combatTeam.ViewCombatTeam.ViewSkillList.Show();
             }
         }
@@ -233,22 +239,27 @@ namespace GameCombat
                 return;
             }
 
-            CombatRole CombatRole = null;
-            if (combatTeam.GetCombatRoleByPos(posId, out CombatRole) == false)
+            CombatRole combatRole = null;
+            if (combatTeam.GetCombatRoleByPos(posId, out combatRole) == false)
             {
                 Debug.LogError("Not found CombatRole, PosId: " + posId);
                 return;
             }
 
-            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == CombatRole.PosId)
+            if (CheckPos(GameEnum.ePosType.E_POS_TYPE_FORWARD, combatTeam, combatRole.PosId) == false)
+            {
+                return;
+            }
+
+            if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == combatRole.PosId)
             {
                 combatTeam.CastPosId = 0;
                 combatTeam.ViewCombatTeam.ViewSkillList.Hide();
             }
             else
             {
-                combatTeam.CastPosId = CombatRole.PosId;
-                combatTeam.ViewCombatTeam.ViewSkillList.SetSkill(CombatRole.Role.ListSkill);
+                combatTeam.CastPosId = combatRole.PosId;
+                SetViewSkillList(combatTeam, combatRole);
                 combatTeam.ViewCombatTeam.ViewSkillList.Show();
             }
         }
@@ -291,9 +302,18 @@ namespace GameCombat
             return true;
         }
 
-        private bool CheckCastSkill()
+        private bool CheckPos(GameEnum.ePosType posType, CombatTeam combatTeam, int posId)
         {
+            List<int> listSkill = new List<int>();
+            if (combatTeam.GetPosList(posType, listSkill) == false)
+            {
+                return false;
+            }
 
+            if (listSkill.Exists(x => x == posId) == false)
+            {
+                return false;
+            }
 
             return true;
         }
@@ -462,6 +482,27 @@ namespace GameCombat
             }
 
             return true;
+        }
+
+        private void SetViewSkillList(CombatTeam combatTeam, CombatRole combatRole)
+        {
+            for (int i = 0; i < GameConst.MAX_ROLE_SKILL; ++i)
+            {
+                if (i < combatRole.Role.ListSkill.Count)
+                {
+                    Skill skill = null;
+                    if (SkillManager.Instance.GetSkill(combatRole.Role.ListSkill[i], out skill) == false)
+                    {
+                        continue;
+                    }
+
+                    combatTeam.ViewCombatTeam.ViewSkillList.ShowSkill(i, skill.Id, CheckPos(skill.PosType, combatTeam, combatRole.PosId));
+                }
+                else
+                {
+                    combatTeam.ViewCombatTeam.ViewSkillList.HideSkill(i);
+                }
+            }
         }
     }
 }

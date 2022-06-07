@@ -38,22 +38,47 @@ namespace GameCombat
             return true;
         }
 
-        internal void SetSkill(List<int> listSkill)
-        {
-            for (int i = 0; i < _listViewSkill.Count; ++i)
-            {
-                ViewSkill viewSkill = _listViewSkill[i];
+        //internal void SetSkill(List<int> listSkill)
+        //{
+        //    for (int i = 0; i < _listViewSkill.Count; ++i)
+        //    {
+        //        ViewSkill viewSkill = _listViewSkill[i];
 
-                if (i < listSkill.Count)
-                {
-                    viewSkill.Set(listSkill[i]);
-                    viewSkill.Show();
-                }
-                else
-                {
-                    viewSkill.Hide();
-                }
+        //        if (i < listSkill.Count)
+        //        {
+        //            viewSkill.Set(listSkill[i]);
+        //            viewSkill.Show();
+        //        }
+        //        else
+        //        {
+        //            viewSkill.Hide();
+        //        }
+        //    }
+        //}
+
+        internal void ShowSkill(int index, int skillId, bool isEnable)
+        {
+            ViewSkill viewSkill = _listViewSkill[index];
+            
+            viewSkill.Set(skillId);
+            
+            if (isEnable)
+            {
+                viewSkill.Enable();
             }
+            else
+            {
+                viewSkill.Disable();
+            }
+            
+            viewSkill.Show();
+        }
+
+        internal void HideSkill(int index)
+        {
+            ViewSkill viewSkill = _listViewSkill[index];
+            
+            viewSkill.Hide();
         }
 
         internal bool IsShow()
