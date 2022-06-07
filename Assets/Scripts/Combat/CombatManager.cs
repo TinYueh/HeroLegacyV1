@@ -27,16 +27,6 @@ namespace GameCombat
             return true;
         }
 
-        private void ShowBlock()
-        {
-            _panelBlock.SetActive(true);
-        }
-
-        private void HideBlock()
-        {
-            _panelBlock.SetActive(false);
-        }
-
         internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)
         {
             if (CombatController.CreateNewCombat(playerTeamId, opponentTeamId) == false)
@@ -50,6 +40,7 @@ namespace GameCombat
             return true;
         }
 
+        #region Round Action
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
             ShowBlock();
@@ -97,5 +88,18 @@ namespace GameCombat
                 CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
             }
         }
+        #endregion
+
+        #region Show Hide
+        private void ShowBlock()
+        {
+            _panelBlock.SetActive(true);
+        }
+
+        private void HideBlock()
+        {
+            _panelBlock.SetActive(false);
+        }
+        #endregion
     }
 }

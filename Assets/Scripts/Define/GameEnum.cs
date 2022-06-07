@@ -120,4 +120,12 @@ public class GameEnum
         E_SKILL_EFFECT_VALUE_TYPE_PERCENT   = 2,    // 比例
         E_SKILL_EFFECT_VALUE_TYPE_LIMIT,
     }
+
+    public enum eSkillEnableCondition
+    {
+        E_SKILL_ENABLE_CONDITION_NA = 0,
+        E_SKILL_ENABLE_CONDITION_POS,     // 站位
+        E_SKILL_ENABLE_CONDITION_ENERGY,  // 能量
+        E_SKILL_ENABLE_CONDITION_LIMIT,
+    }
 }

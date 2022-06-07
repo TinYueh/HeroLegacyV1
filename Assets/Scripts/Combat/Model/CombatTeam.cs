@@ -11,6 +11,7 @@ namespace GameCombat
 
         internal GameEnum.eCombatTeamType TeamType { get; private set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         internal int EnergyPoint { get; private set; } = 0;
+        internal int EnergyOrb { get; private set; } = 0;
         internal int MatchPosId { get; private set; } = 0;  // 對戰位
         internal int CastPosId { get; set; } = 0;           // 施放位
         internal int CastSkillId { get; set; } = 0;         // 施放技能
@@ -18,7 +19,6 @@ namespace GameCombat
 
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // <PosId, CombatRole>
         private Dictionary<int, CircleSocket> _dicCircleSocket = new Dictionary<int, CircleSocket>();   // <PosId, CircleSocket>
-        private List<int> _listRoundPos = new List<int>();                                              // <PosId>
 
         internal bool HasFirstToken { get; private set; } = false;  // 判決平先
 
@@ -181,16 +181,16 @@ namespace GameCombat
             }
 
             int viewPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
-            int viewOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
+            EnergyOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
 
             ViewCombatTeam.ViewEnergyBar.SetEnergyBar(viewPoint);
-            ViewCombatTeam.ViewEnergyBar.SetEnergyOrb(viewOrb);
+            ViewCombatTeam.ViewEnergyBar.SetEnergyOrb(EnergyOrb);
 
             if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
             {
                 // Todo: Lock EnergyBar
             }
-        }
+        } 
 
         #endregion
 

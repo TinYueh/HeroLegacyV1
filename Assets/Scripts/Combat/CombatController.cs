@@ -318,6 +318,19 @@ namespace GameCombat
             return true;
         }
 
+        private bool CheckSkillEnableCondition(Dictionary<GameEnum.eSkillEnableCondition, bool> dicEnable)
+        {
+            foreach (var enable in dicEnable)
+            {
+                if (enable.Value == false)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         #endregion
 
         #region Get
@@ -486,6 +499,9 @@ namespace GameCombat
 
         private void SetViewSkillList(CombatTeam combatTeam, CombatRole combatRole)
         {
+            // Todo: UI 顯示不可施放的原因
+            Dictionary<GameEnum.eSkillEnableCondition, bool> dicEnable = new Dictionary<GameEnum.eSkillEnableCondition, bool>();
+
             for (int i = 0; i < GameConst.MAX_ROLE_SKILL; ++i)
             {
                 if (i < combatRole.Role.ListSkill.Count)
@@ -496,12 +512,17 @@ namespace GameCombat
                         continue;
                     }
 
-                    combatTeam.ViewCombatTeam.ViewSkillList.ShowSkill(i, skill.Id, CheckPos(skill.PosType, combatTeam, combatRole.PosId));
+                    dicEnable.Add(GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_POS, CheckPos(skill.PosType, combatTeam, combatRole.PosId));
+                    dicEnable.Add(GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_ENERGY, (combatTeam.EnergyOrb >= skill.Cost));
+
+                    combatTeam.ViewCombatTeam.ViewSkillList.ShowSkill(i, skill.Id, CheckSkillEnableCondition(dicEnable));
                 }
                 else
                 {
                     combatTeam.ViewCombatTeam.ViewSkillList.HideSkill(i);
                 }
+
+                dicEnable.Clear();
             }
         }
     }
