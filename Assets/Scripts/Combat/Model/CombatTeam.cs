@@ -11,13 +11,14 @@ namespace GameCombat
 
         internal GameEnum.eCombatTeamType TeamType { get; private set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
         internal int EnergyPoint { get; private set; } = 0;
-        internal int MatchPosId { get; private set; } = 0;
-        internal int CastPosId { get; set; } = 0;
-        internal int CastSkillId { get; set; } = 0;
+        internal int MatchPosId { get; private set; } = 0;  // 對戰位
+        internal int CastPosId { get; set; } = 0;           // 施放位
+        internal int CastSkillId { get; set; } = 0;         // 施放技能
         internal GameEnum.eRotateDirection RotateDirection { get; private set; } = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
 
-        private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // 隊伍成員 <PosId, CombatRole>
+        private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // <PosId, CombatRole>
         private Dictionary<int, CircleSocket> _dicCircleSocket = new Dictionary<int, CircleSocket>();   // <PosId, CircleSocket>
+        private List<int> _listRoundPos = new List<int>();                                              // <PosId>
 
         internal bool HasFirstToken { get; private set; } = false;  // 判決平先
 
@@ -116,6 +117,8 @@ namespace GameCombat
             return true;
         }
 
+        #region Get Combat Role
+
         internal bool GetCombatRoleByPos(int posId, out CombatRole outCombatRole)
         {
             if (_dicCombatRole.TryGetValue(posId, out outCombatRole) == false)
@@ -143,6 +146,8 @@ namespace GameCombat
             return false;
         }
 
+        #endregion
+
         internal void HandleRotation(GameEnum.eRotateDirection direction)
         {
             RotateDirection = direction;
@@ -150,6 +155,8 @@ namespace GameCombat
             ChangeMatchPosId(RotateDirection);
             ViewCombatTeam.HandleRotation(RotateDirection);
         }
+
+        #region Energy
 
         internal void ChangeEnergyPoint(int deltaPoint)
         {
@@ -185,6 +192,10 @@ namespace GameCombat
             }
         }
 
+        #endregion
+
+        #region Pos Id
+
         private void ChangeMatchPosId(GameEnum.eRotateDirection direction)
         {
             int tmpMatchPosId = MatchPosId;
@@ -207,6 +218,11 @@ namespace GameCombat
 
         private void SetMatchPosId(int posId)
         {
+            MatchPosId = ConvertPosId(posId);
+        }
+
+        internal int ConvertPosId(int posId)
+        {
             if (posId <= 0)
             {
                 posId = GameConst.MAX_TEAM_MEMBER - (posId % GameConst.MAX_TEAM_MEMBER);
@@ -221,8 +237,62 @@ namespace GameCombat
                 }
             }
 
-            MatchPosId = posId;
+            return posId;
         }
+
+        internal bool GetPosList(GameEnum.ePosType posType, List<int> listPos)
+        {
+            if (MatchPosId == 0)
+            {
+                return false;
+            }
+
+            switch (posType)
+            {
+                case GameEnum.ePosType.E_POS_TYPE_MATCH:
+                    {
+                        listPos.Add(MatchPosId);
+                        break;
+                    }
+                case GameEnum.ePosType.E_POS_TYPE_WING:
+                    {
+                        listPos.Add(ConvertPosId(MatchPosId + 1));
+                        listPos.Add(ConvertPosId(MatchPosId - 1));
+                        break;
+                    }
+                case GameEnum.ePosType.E_POS_TYPE_FORWARD:
+                    {
+                        listPos.Add(MatchPosId);
+                        listPos.Add(ConvertPosId(MatchPosId + 1));
+                        listPos.Add(ConvertPosId(MatchPosId - 1));
+                        break;
+                    }
+                case GameEnum.ePosType.E_POS_TYPE_GUARD:
+                    {
+                        int posId = MatchPosId + (GameConst.MAX_TEAM_MEMBER / 2);
+                        listPos.Add(ConvertPosId(posId));
+                        listPos.Add(ConvertPosId(posId + 1));
+                        listPos.Add(ConvertPosId(posId - 1));
+                        break;
+                    }
+                case GameEnum.ePosType.E_POS_TYPE_ALL:
+                    {
+                        for (int i = 0; i < GameConst.MAX_TEAM_MEMBER; ++i)
+                        {
+                            listPos.Add(ConvertPosId(MatchPosId + i));
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
+
+            return true;
+        }
+
+        #endregion
 
         internal bool GetCircleSocket(int posId, out CircleSocket outCircleSocket)
         {

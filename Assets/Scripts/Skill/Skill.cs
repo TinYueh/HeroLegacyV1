@@ -8,7 +8,7 @@ namespace GameSkill
     {
         internal int Id { get; private set; } = 0;
         internal int Name { get; private set; } = 0;
-        internal GameEnum.eSkillPos Pos { get; private set; } = GameEnum.eSkillPos.E_SKILL_POS_NA;
+        internal GameEnum.ePosType PosType { get; private set; } = GameEnum.ePosType.E_POS_TYPE_NA;
         internal int Cost { get; private set; } = 0;
         internal int Cd { get; private set; } = 0;
         internal GameEnum.eSkillRange Range { get; private set; } = GameEnum.eSkillRange.E_SKILL_RANGE_NA;
@@ -19,7 +19,7 @@ namespace GameSkill
         {
             Id = csvData._id;
             Name = csvData._name;
-            Pos = (GameEnum.eSkillPos)csvData._pos;
+            PosType = (GameEnum.ePosType)csvData._posType;
             Cost = csvData._cost;
             Cd = csvData._cd;
             Range = (GameEnum.eSkillRange)csvData._range;

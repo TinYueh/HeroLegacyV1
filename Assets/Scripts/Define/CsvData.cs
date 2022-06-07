@@ -28,10 +28,10 @@ public class SkillCsvData
 {
     public int _id = 0;
     public int _name = 0;
-    public int _pos = 0;    // eSkillPos
+    public int _posType = 0;    // ePosType
     public int _cost = 0;
     public int _cd = 0;
-    public int _range = 0;  // eSkillRange
+    public int _range = 0;      // eSkillRange
     public SkillEffectCsvData[] _effect = new SkillEffectCsvData[GameConst.MAX_SKILL_EFFECT];
 }
 

@@ -131,7 +131,7 @@ namespace GameSystem.Table
 
             int.TryParse(rowData[outIndex], out data._id);
             int.TryParse(rowData[++outIndex], out data._name);
-            int.TryParse(rowData[++outIndex], out data._pos);
+            int.TryParse(rowData[++outIndex], out data._posType);
             int.TryParse(rowData[++outIndex], out data._cost);
             int.TryParse(rowData[++outIndex], out data._cd);
             int.TryParse(rowData[++outIndex], out data._range);

@@ -77,7 +77,7 @@ namespace GameCombat
             return true;
         }
 
-        #region RoundAction
+        #region Round Action
 
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
@@ -193,7 +193,7 @@ namespace GameCombat
 
         #endregion
 
-        #region OnClick
+        #region On Click
 
         internal void OnClickCombatRolePortrait(GameEnum.eCombatTeamType teamType, int memberId)
         {
@@ -287,6 +287,13 @@ namespace GameCombat
         private bool CheckExecNormalAttack(CombatRole source, CombatRole target)
         {
             // 排除不能普攻的條件
+
+            return true;
+        }
+
+        private bool CheckCastSkill()
+        {
+
 
             return true;
         }
@@ -456,7 +463,5 @@ namespace GameCombat
 
             return true;
         }
-
-
     }
 }
