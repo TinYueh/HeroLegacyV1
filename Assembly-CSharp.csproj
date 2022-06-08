@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\Combat\View\ViewCombatCircle.cs" />
     <Compile Include="Assets\Scripts\Combat\View\ViewEnergyBar.cs" />
     <Compile Include="Assets\Scripts\Combat\View\ViewMemberList.cs" />
+    <Compile Include="Assets\Scripts\System\Controller\InputController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -34,13 +34,15 @@ namespace GameCombat
 
                 _dicViewCombatRole.Add(memberId, viewCombatRole);
 
-                HideCombatRole(memberId);
+                HideViewCombatRole(memberId);
             }
 
             return true;
         }
 
-        internal bool GetCombatRole(int memberId, out ViewCombatRole outViewCombatRole)
+        #region Get Set
+
+        internal bool GetViewCombatRole(int memberId, out ViewCombatRole outViewCombatRole)
         {
             if (_dicViewCombatRole.TryGetValue(memberId, out outViewCombatRole) == false)
             {
@@ -51,10 +53,10 @@ namespace GameCombat
             return true;
         }
 
-        internal void SetCombatRole(int memberId, CombatRole combatRole)
+        internal void SetViewCombatRole(int memberId, CombatRole combatRole)
         {
             ViewCombatRole viewCombatRole = null;
-            if (GetCombatRole(memberId, out viewCombatRole) == false)
+            if (GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;
             }
@@ -63,10 +65,14 @@ namespace GameCombat
             viewCombatRole.SetEmblem(combatRole.Role.Emblem);
         }
 
-        internal void ShowCombatRole(int memberId)
+        #endregion
+
+        #region Show Hide
+
+        internal void ShowViewCombatRole(int memberId)
         {
             ViewCombatRole viewCombatRole = null;
-            if (GetCombatRole(memberId, out viewCombatRole) == false)
+            if (GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;
             }
@@ -74,15 +80,17 @@ namespace GameCombat
             viewCombatRole.gameObject.SetActive(true);
         }
 
-        internal void HideCombatRole(int memberId)
+        internal void HideViewCombatRole(int memberId)
         {
             ViewCombatRole viewCombatRole = null;
-            if (GetCombatRole(memberId, out viewCombatRole) == false)
+            if (GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;   
             }
 
             viewCombatRole.gameObject.SetActive(false);
         }
+
+        #endregion
     }
 }

@@ -124,8 +124,9 @@ public class GameEnum
     public enum eSkillEnableCondition
     {
         E_SKILL_ENABLE_CONDITION_NA = 0,
-        E_SKILL_ENABLE_CONDITION_POS,     // 站位
-        E_SKILL_ENABLE_CONDITION_ENERGY,  // 能量
+        E_SKILL_ENABLE_CONDITION_TEAM,      // 隊伍
+        E_SKILL_ENABLE_CONDITION_POS,       // 站位
+        E_SKILL_ENABLE_CONDITION_ENERGY,    // 能量
         E_SKILL_ENABLE_CONDITION_LIMIT,
     }
 }

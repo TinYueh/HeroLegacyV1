@@ -45,6 +45,5 @@ namespace GameSkill
 
             return true;
         }
-
     }
 }

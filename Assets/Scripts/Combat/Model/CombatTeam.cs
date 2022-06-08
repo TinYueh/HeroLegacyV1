@@ -76,7 +76,7 @@ namespace GameCombat
                     return false;
                 }
 
-                ViewCombatTeam.ViewMemberList.ShowCombatRole(memberId);
+                ViewCombatTeam.ViewMemberList.ShowViewCombatRole(memberId);
             }
 
             SetEnergyPoint(0);
@@ -95,7 +95,7 @@ namespace GameCombat
             }
 
             ViewCombatRole viewCombatRole = null;
-            if (ViewCombatTeam.ViewMemberList.GetCombatRole(memberId, out viewCombatRole) == false)
+            if (ViewCombatTeam.ViewMemberList.GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 Debug.LogError("Not found RoleCsvData, MemberId: " + memberId);
                 return false;
@@ -110,11 +110,43 @@ namespace GameCombat
 
             _dicCombatRole.Add(posId, combatRole);            
 
-            ViewCombatTeam.ViewMemberList.SetCombatRole(memberId, combatRole);
+            ViewCombatTeam.ViewMemberList.SetViewCombatRole(memberId, combatRole);
 
             SetCircleSocket(posId, combatRole);
 
             return true;
+        }
+
+        internal void HandleRotation(GameEnum.eRotateDirection direction)
+        {
+            RotateDirection = direction;
+
+            ChangeMatchPosId(RotateDirection);
+            ViewCombatTeam.HandleRotation(RotateDirection);
+        }
+
+        internal bool ExecCircleSocket(int posId, CombatTeam target)
+        {
+            CircleSocket circleSocket = null;
+            if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
+            {
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
+            }
+
+            return circleSocket.Exec(target);
+        }
+
+        internal bool CheckTeamLiving()
+        {
+            foreach (var combatRole in _dicCombatRole)
+            {
+                if (combatRole.Value.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #region Get Combat Role
@@ -148,13 +180,47 @@ namespace GameCombat
 
         #endregion
 
-        internal void HandleRotation(GameEnum.eRotateDirection direction)
-        {
-            RotateDirection = direction;
+        #region Get Set
 
-            ChangeMatchPosId(RotateDirection);
-            ViewCombatTeam.HandleRotation(RotateDirection);
+        internal bool GetCircleSocket(int posId, out CircleSocket outCircleSocket)
+        {
+            if (_dicCircleSocket.TryGetValue(posId, out outCircleSocket) == false)
+            {
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
+                return false;
+            }
+
+            return true;
         }
+
+        private bool SetCircleSocket(int posId, CombatRole combatRole)
+        {
+            CircleSocket circleSocket = null;
+            if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
+            {
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
+                return false;
+            }
+
+            circleSocket.Set(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, combatRole);
+            return true;
+        }
+
+        internal void SetFirstToken(bool getFirstToken)
+        {
+            HasFirstToken = getFirstToken;
+
+            if (getFirstToken)
+            {
+                ViewCombatTeam.ViewCombatStats.ShowFirstToken();
+            }
+            else
+            {
+                ViewCombatTeam.ViewCombatStats.HideFirstToken();
+            }
+        }
+
+        #endregion
 
         #region Energy
 
@@ -293,67 +359,5 @@ namespace GameCombat
         }
 
         #endregion
-
-        internal bool GetCircleSocket(int posId, out CircleSocket outCircleSocket)
-        {
-            if (_dicCircleSocket.TryGetValue(posId, out outCircleSocket) == false)
-            {
-                Debug.LogError("Not found CircleSocket, PosId: " + posId);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool SetCircleSocket(int posId, CombatRole combatRole)
-        {
-            CircleSocket circleSocket = null;
-            if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
-            {
-                Debug.LogError("Not found CircleSocket, PosId: " + posId);
-                return false;
-            }
-
-            circleSocket.Set(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, combatRole);
-            return true;
-        }
-
-        internal bool ExecCircleSocket(int posId, CombatTeam target)
-        {
-            CircleSocket circleSocket = null;
-            if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
-            {
-                Debug.LogError("Not found CircleSocket, PosId: " + posId);
-            }
-
-            return circleSocket.Exec(target);
-        }
-
-        internal void SetFirstToken(bool getFirstToken)
-        {
-            HasFirstToken = getFirstToken;
-
-            if (getFirstToken)
-            {
-                ViewCombatTeam.ViewCombatStats.ShowFirstToken();
-            }
-            else
-            {
-                ViewCombatTeam.ViewCombatStats.HideFirstToken();
-            }
-        }
-
-        internal bool CheckTeamLiving()
-        {
-            foreach (var combatRole in _dicCombatRole)
-            {
-                if (combatRole.Value.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }
