@@ -28,7 +28,7 @@ namespace GameCombat
             MemberId = memberId;
             PosId = posId;
             Health = Role.Health;
-            State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING;
+            State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_ALIVE;
             _viewCombatRole = viewCombatRole;    // Attach View
 
             return true;
@@ -73,9 +73,19 @@ namespace GameCombat
             //else
             //{
             //    // 實作復活時需要
-            //    State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING;
-            //    _viewCombatRole.SetStateLiving();
+            //    State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_ALIVE;
+            //    _viewCombatRole.SetStateAlive();
             //}
+        }
+
+        internal bool IsAlive()
+        {
+            return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_ALIVE);
+        }
+
+        internal bool IsDying()
+        {
+            return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING);
         }
     }
 }

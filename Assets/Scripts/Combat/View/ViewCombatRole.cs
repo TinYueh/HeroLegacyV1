@@ -79,7 +79,7 @@ namespace GameCombat
             _btnPortrait.interactable = false;
         }
 
-        internal void SetStateLiving()
+        internal void SetStateAlive()
         {
             _imgEmblem.color = new Color(1f, 1f, 1f, 1f);
             _btnPortrait.interactable = true;

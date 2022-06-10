@@ -53,8 +53,8 @@ public class GameEnum
     public enum eCombatRoleState
     {
         E_COMBAT_ROLE_STATE_NA = 0,
-        E_COMBAT_ROLE_STATE_LIVING,     // 正常
-        E_COMBAT_ROLE_STATE_DYING,      // 瀕死
+        E_COMBAT_ROLE_STATE_ALIVE,  // 存活
+        E_COMBAT_ROLE_STATE_DYING,  // 瀕死
         E_COMBAT_ROLE_STATE_LIMIT,
     }
 
@@ -127,6 +127,7 @@ public class GameEnum
         E_SKILL_ENABLE_CONDITION_TEAM,      // 隊伍
         E_SKILL_ENABLE_CONDITION_POS,       // 站位
         E_SKILL_ENABLE_CONDITION_ENERGY,    // 能量
+        E_SKILL_ENABLE_CONDITION_MATCH,     // 對戰
         E_SKILL_ENABLE_CONDITION_LIMIT,
     }
 }

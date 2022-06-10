@@ -136,11 +136,11 @@ namespace GameCombat
             return circleSocket.Exec(target);
         }
 
-        internal bool CheckTeamLiving()
+        internal bool CheckTeamAlive()
         {
             foreach (var combatRole in _dicCombatRole)
             {
-                if (combatRole.Value.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_LIVING)
+                if (combatRole.Value.IsAlive())
                 {
                     return true;
                 }
@@ -260,7 +260,7 @@ namespace GameCombat
 
         #endregion
 
-        #region Pos Id
+        #region Pos
 
         private void ChangeMatchPosId(GameEnum.eRotateDirection direction)
         {
@@ -356,6 +356,17 @@ namespace GameCombat
             }
 
             return true;
+        }
+
+        internal bool IsMatchPosAlive()
+        {
+            CombatRole combatRole = null;
+            if (GetCombatRoleByPos(MatchPosId, out combatRole) == false)
+            {
+                return false;
+            }
+
+            return combatRole.IsAlive();
         }
 
         #endregion

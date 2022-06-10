@@ -294,14 +294,14 @@ namespace GameCombat
 
         internal bool FinishRoundAction()
         {
-            if (_combatPlayer.CheckTeamLiving() == false)
+            if (_combatPlayer.CheckTeamAlive() == false)
             {
                 // Game Over
                 Debug.Log("Game Over");
 
                 return true;
             }
-            else if (_combatOpponent.CheckTeamLiving() == false)
+            else if (_combatOpponent.CheckTeamAlive() == false)
             {
                 // Accomplish
                 Debug.Log("Accomplish");
@@ -400,8 +400,7 @@ namespace GameCombat
         {
             // 立即中止普攻的條件
 
-            if (source.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING
-                || target.State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING)
+            if (source.IsDying() || target.IsDying())
             {
                 return true;
             }
@@ -507,6 +506,7 @@ namespace GameCombat
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_TEAM] = (combatTeam.TeamType == GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_PLAYER);
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_POS] = CheckPos(skill.PosType, combatTeam, combatRole.PosId);
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_ENERGY] = (combatTeam.EnergyOrb >= skill.Cost);
+                    dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_MATCH] = combatTeam.IsMatchPosAlive();
 
                     combatTeam.ViewCombatTeam.ViewSkillList.ShowSkill(i, skill.Id, CheckSkillEnableCondition(dicEnable));
                 }
