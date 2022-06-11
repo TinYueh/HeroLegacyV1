@@ -16,7 +16,7 @@ namespace GameCombat
 
         private int _sfxRotate = 201;
 
-        private delegate void DlgStartRoundActionFunc(CombatTeam combatTeam);
+        private delegate void DlgStartRoundActionFunc(CombatTeam sourceTeam, CombatTeam targetTeam);
         private Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundActionFunc> _dicStartRoundActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundActionFunc>();
 
         internal bool Init()
@@ -207,13 +207,13 @@ namespace GameCombat
             _combatPlayer.ViewCombatTeam.ViewSkillList.Hide();
 
             // Player
-            _dicStartRoundActionFunc[playerAction](_combatPlayer);
+            _dicStartRoundActionFunc[playerAction](_combatPlayer, _combatOpponent);
 
             // Opponent
             GameEnum.eCombatRoundAction opponentAction = GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_NA;
             CombatManager.Instance.CombatAI.GetRoundAction(out opponentAction);
 
-            _dicStartRoundActionFunc[opponentAction](_combatOpponent);
+            _dicStartRoundActionFunc[opponentAction](_combatOpponent, _combatPlayer);
 
             if (IsCombatCircleRotate())
             {
@@ -222,19 +222,25 @@ namespace GameCombat
             }
         }
 
-        private void StartRoundActionRotateRight(CombatTeam combatTeam)
+        private void StartRoundActionRotateRight(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
-            combatTeam.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
+            sourceTeam.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
         }
 
-        private void StartRoundActionRotateLeft(CombatTeam combatTeam)
+        private void StartRoundActionRotateLeft(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
-            combatTeam.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
+            sourceTeam.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
         }
 
-        private void StartRoundActionCast(CombatTeam combatTeam)
+        private void StartRoundActionCast(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
+            CombatRole combatRole = null;
+            if (sourceTeam.GetCombatRoleByPos(sourceTeam.MatchPosId, out combatRole) == false)
+            {
+                return;
+            }
 
+            SkillManager.Instance.ExecSkill(sourceTeam.CastSkillId, combatRole, sourceTeam, targetTeam);
         }
 
         internal bool ProcessRoundAction()
@@ -417,13 +423,13 @@ namespace GameCombat
 
         private bool CheckPos(GameEnum.ePosType posType, CombatTeam combatTeam, int posId)
         {
-            List<int> listSkill = new List<int>();
-            if (combatTeam.GetPosList(posType, listSkill) == false)
+            List<int> listPos = new List<int>();
+            if (combatTeam.GetPosList(posType, listPos) == false)
             {
                 return false;
             }
 
-            if (listSkill.Exists(x => x == posId) == false)
+            if (listPos.Exists(x => x == posId) == false)
             {
                 return false;
             }

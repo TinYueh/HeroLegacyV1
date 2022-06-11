@@ -91,17 +91,20 @@ public class GameEnum
         E_SKILL_RANGE_NA = 0,
         E_SKILL_RANGE_SOURCE            = 1,    // 自己
         E_SKILL_RANGE_SOURCE_MATCH      = 101,  // 已方對戰位
-        E_SKILL_RANGE_SOURCE_FORWARD    = 102,  // 已方前排
-        E_SKILL_RANGE_SOURCE_GUARD      = 103,  // 己方後排
-        E_SKILL_RANGE_SOURCE_ALL        = 104,  // 已方全體
+        E_SKILL_RANGE_SOURCE_WING       = 102,  // 己方側翼
+        E_SKILL_RANGE_SOURCE_FORWARD    = 103,  // 已方前排
+        E_SKILL_RANGE_SOURCE_GUARD      = 104,  // 己方後排
+        E_SKILL_RANGE_SOURCE_ALL        = 105,  // 已方全體
         E_SKILL_RANGE_TARGET_MATCH      = 201,  // 對方對戰位
-        E_SKILL_RANGE_TARGET_FORWARD    = 202,  // 對方前排
-        E_SKILL_RANGE_TARGET_GUARD      = 203,  // 對方後排
-        E_SKILL_RANGE_TARGET_ALL        = 204,  // 對方全體
+        E_SKILL_RANGE_TARGET_WING       = 202,  // 對方側翼
+        E_SKILL_RANGE_TARGET_FORWARD    = 203,  // 對方前排
+        E_SKILL_RANGE_TARGET_GUARD      = 204,  // 對方後排
+        E_SKILL_RANGE_TARGET_ALL        = 205,  // 對方全體
         E_SKILL_RANGE_BOTH_MATCH        = 301,  // 雙方對戰位
-        E_SKILL_RANGE_BOTH_FORWARD      = 302,  // 雙方前排
-        E_SKILL_RANGE_BOTH_GUARD        = 303,  // 雙方後排
-        E_SKILL_RANGE_BOTH_ALL          = 304,  // 雙方全體
+        E_SKILL_RANGE_BOTH_WING         = 302,  // 雙方側翼
+        E_SKILL_RANGE_BOTH_FORWARD      = 303,  // 雙方前排
+        E_SKILL_RANGE_BOTH_GUARD        = 304,  // 雙方後排
+        E_SKILL_RANGE_BOTH_ALL          = 305,  // 雙方全體
         E_SKILL_RANGE_LIMIT,
     }
 

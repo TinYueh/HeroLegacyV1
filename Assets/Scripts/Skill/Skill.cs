@@ -13,7 +13,7 @@ namespace GameSkill
         internal int Cd { get; private set; } = 0;
         internal GameEnum.eSkillRange Range { get; private set; } = GameEnum.eSkillRange.E_SKILL_RANGE_NA;
 
-        private List<Effect> _listEffect = new List<Effect>();
+        internal List<Effect> _listEffect = new List<Effect>();
 
         internal bool Init(SkillCsvData csvData)
         {

@@ -149,7 +149,7 @@ namespace GameCombat
             return false;
         }
 
-        #region Get Combat Role
+        #region Get Set
 
         internal bool GetCombatRoleByPos(int posId, out CombatRole outCombatRole)
         {
@@ -177,10 +177,6 @@ namespace GameCombat
 
             return false;
         }
-
-        #endregion
-
-        #region Get Set
 
         internal bool GetCircleSocket(int posId, out CircleSocket outCircleSocket)
         {
@@ -220,9 +216,37 @@ namespace GameCombat
             }
         }
 
+        internal void GetCombatRoleList(List<int> listPos, ref List<CombatRole> refListCombatRole)
+        {
+            CombatRole combatRole = null;
+            foreach (var posId in listPos)
+            {
+                if (GetCombatRoleByPos(posId, out combatRole))
+                {
+                    refListCombatRole.Add(combatRole);
+                }
+            }
+        }
+
+        internal void GetCombatRoleList(GameEnum.ePosType posType, ref List<CombatRole> refListCombatRole)
+        {
+            List<int> listPos = new List<int>();
+            if (GetPosList(posType, listPos) == false)
+            {
+                return;
+            }
+
+            GetCombatRoleList(listPos, ref refListCombatRole);
+        }
+
         #endregion
 
         #region Energy
+
+        internal void ChangeEnergyOrb(int deltaOrb)
+        {
+            ChangeEnergyPoint(deltaOrb * GameConst.BAR_ENERGY_POINT);
+        }
 
         internal void ChangeEnergyPoint(int deltaPoint)
         {
