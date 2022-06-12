@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameSystem.Audio;
 
 namespace GameCombat
 {
@@ -39,6 +40,12 @@ namespace GameCombat
             }
 
             dlgFunc();
+
+            // Todo: 背景音樂改為正流程
+            if (Input.GetKey(KeyCode.A))
+            {
+                AudioManager.Instance.PlayBgm(202, true);
+            }
         }
 
         private void RegistCombatRoundStateFunc()
