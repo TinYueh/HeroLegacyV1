@@ -139,7 +139,7 @@ namespace GameCombat
         {
             int damageValue = 0;
 
-            CombatRole first = null;    // ¥ı§ğ
+            CombatRole first = null;    // å…ˆæ”»
             CombatRole second = null;
 
             switch (result)
@@ -169,7 +169,7 @@ namespace GameCombat
                     }
             }
 
-            // ¥ı§ğ
+            // å…ˆæ”»
             if (CheckAbortNormalAttack(first, second))
             {
                 return true;
@@ -182,7 +182,7 @@ namespace GameCombat
                 second.ChangeHealth(-damageValue);
             }
 
-            // «á§ğ
+            // å¾Œæ”»
             if (CheckAbortNormalAttack(second, first))
             {
                 return true;
@@ -202,7 +202,7 @@ namespace GameCombat
 
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
-            // ¶i¦æ¤¤Ãö³¬ UI
+            // é€²è¡Œä¸­é—œé–‰ UI
             _combatOpponent.ViewCombatTeam.ViewSkillList.Hide();
             _combatPlayer.ViewCombatTeam.ViewSkillList.Hide();
 
@@ -217,19 +217,19 @@ namespace GameCombat
 
             if (IsCombatCircleRotate())
             {
-                // Todo: ­µ®Ä²Î¤@ºŞ²z
+                // Todo: éŸ³æ•ˆçµ±ä¸€ç®¡ç†
                 AudioManager.Instance.PlaySfx(_sfxRotate);
             }
         }
 
         private void StartRoundActionRotateRight(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
-            sourceTeam.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
+            sourceTeam.Rotate(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
         }
 
         private void StartRoundActionRotateLeft(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
-            sourceTeam.HandleRotation(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
+            sourceTeam.Rotate(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
         }
 
         private void StartRoundActionCast(CombatTeam sourceTeam, CombatTeam targetTeam)
@@ -247,14 +247,14 @@ namespace GameCombat
         {
             if (_combatPlayer.ExecCircleSocket(_combatPlayer.MatchPosId, _combatOpponent) == false)
             {
-                // Ä~Äò±ÛÂà
-                _combatPlayer.HandleRotation(_combatPlayer.RotateDirection);
+                // ç¹¼çºŒæ—‹è½‰
+                _combatPlayer.Rotate(_combatPlayer.RotateDirection);
             }
 
             if (_combatOpponent.ExecCircleSocket(_combatOpponent.MatchPosId, _combatPlayer) == false)
             {
-                // Ä~Äò±ÛÂà
-                _combatOpponent.HandleRotation(_combatOpponent.RotateDirection);
+                // ç¹¼çºŒæ—‹è½‰
+                _combatOpponent.Rotate(_combatOpponent.RotateDirection);
             }
 
             if (IsCombatCircleRotate())
@@ -264,7 +264,7 @@ namespace GameCombat
                 return false;
             }
 
-            // ¯u¥¿ÀR¤î
+            // çœŸæ­£éœæ­¢
             return true;
         }
 
@@ -284,14 +284,14 @@ namespace GameCombat
                 return;
             }
 
-            // Äİ©Ê¹ï¾Ô
+            // å±¬æ€§å°æˆ°
             GameEnum.eCombatAttributeMatchResult result = GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_NA;
             if (HandleAttributeMatch(combatPlayer, combatOpponent, out result) == false)
             {
                 Debug.LogError("HandleAttributeMatch failed");
             }
 
-            // ´¶§ğ
+            // æ™®æ”»
             if (HandleNormalAttack(combatPlayer, combatOpponent, result) == false)
             {
                 Debug.LogError("HandleNormalAttack failed");
@@ -318,6 +318,12 @@ namespace GameCombat
             return false;
         }
 
+        internal void PrepareRoundAction()
+        {
+            _combatPlayer.Prepare();
+            _combatOpponent.Prepare();
+        }
+
         #endregion
 
         #region On Click
@@ -340,15 +346,15 @@ namespace GameCombat
 
             if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == combatRole.PosId)
             {
-                // ­«½ÆÂI¿ï¬Û¦P§Ş¯à¦C«hÃö³¬
+                // é‡è¤‡é»é¸ç›¸åŒæŠ€èƒ½åˆ—å‰‡é—œé–‰
                 combatTeam.CastPosId = 0;
                 combatTeam.ViewCombatTeam.ViewSkillList.Hide();
             }
             else
             {
-                // ¶}±Ò§Ş¯à¦C
+                // é–‹å•ŸæŠ€èƒ½åˆ—
                 combatTeam.CastPosId = combatRole.PosId;
-                SetViewSkillList(combatTeam, combatRole);   // ³]©w§Ş¯à¦Cªº¤º®e
+                SetViewSkillList(combatTeam, combatRole);   // è¨­å®šæŠ€èƒ½åˆ—çš„å…§å®¹
                 combatTeam.ViewCombatTeam.ViewSkillList.Show();
             }
         }
@@ -371,13 +377,13 @@ namespace GameCombat
 
             if (combatTeam.ViewCombatTeam.ViewSkillList.IsShow() && combatTeam.CastPosId == combatRole.PosId)
             {
-                // ­«½ÆÂI¿ï¬Û¦P§Ş¯à¦C«hÃö³¬
+                // é‡è¤‡é»é¸ç›¸åŒæŠ€èƒ½åˆ—å‰‡é—œé–‰
                 combatTeam.CastPosId = 0;
                 combatTeam.ViewCombatTeam.ViewSkillList.Hide();
             }
             else
             {
-                // ¶}±Ò§Ş¯à¦C
+                // é–‹å•ŸæŠ€èƒ½åˆ—
                 combatTeam.CastPosId = combatRole.PosId;
                 SetViewSkillList(combatTeam, combatRole);
                 combatTeam.ViewCombatTeam.ViewSkillList.Show();
@@ -404,7 +410,7 @@ namespace GameCombat
 
         private bool CheckAbortNormalAttack(CombatRole source, CombatRole target)
         {
-            // ¥ß§Y¤¤¤î´¶§ğªº±ø¥ó
+            // ç«‹å³ä¸­æ­¢æ™®æ”»çš„æ¢ä»¶
 
             if (source.IsDying() || target.IsDying())
             {
@@ -416,7 +422,7 @@ namespace GameCombat
 
         private bool CheckExecNormalAttack(CombatRole source, CombatRole target)
         {
-            // ±Æ°£¤£¯à´¶§ğªº±ø¥ó
+            // æ’é™¤ä¸èƒ½æ™®æ”»çš„æ¢ä»¶
 
             return true;
         }
@@ -496,7 +502,7 @@ namespace GameCombat
 
         private void SetViewSkillList(CombatTeam combatTeam, CombatRole combatRole)
         {
-            // Todo: UI Åã¥Ü¤£¥i¬I©ñªº­ì¦]
+            // Todo: UI é¡¯ç¤ºä¸å¯æ–½æ”¾çš„åŸå› 
             Dictionary<GameEnum.eSkillEnableCondition, bool> dicEnable = new Dictionary<GameEnum.eSkillEnableCondition, bool>();
 
             for (int i = 0; i < GameConst.MAX_ROLE_SKILL; ++i)
@@ -513,6 +519,7 @@ namespace GameCombat
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_POS] = CheckPos(skill.PosType, combatTeam, combatRole.PosId);
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_ENERGY] = (combatTeam.EnergyOrb >= skill.Cost);
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_MATCH] = combatTeam.IsMatchPosAlive();
+                    dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_CD] = (combatRole.IsSkillCd(skill.Id) == false);
 
                     combatTeam.ViewCombatTeam.ViewSkillList.ShowSkill(i, skill.Id, CheckSkillEnableCondition(dicEnable));
                 }

@@ -48,6 +48,8 @@ namespace GameSkill
 
             sourceTeam.ChangeEnergyOrb(-skill.Cost);
 
+            source.SetSkillCd(skill.Id, skill.Cd + 1); // 不包含此回合
+
             List<CombatRole> listTarget = new List<CombatRole>();
             GetRangeTarget(skill.Range, source, sourceTeam, targetTeam, ref listTarget);
 

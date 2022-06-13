@@ -99,7 +99,7 @@ namespace GameCombat
             return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
         }
 
-        internal void EnableRotation()
+        internal void Rotate()
         {
             _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
         }

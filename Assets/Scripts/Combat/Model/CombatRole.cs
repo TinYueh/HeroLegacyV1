@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GameCombat
@@ -15,6 +16,8 @@ namespace GameCombat
         internal GameEnum.eCombatRoleState State { get; private set; } = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_NA;
         internal int Health { get; private set; } = 0;
         internal int NormalDamage { get; set; } = 0;
+
+        private Dictionary<int, int> _dicSkillCd = new Dictionary<int, int>();  // <SkillId, Cd>
 
         internal bool Init(GameEnum.eCombatTeamType teamType, int memberId, int posId, RoleCsvData csvData, ViewCombatRole viewCombatRole)
         {
@@ -86,6 +89,50 @@ namespace GameCombat
         internal bool IsDying()
         {
             return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING);
+        }
+
+        internal bool IsSkillCd(int skillId)
+        {
+            int value = 0;
+            if (_dicSkillCd.TryGetValue(skillId, out value) == false)
+            {
+                return false;
+            }
+
+            return value > 0;
+        }
+
+        internal void ChangeAllSkillCd(int deltaCd)
+        {
+            for (int i = 0; i < _dicSkillCd.Count; ++i)
+            {
+                ChangeSkillCd(_dicSkillCd.ElementAt(i).Key, deltaCd);
+            }
+        }
+
+        internal void ChangeSkillCd(int skillId, int deltaCd)
+        {
+            if (_dicSkillCd.ContainsKey(skillId))
+            {
+                int value = _dicSkillCd[skillId];
+                if (value == 0)
+                {
+                    return;
+                }
+
+                value += deltaCd;
+                if (value < 0)
+                {
+                    value = 0;
+                }
+
+                _dicSkillCd[skillId] = value;
+            }
+        }
+
+        internal void SetSkillCd(int skillId, int cd)
+        {
+            _dicSkillCd[skillId] = cd;
         }
     }
 }

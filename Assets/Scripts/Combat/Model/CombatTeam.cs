@@ -117,12 +117,12 @@ namespace GameCombat
             return true;
         }
 
-        internal void HandleRotation(GameEnum.eRotateDirection direction)
+        internal void Rotate(GameEnum.eRotateDirection direction)
         {
             RotateDirection = direction;
 
             ChangeMatchPosId(RotateDirection);
-            ViewCombatTeam.HandleRotation(RotateDirection);
+            ViewCombatTeam.Rotate(RotateDirection);
         }
 
         internal bool ExecCircleSocket(int posId, CombatTeam target)
@@ -147,6 +147,16 @@ namespace GameCombat
             }
 
             return false;
+        }
+
+        internal void Prepare()
+        {
+            var e = _dicCombatRole.GetEnumerator();
+            while (e.MoveNext())
+            {
+                // 降技能 Cd
+                e.Current.Value.ChangeAllSkillCd(-1);
+            }
         }
 
         #region Get Set

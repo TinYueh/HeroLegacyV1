@@ -131,6 +131,7 @@ public class GameEnum
         E_SKILL_ENABLE_CONDITION_POS,       // 站位
         E_SKILL_ENABLE_CONDITION_ENERGY,    // 能量
         E_SKILL_ENABLE_CONDITION_MATCH,     // 對戰
+        E_SKILL_ENABLE_CONDITION_CD,        // 冷卻
         E_SKILL_ENABLE_CONDITION_LIMIT,
     }
 }

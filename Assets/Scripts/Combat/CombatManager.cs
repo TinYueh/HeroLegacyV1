@@ -85,6 +85,8 @@ namespace GameCombat
             }
             else
             {
+                CombatController.PrepareRoundAction();
+
                 CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
             }
         }

@@ -57,7 +57,7 @@ namespace GameCombat
             return true;
         }
 
-        internal void HandleRotation(GameEnum.eRotateDirection direction)
+        internal void Rotate(GameEnum.eRotateDirection direction)
         {
             if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT)
             {
@@ -74,7 +74,7 @@ namespace GameCombat
 
             ViewCombatCircle.RotateAngleRemaining = GameConst.COMBAT_CIRCLE_SLOT_ANGLE;
             
-            ViewCombatCircle.EnableRotation();
+            ViewCombatCircle.Rotate();
         }           
     }
 }
