@@ -41,6 +41,7 @@ namespace GameCombat
         }
 
         #region Round Action
+
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
             ShowBlock();
@@ -75,9 +76,7 @@ namespace GameCombat
         }
 
         internal void FinishRoundAction()
-        {
-            HideBlock();
-
+        {           
             if (CombatController.FinishRoundAction())
             {
                 // 戰鬥結束
@@ -85,11 +84,14 @@ namespace GameCombat
             }
             else
             {
+                HideBlock();
+
                 CombatController.PrepareRoundAction();
 
                 CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
             }
         }
+        
         #endregion
 
         #region Show Hide

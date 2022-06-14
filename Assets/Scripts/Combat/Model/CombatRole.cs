@@ -37,6 +37,8 @@ namespace GameCombat
             return true;
         }
 
+        #region Get Set
+
         internal void ChangeHealth(int deltaHealth)
         {
             int tmpHealth = Health + deltaHealth;
@@ -81,27 +83,6 @@ namespace GameCombat
             //}
         }
 
-        internal bool IsAlive()
-        {
-            return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_ALIVE);
-        }
-
-        internal bool IsDying()
-        {
-            return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING);
-        }
-
-        internal bool IsSkillCd(int skillId)
-        {
-            int value = 0;
-            if (_dicSkillCd.TryGetValue(skillId, out value) == false)
-            {
-                return false;
-            }
-
-            return value > 0;
-        }
-
         internal void ChangeAllSkillCd(int deltaCd)
         {
             for (int i = 0; i < _dicSkillCd.Count; ++i)
@@ -134,5 +115,32 @@ namespace GameCombat
         {
             _dicSkillCd[skillId] = cd;
         }
+
+        #endregion
+
+        #region Logic
+
+        internal bool IsAlive()
+        {
+            return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_ALIVE);
+        }
+
+        internal bool IsDying()
+        {
+            return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING);
+        }
+
+        internal bool IsSkillCd(int skillId)
+        {
+            int value = 0;
+            if (_dicSkillCd.TryGetValue(skillId, out value) == false)
+            {
+                return false;
+            }
+
+            return value > 0;
+        }
+
+        #endregion
     }
 }

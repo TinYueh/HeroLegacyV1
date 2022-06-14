@@ -101,28 +101,28 @@ namespace GameCombat
             return (_viewCombatPlayer.ViewCombatCircle.IsRotate() || _viewCombatOpponent.ViewCombatCircle.IsRotate());
         }
 
-        private bool HandleAttributeMatch(CombatRole player, CombatRole opponent, out GameEnum.eCombatAttributeMatchResult outResult)
+        private bool HandleAttributeMatch(CombatTeam player, CombatTeam opponent, out GameEnum.eCombatAttributeMatchResult outResult)
         {
-            outResult = CombatManager.Instance.CombatFormula.CheckAttributeMatch(player.Role.Attribute, opponent.Role.Attribute);
+            outResult = CombatManager.Instance.CombatFormula.CheckAttributeMatch(player.GetMatchCombatRole().Role.Attribute, opponent.GetMatchCombatRole().Role.Attribute);
 
             switch (outResult)
             {
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN:
                     {
-                        _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
-                        _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
+                        player.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
+                        opponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
                         break;
                     }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE:
                     {
-                        _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
-                        _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
+                        player.ChangeEnergyPoint(GameConst.COMBAT_MATCH_LOSE_ENERGY_POINT);
+                        opponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_WIN_ENERGY_POINT);
                         break;
                     }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW:
                     {
-                        _combatPlayer.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
-                        _combatOpponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
+                        player.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
+                        opponent.ChangeEnergyPoint(GameConst.COMBAT_MATCH_DRAW_ENERGY_POINT);
                         break;
                     }
                 default:
@@ -135,31 +135,26 @@ namespace GameCombat
             return true;
         }
 
-        private bool HandleNormalAttack(CombatRole player, CombatRole opponent, GameEnum.eCombatAttributeMatchResult result)
+        private bool DecideFirst(CombatTeam player, CombatTeam opponoent, GameEnum.eCombatAttributeMatchResult result, ref CombatTeam refFirst, ref CombatTeam refSecond)
         {
-            int damageValue = 0;
-
-            CombatRole first = null;    // 先攻
-            CombatRole second = null;
-
             switch (result)
             {
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN:
                     {
-                        first = player;
-                        second = opponent;
+                        refFirst = player;
+                        refSecond = opponoent;
                         break;
                     }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE:
                     {
-                        first = opponent;
-                        second = player;
+                        refFirst = opponoent;
+                        refSecond = player;
                         break;
                     }
                 case GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW:
                     {
-                        first = (_combatPlayer.HasFirstToken == true) ? player : opponent;
-                        second = (first == player) ? opponent : player;
+                        refFirst = (player.HasFirstToken == true) ? player : opponoent;
+                        refSecond = (refFirst == player) ? opponoent : player;
                         FlipFirstToken();
                         break;
                     }
@@ -168,6 +163,32 @@ namespace GameCombat
                         return false;
                     }
             }
+
+            return true;
+        }
+
+        private bool HandleCastSkill(CombatTeam first, CombatTeam second)
+        {
+            // 先攻
+            if (first.IsCastSkill())
+            {
+                SkillManager.Instance.ExecSkill(first.CastSkillId, first.GetCastCombatRole(), first, second);
+                first.ClearSkill();
+            }
+
+            // 後攻
+            if (second.IsCastSkill())
+            {
+                SkillManager.Instance.ExecSkill(second.CastSkillId, second.GetCastCombatRole(), second, first);
+                second.ClearSkill();
+            }
+
+            return true;
+        }
+
+        private bool HandleNormalAttack(CombatRole first, CombatRole second)
+        {
+            int damageValue = 0;
 
             // 先攻
             if (CheckAbortNormalAttack(first, second))
@@ -234,13 +255,6 @@ namespace GameCombat
 
         private void StartRoundActionCast(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
-            CombatRole combatRole = null;
-            if (sourceTeam.GetCombatRoleByPos(sourceTeam.MatchPosId, out combatRole) == false)
-            {
-                return;
-            }
-
-            SkillManager.Instance.ExecSkill(sourceTeam.CastSkillId, combatRole, sourceTeam, targetTeam);
         }
 
         internal bool ProcessRoundAction()
@@ -270,29 +284,32 @@ namespace GameCombat
 
         internal void ExecRoundAction()
         {
-            CombatRole combatPlayer = null;
-            if (_combatPlayer.GetCombatRoleByPos(_combatPlayer.MatchPosId, out combatPlayer) == false)
-            {
-                Debug.LogError("Get CombatPlayer failed");
-                return;
-            }
-
-            CombatRole combatOpponent = null;
-            if (_combatOpponent.GetCombatRoleByPos(_combatOpponent.MatchPosId, out combatOpponent) == false)
-            {
-                Debug.LogError("Get CombatOpponent failed");
-                return;
-            }
-
             // 屬性對戰
             GameEnum.eCombatAttributeMatchResult result = GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_NA;
-            if (HandleAttributeMatch(combatPlayer, combatOpponent, out result) == false)
+            if (HandleAttributeMatch(_combatPlayer, _combatOpponent, out result) == false)
             {
                 Debug.LogError("HandleAttributeMatch failed");
+                return;
+            }
+
+            CombatTeam first = null;
+            CombatTeam second = null;
+
+            // 決定先後
+            if (DecideFirst(_combatPlayer, _combatOpponent, result, ref first, ref second) == false)
+            {
+                Debug.LogError("HandleDecideFirst failed");
+                return;
+            }
+
+            // 施放技能
+            if (HandleCastSkill(first, second) == false)
+            {
+                Debug.LogError("HandleCastSkill failed");
             }
 
             // 普攻
-            if (HandleNormalAttack(combatPlayer, combatOpponent, result) == false)
+            if (HandleNormalAttack(first.GetMatchCombatRole(), second.GetMatchCombatRole()) == false)
             {
                 Debug.LogError("HandleNormalAttack failed");
             }

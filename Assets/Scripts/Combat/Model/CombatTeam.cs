@@ -159,6 +159,17 @@ namespace GameCombat
             }
         }
 
+        internal void ClearSkill()
+        {
+            CastPosId = 0;
+            CastSkillId = 0;
+        }
+
+        internal bool IsCastSkill()
+        {
+            return (CastPosId > 0 && CastSkillId > 0);
+        }
+
         #region Get Set
 
         internal bool GetCombatRoleByPos(int posId, out CombatRole outCombatRole)
@@ -187,6 +198,22 @@ namespace GameCombat
 
             return false;
         }
+
+        internal CombatRole GetMatchCombatRole()
+        {
+            CombatRole combatRole = null;
+            GetCombatRoleByPos(MatchPosId, out combatRole);
+
+            return combatRole;
+        }
+
+        internal CombatRole GetCastCombatRole()
+        {
+            CombatRole combatRole = null;
+            GetCombatRoleByPos(CastPosId, out combatRole);
+
+            return combatRole;
+        }        
 
         internal bool GetCircleSocket(int posId, out CircleSocket outCircleSocket)
         {
