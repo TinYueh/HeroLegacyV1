@@ -18,8 +18,11 @@ public class RoleCsvData
     public int _attribute = 0;  // eRoleAttribute
     public int _talent = 0;
     public int _health = 0;
-    public int _attack = 0;
-    public int _defence = 0;
+    public int _attackType = 0; // eRoleAttackType
+    public int _ptk = 0;
+    public int _mtk = 0;
+    public int _pef = 0;
+    public int _mef = 0;
     public int _ai = 0;
     public int[] _skillId = new int[GameConst.MAX_ROLE_SKILL];
 }

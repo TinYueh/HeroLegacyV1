@@ -47,7 +47,15 @@ namespace GameCombat
 
         internal void GetNormalAttackDamage(CombatRole source, CombatRole target, bool isCriticalHit, out int outValue)
         {
-            outValue = source.Role.Attack - target.Role.Defence;
+            if (source.Role.AttackType == GameEnum.eRoleAttackType.E_ROLE_ATTACK_TYPE_PHYSICAL)
+            {
+                outValue = source.Role.Ptk - target.Role.Pef;
+            }
+            else
+            {
+                outValue = source.Role.Mtk - target.Role.Mef;
+            }
+
             outValue = (outValue < 1) ? 1 : outValue;
 
             if (isCriticalHit)

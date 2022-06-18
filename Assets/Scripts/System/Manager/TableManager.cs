@@ -110,8 +110,11 @@ namespace GameSystem.Table
             int.TryParse(rowData[++outIndex], out data._attribute);
             int.TryParse(rowData[++outIndex], out data._talent);
             int.TryParse(rowData[++outIndex], out data._health);
-            int.TryParse(rowData[++outIndex], out data._attack);
-            int.TryParse(rowData[++outIndex], out data._defence);
+            int.TryParse(rowData[++outIndex], out data._attackType);
+            int.TryParse(rowData[++outIndex], out data._ptk);
+            int.TryParse(rowData[++outIndex], out data._mtk);
+            int.TryParse(rowData[++outIndex], out data._pef);
+            int.TryParse(rowData[++outIndex], out data._mef);
             int.TryParse(rowData[++outIndex], out data._ai);
 
             for (int i = 0; i < GameConst.MAX_ROLE_SKILL; ++i)

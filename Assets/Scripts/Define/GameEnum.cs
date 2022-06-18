@@ -67,6 +67,14 @@ public class GameEnum
         E_ROLE_ATTRIBUTE_LIMIT,
     }
 
+    public enum eRoleAttackType
+    {
+        E_ROLE_ATTACK_TYPE_NA = 0,
+        E_ROLE_ATTACK_TYPE_PHYSICAL,    // 物攻
+        E_ROLE_ATTACK_TYPE_MAGIC,       // 魔攻
+        E_ROLE_ATTACK_TYPE_LIMIT,
+    }
+
     public enum eCircleSocketType
     {
         E_CIRCLE_SOCKET_TYPE_NA = 0,
