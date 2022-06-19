@@ -103,10 +103,10 @@ namespace GameSystem.Table
             outIndex = 0;
 
             int.TryParse(rowData[outIndex], out data._id);
-            int.TryParse(rowData[++outIndex], out data._teamType);
+            data._name = rowData[++outIndex];
+            int.TryParse(rowData[++outIndex], out data._uiName);
             int.TryParse(rowData[++outIndex], out data._portrait);
             int.TryParse(rowData[++outIndex], out data._emblem);
-            int.TryParse(rowData[++outIndex], out data._name);
             int.TryParse(rowData[++outIndex], out data._attribute);
             int.TryParse(rowData[++outIndex], out data._talent);
             int.TryParse(rowData[++outIndex], out data._health);
@@ -133,7 +133,7 @@ namespace GameSystem.Table
             outIndex = 0;
 
             int.TryParse(rowData[outIndex], out data._id);
-            int.TryParse(rowData[++outIndex], out data._name);
+            int.TryParse(rowData[++outIndex], out data._uiName);
             int.TryParse(rowData[++outIndex], out data._posType);
             int.TryParse(rowData[++outIndex], out data._cost);
             int.TryParse(rowData[++outIndex], out data._cd);

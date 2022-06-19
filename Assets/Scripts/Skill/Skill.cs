@@ -7,7 +7,7 @@ namespace GameSkill
     public class Skill
     {
         internal int Id { get; private set; } = 0;
-        internal int Name { get; private set; } = 0;
+        internal int UIName { get; private set; } = 0;
         internal GameEnum.ePosType PosType { get; private set; } = GameEnum.ePosType.E_POS_TYPE_NA;
         internal int Cost { get; private set; } = 0;
         internal int Cd { get; private set; } = 0;
@@ -18,7 +18,7 @@ namespace GameSkill
         internal bool Init(SkillCsvData csvData)
         {
             Id = csvData._id;
-            Name = csvData._name;
+            UIName = csvData._uiName;
             PosType = (GameEnum.ePosType)csvData._posType;
             Cost = csvData._cost;
             Cd = csvData._cd;

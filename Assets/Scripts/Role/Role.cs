@@ -6,10 +6,10 @@ using GameSystem.Table;
 public class Role
 {
     public int Id { get; internal set; } = 0;
-    public GameEnum.eCombatTeamType TeamType { get; internal set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+    public string Name { get; internal set; } = null;
+    public int UIName { get; internal set; } = 0;
     public int Portrait { get; internal set; } = 0;
     public int Emblem { get; internal set; } = 0;
-    public int Name { get; internal set; } = 0;
     public GameEnum.eRoleAttribute Attribute { get; internal set; } = GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_NA;
     public int Talent { get; internal set; } = 0;
     public int Health { get; internal set; } = 0;
@@ -24,7 +24,8 @@ public class Role
     public bool Init(RoleCsvData csvData)
     {
         Id = csvData._id;
-        TeamType = (GameEnum.eCombatTeamType)csvData._teamType;
+        Name = csvData._name;
+        UIName = csvData._uiName;
         Portrait = csvData._portrait;
         Emblem = csvData._emblem;
         Name = csvData._name;

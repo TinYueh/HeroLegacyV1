@@ -1,4 +1,4 @@
-Id,Name,PosType,Cost,Cd,Range,EffectType1,EffectValueType1,EffectValue1,EffectType2,EffectValueType2,EffectValue2
+Id,UIName,PosType,Cost,Cd,Range,EffectType1,EffectValueType1,EffectValue1,EffectType2,EffectValueType2,EffectValue2
 1,10001,1,1,1,1,1,1,500,0,0,0
 2,10002,1,1,1,201,2,2,20,0,0,0
 3,10003,1,1,2,202,2,1,300,0,0,0

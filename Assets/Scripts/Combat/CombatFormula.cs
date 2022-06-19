@@ -47,14 +47,22 @@ namespace GameCombat
 
         internal void GetNormalAttackDamage(CombatRole source, CombatRole target, bool isCriticalHit, out int outValue)
         {
+            int rand = Random.Range(85, 101);
+            int sourceAtk = 0;
+            int targetDef = 0;
+
             if (source.Role.AttackType == GameEnum.eRoleAttackType.E_ROLE_ATTACK_TYPE_PHYSICAL)
             {
-                outValue = source.Role.Ptk - target.Role.Pef;
+                sourceAtk = source.Role.Ptk;
+                targetDef = target.Role.Pef;
             }
             else
             {
-                outValue = source.Role.Mtk - target.Role.Mef;
+                sourceAtk = source.Role.Mtk;
+                targetDef = target.Role.Mef;
             }
+
+            outValue = (sourceAtk * rand) / 100 - targetDef;
 
             outValue = (outValue < 1) ? 1 : outValue;
 

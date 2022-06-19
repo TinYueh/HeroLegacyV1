@@ -11,10 +11,10 @@ public class TeamCsvData
 public class RoleCsvData
 {
     public int _id = 0;
-    public int _teamType = 0;   // eCombatTeamType
+    public string _name = null;
+    public int _uiName = 0;
     public int _portrait = 0;
     public int _emblem = 0;
-    public int _name = 0;
     public int _attribute = 0;  // eRoleAttribute
     public int _talent = 0;
     public int _health = 0;
@@ -30,7 +30,7 @@ public class RoleCsvData
 public class SkillCsvData
 {
     public int _id = 0;
-    public int _name = 0;
+    public int _uiName = 0;
     public int _posType = 0;    // ePosType
     public int _cost = 0;
     public int _cd = 0;
