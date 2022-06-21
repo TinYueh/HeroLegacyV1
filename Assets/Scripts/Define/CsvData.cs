@@ -30,6 +30,7 @@ public class RoleCsvData
 public class SkillCsvData
 {
     public int _id = 0;
+    public string _name = null;
     public int _uiName = 0;
     public int _posType = 0;    // ePosType
     public int _cost = 0;

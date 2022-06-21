@@ -133,6 +133,7 @@ namespace GameSystem.Table
             outIndex = 0;
 
             int.TryParse(rowData[outIndex], out data._id);
+            data._name = rowData[++outIndex];
             int.TryParse(rowData[++outIndex], out data._uiName);
             int.TryParse(rowData[++outIndex], out data._posType);
             int.TryParse(rowData[++outIndex], out data._cost);

@@ -70,8 +70,8 @@ public class GameEnum
     public enum eRoleAttackType
     {
         E_ROLE_ATTACK_TYPE_NA = 0,
-        E_ROLE_ATTACK_TYPE_PHYSICAL,    // 物攻
-        E_ROLE_ATTACK_TYPE_MAGIC,       // 魔攻
+        E_ROLE_ATTACK_TYPE_PHYSICAL,    // 物理傷害
+        E_ROLE_ATTACK_TYPE_MAGIC,       // 魔法傷害
         E_ROLE_ATTACK_TYPE_LIMIT,
     }
 
@@ -119,8 +119,10 @@ public class GameEnum
     public enum eSkillEffectType
     {
         E_SKILL_EFFECT_TYPE_NA = 0,
-        E_SKILL_EFFECT_TYPE_HEAL    = 1,    // 治療
-        E_SKILL_EFFECT_TYPE_DAMAGE  = 2,    // 傷害
+        E_SKILL_EFFECT_TYPE_DAMAGE_PHYSICAL = 101,  // 物理傷害(Ptk)
+        E_SKILL_EFFECT_TYPE_DAMAGE_MAGIC    = 102,  // 魔法傷害(Mtk)
+        E_SKILL_EFFECT_TYPE_HEAL            = 201,  // 治療(Mtk)
+
         E_SKILL_EFFECT_TYPE_LIMIT,
     }
 
