@@ -45,15 +45,77 @@ namespace GameCombat
             return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW;
         }
 
-        internal void GetNormalAttackDamage(CombatRole source, CombatRole target, bool isCriticalHit, out int outValue)
+        internal int GetValuePercent(int source, int percent)
         {
-            outValue = source.Role.Attack - target.Role.Defence;
-            outValue = (outValue < 1) ? 1 : outValue;
+            int value = source * percent / 100;
+
+            return value;
+        }
+
+        internal int GetNormalAttackDamage(CombatRole source, CombatRole target, bool isCriticalHit)
+        {
+            int rand = Random.Range(90, 101);
+            int sourceAtk = 0;
+            int targetDef = 0;
+
+            if (source.Role.AttackType == GameEnum.eRoleAttackType.E_ROLE_ATTACK_TYPE_PHYSICAL)
+            {
+                sourceAtk = source.Role.Ptk;
+                targetDef = target.Role.Pef;
+            }
+            else if (source.Role.AttackType == GameEnum.eRoleAttackType.E_ROLE_ATTACK_TYPE_MAGIC)
+            {
+                sourceAtk = source.Role.Mtk;
+                targetDef = target.Role.Mef;
+            }
+
+            int damage = sourceAtk * rand / 100 - targetDef;
 
             if (isCriticalHit)
             {
-                outValue = (int)(outValue * GameConst.CRITICAL_HIT_DAMAGE_RATIO);
+                damage = GetValuePercent(damage, GameConst.CRITICAL_HIT_DAMAGE_PERCENT);
             }
+
+            damage = (damage < 1) ? 1 : damage;
+
+            return damage;
+        }
+
+        internal int GetSkillDamagePhysical(CombatRole source, CombatRole target, int effectValue)
+        {
+            int rand = Random.Range(90, 101);
+            int sourceAtk = GetValuePercent(source.Role.Ptk, effectValue);
+            int targetDef = target.Role.Pef;
+
+            int damage = (sourceAtk * rand) / 100 - targetDef;
+
+            damage = (damage < 1) ? 1 : damage;
+
+            return damage;
+        }
+
+        internal int GetSkillDamageMagic(CombatRole source, CombatRole target, int effectValue)
+        {
+            int rand = Random.Range(90, 101);
+            int sourceAtk = GetValuePercent(source.Role.Mtk, effectValue);
+            int targetDef = target.Role.Mef;
+
+            int damage = sourceAtk * rand / 100 - targetDef;
+
+            damage = (damage < 1) ? 1 : damage;
+
+            return damage;
+        }
+
+        internal int GetSkillHeal(CombatRole source, CombatRole target, int effectValue)
+        {
+            int rand = Random.Range(90, 101);
+            int sourceAtk = GetValuePercent(source.Role.Mtk, effectValue);
+            int targetDef = (target.Role.Pef > target.Role.Mef) ? target.Role.Pef : target.Role.Mef;
+
+            int heal = (sourceAtk + targetDef) / 2 * rand / 100;
+
+            return heal;
         }
     }
 }

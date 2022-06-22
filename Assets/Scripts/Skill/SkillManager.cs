@@ -10,7 +10,7 @@ namespace GameSkill
     {
         private Dictionary<int, Skill> _dicSkill = new Dictionary<int, Skill>();
 
-        private delegate bool DlgSkillExecFunc(Skill skill, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget);
+        private delegate bool DlgSkillExecFunc(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget);
         private Dictionary<GameEnum.eSkillEffectType, DlgSkillExecFunc> _dicSkillExecFunc = new Dictionary<GameEnum.eSkillEffectType, DlgSkillExecFunc>();
 
         public override bool Init()
@@ -34,8 +34,9 @@ namespace GameSkill
 
         private void RegistSkillExecFunc()
         {
-            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_HEAL, ExecHeal);
-            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE, ExecDamage);
+            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_PHYSICAL, ExecDamagePhysical);
+            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_MAGIC, ExecDamageMagic);
+            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_HEAL, ExecHealMtk);
         }
 
         internal bool ExecSkill(int skillId, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam)
@@ -67,27 +68,43 @@ namespace GameSkill
                     return false;
                 }
 
-                dlgFunc(skill, source, sourceTeam, targetTeam, listTarget);
+                dlgFunc(skill, effect, source, sourceTeam, targetTeam, listTarget);
             }
 
             return true;
         }
 
-        private bool ExecHeal(Skill skill, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
-        {
+        private bool ExecDamagePhysical(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
+        {            
             foreach (var target in listTarget)
             {
-                target.ChangeHealth(1000);
+                int damage = CombatManager.Instance.CombatFormula.GetSkillDamagePhysical(source, target, effect.Value);
+
+                target.ChangeHealth(-damage);
             }
 
             return true;
         }
 
-        private bool ExecDamage(Skill skill, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
+        private bool ExecDamageMagic(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
         {
             foreach (var target in listTarget)
             {
-                target.ChangeHealth(-1000);
+                int damage = CombatManager.Instance.CombatFormula.GetSkillDamageMagic(source, target, effect.Value);
+
+                target.ChangeHealth(-damage);
+            }
+
+            return true;
+        }
+
+        private bool ExecHealMtk(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
+        {
+            foreach (var target in listTarget)
+            {
+                int heal = CombatManager.Instance.CombatFormula.GetSkillHeal(source, target, effect.Value);
+
+                target.ChangeHealth(heal);
             }
 
             return true;

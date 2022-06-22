@@ -11,15 +11,18 @@ public class TeamCsvData
 public class RoleCsvData
 {
     public int _id = 0;
-    public int _teamType = 0;   // eCombatTeamType
+    public string _name = null;
+    public int _uiName = 0;
     public int _portrait = 0;
     public int _emblem = 0;
-    public int _name = 0;
     public int _attribute = 0;  // eRoleAttribute
     public int _talent = 0;
     public int _health = 0;
-    public int _attack = 0;
-    public int _defence = 0;
+    public int _attackType = 0; // eRoleAttackType
+    public int _ptk = 0;
+    public int _mtk = 0;
+    public int _pef = 0;
+    public int _mef = 0;
     public int _ai = 0;
     public int[] _skillId = new int[GameConst.MAX_ROLE_SKILL];
 }
@@ -27,7 +30,8 @@ public class RoleCsvData
 public class SkillCsvData
 {
     public int _id = 0;
-    public int _name = 0;
+    public string _name = null;
+    public int _uiName = 0;
     public int _posType = 0;    // ePosType
     public int _cost = 0;
     public int _cd = 0;

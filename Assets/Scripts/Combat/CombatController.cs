@@ -186,9 +186,9 @@ namespace GameCombat
             return true;
         }
 
-        private bool HandleNormalAttack(CombatRole first, CombatRole second)
+        private bool HandleNormalAttack(CombatRole first, CombatRole second, GameEnum.eCombatAttributeMatchResult result)
         {
-            int damageValue = 0;
+            int damage = 0;            
 
             // 先攻
             if (CheckAbortNormalAttack(first, second))
@@ -198,9 +198,12 @@ namespace GameCombat
 
             if (CheckExecNormalAttack(first, second))
             {
-                CombatManager.Instance.CombatFormula.GetNormalAttackDamage(first, second, true, out damageValue);
-                first.NormalDamage = damageValue;
-                second.ChangeHealth(-damageValue);
+                // 先攻是因為屬性才會觸發爆擊
+                bool isCriticalHit = (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN);
+                
+                damage = CombatManager.Instance.CombatFormula.GetNormalAttackDamage(first, second, isCriticalHit);
+                first.NormalDamage = damage;
+                second.ChangeHealth(-damage);
             }
 
             // 後攻
@@ -211,9 +214,9 @@ namespace GameCombat
 
             if (CheckExecNormalAttack(second, first))
             {
-                CombatManager.Instance.CombatFormula.GetNormalAttackDamage(second, first, false, out damageValue);
-                second.NormalDamage = damageValue;
-                first.ChangeHealth(-damageValue);
+                damage = CombatManager.Instance.CombatFormula.GetNormalAttackDamage(second, first, false);
+                second.NormalDamage = damage;
+                first.ChangeHealth(-damage);
             }
 
             return true;
@@ -309,7 +312,7 @@ namespace GameCombat
             }
 
             // 普攻
-            if (HandleNormalAttack(first.GetMatchCombatRole(), second.GetMatchCombatRole()) == false)
+            if (HandleNormalAttack(first.GetMatchCombatRole(), second.GetMatchCombatRole(), result) == false)
             {
                 Debug.LogError("HandleNormalAttack failed");
             }
