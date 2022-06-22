@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\Combat\View\ViewSkillList.cs" />
     <Compile Include="Assets\Scripts\Combat\View\ViewCombatRole.cs" />
     <Compile Include="Assets\Scripts\Skill\Effect.cs" />
+    <Compile Include="Assets\Scripts\System\Manager\TooltipManager.cs" />
     <Compile Include="Assets\Scripts\Combat\Model\CombatTeam.cs" />
     <Compile Include="Assets\Scripts\Define\GameEnum.cs" />
     <Compile Include="Assets\Scripts\Combat\CombatAI.cs" />

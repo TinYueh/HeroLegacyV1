@@ -4,6 +4,7 @@ using UnityEngine;
 using GameSystem.Audio;
 using GameSystem.Scene;
 using GameSystem.Table;
+using GameSystem.Tooltip;
 using GameSystem.UI;
 using GameSkill;
 
@@ -39,6 +40,7 @@ namespace GameSystem
             AudioManager.Instance.Init();
             SceneManager.Instance.Init();
             SkillManager.Instance.Init();
+            TooltipManager.Instance.Init();
         }
 
         private void Start()
