@@ -40,12 +40,6 @@ namespace GameCombat
             }
 
             dlgFunc();
-
-            // Todo: 背景音樂改為正流程
-            if (Input.GetKey(KeyCode.A))
-            {
-                AudioManager.Instance.PlayBgm(202, true);
-            }
         }
 
         private void RegistCombatRoundStateFunc()
@@ -59,6 +53,7 @@ namespace GameCombat
 
         private void CombatRoundStateStandby()
         {
+            // Todo: 改為讀數 1 秒後確定, 因此先用 GetKey
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Z))
             {
                 CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT);
