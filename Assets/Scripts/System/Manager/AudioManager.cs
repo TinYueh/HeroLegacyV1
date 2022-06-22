@@ -8,9 +8,6 @@ namespace GameSystem.Audio
 {
     public class AudioManager : Singleton<AudioManager>
     {
-        private float _bgmDefaultVolume = 0.5f;
-        private float _sfxDefaultVolume = 1f;
-
         private AudioSource _bgmSource = null;
         private AudioSource _sfxSource = null;
 
@@ -22,7 +19,6 @@ namespace GameSystem.Audio
                 Debug.LogError("Not found Bgm AudioSource");
                 return false;
             }
-            SetBgmVolume(_bgmDefaultVolume);
 
             _sfxSource = GameObject.Find("SfxSource").GetComponent<AudioSource>();
             if (_sfxSource == null)
@@ -30,7 +26,6 @@ namespace GameSystem.Audio
                 Debug.LogError("Not found Sfx AudioSource");
                 return false;
             }
-            SetSfxVolume(_sfxDefaultVolume);
 
             Debug.Log("AudioManager Init OK");
             return true;
