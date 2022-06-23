@@ -207,6 +207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1949835077861527743}
   - component: {fileID: 1949835077861527742}
+  - component: {fileID: -4087984027433726515}
   m_Layer: 0
   m_Name: UICombatRole
   m_TagString: Untagged
@@ -247,6 +248,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d9a5d8f2b1dd9141810e9bf3c208807, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4087984027433726515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949835077861527736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a87148fb520a948a1cbffe0cc58f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1949835078280663900

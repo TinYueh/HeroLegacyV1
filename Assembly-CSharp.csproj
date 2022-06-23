@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Combat\CombatCore.cs" />
     <Compile Include="Assets\Scripts\System\Manager\AudioManager.cs" />
     <Compile Include="Assets\Scripts\System\Manager\UIManager.cs" />
+    <Compile Include="Assets\Scripts\System\Tooltip\TooltipTrigger.cs" />
     <Compile Include="Assets\Scripts\System\Controller\CoverController.cs" />
     <Compile Include="Assets\Scripts\Combat\CombatController.cs" />
     <Compile Include="Assets\Scripts\Skill\SkillManager.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="Assets\Scripts\Combat\View\ViewCombatCircle.cs" />
     <Compile Include="Assets\Scripts\Combat\View\ViewEnergyBar.cs" />
     <Compile Include="Assets\Scripts\Combat\View\ViewMemberList.cs" />
-    <Compile Include="Assets\Scripts\System\Tooltip\TooltipTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

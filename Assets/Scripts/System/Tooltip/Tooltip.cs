@@ -9,20 +9,44 @@ namespace GameSystem.Tooltip
     public class Tooltip : MonoBehaviour
     {
         [SerializeField]
-        internal TextMeshProUGUI _header;
+        private TextMeshProUGUI _header;
         [SerializeField]
-        internal TextMeshProUGUI _content;
+        private TextMeshProUGUI _content;
         [SerializeField]
-        public LayoutElement _layoutElement;
+        private LayoutElement _layoutElement;
         [SerializeField]
         private int _charWrapLimit;
 
+        private bool _isTextUpdate;
+
         private void Update()
         {
-            int headerLength = _header.text.Length;
-            int contentLength = _content.text.Length;
+            if (_isTextUpdate)
+            {
+                int headerLength = _header.text.Length;
+                int contentLength = _content.text.Length;
 
-            _layoutElement.enabled = (headerLength > _charWrapLimit || contentLength > _charWrapLimit);
+                _layoutElement.enabled = (headerLength > _charWrapLimit || contentLength > _charWrapLimit);
+
+                _isTextUpdate = false;
+            }
+        }
+
+        internal void SetText(string content, string header = "")
+        {
+            if (string.IsNullOrEmpty(header))
+            {
+                _header.gameObject.SetActive(false);
+            }
+            else
+            {
+                _header.gameObject.SetActive(true);
+                _header.text = header;
+            }
+
+            _content.text = content;
+
+            _isTextUpdate = true;
         }
     }
 }

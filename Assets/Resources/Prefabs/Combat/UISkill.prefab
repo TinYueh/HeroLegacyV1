@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 3491685763063228394}
   - component: {fileID: 3491685763063228393}
   - component: {fileID: 3572013788322953986}
+  - component: {fileID: -7471622711689496456}
   m_Layer: 0
   m_Name: UISkill
   m_TagString: Untagged
@@ -209,5 +210,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 959b1bc37c9afc543b9f866eb4162287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7471622711689496456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491685763063228399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a87148fb520a948a1cbffe0cc58f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
