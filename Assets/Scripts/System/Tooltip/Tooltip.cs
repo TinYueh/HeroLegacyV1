@@ -42,6 +42,15 @@ namespace GameSystem.Tooltip
             float pivotX = position.x / Screen.width;
             float pivotY = position.y / Screen.height;
 
+            if (pivotY > 0.5f)
+            {
+                pivotY += 0.1f;
+            }
+            else
+            {
+                pivotY -= 0.1f;
+            }
+
             _rectTransform.pivot = new Vector2(pivotX, pivotY);
             transform.position = position;
         }
