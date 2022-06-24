@@ -30,7 +30,7 @@ namespace GameCombat
                 Debug.LogError("Not found ButtonSkill");
                 return false;
             }
-            _btnSkill.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickSkill(_teamType, _skillId));
+            _btnSkill.onClick.AddListener(() => CombatManager.Instance.Controller.OnClickSkill(_teamType, _skillId));
 
             return true;
         }

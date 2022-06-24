@@ -7,16 +7,26 @@ namespace GameSystem.Tooltip
 {
     public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public string _header;
-        public string _content;
+        private static LTDescr _delay;
+
+        internal string _header;
+        internal string _content;
+
+        internal delegate void DlgGetText(out string outContent, out string outHeader);
+        internal DlgGetText _dlgGetText;
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            TooltipManager.Instance.Show(_content, _header);
+            _dlgGetText(out _content, out _header);
+
+            _delay = LeanTween.delayedCall(0.5f, () => {
+                TooltipManager.Instance.Show(_content, _header);
+            });
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            LeanTween.cancel(_delay.uniqueId);
             TooltipManager.Instance.Hide();
         }
     }

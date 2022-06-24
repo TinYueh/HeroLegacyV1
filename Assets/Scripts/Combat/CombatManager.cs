@@ -6,30 +6,29 @@ namespace GameCombat
 {
     public class CombatManager : Singleton<CombatManager>
     {
-        internal CombatAI CombatAI { get; private set; } = new CombatAI();
-        internal CombatFormula CombatFormula { get; private set; } = new CombatFormula();
-        internal CombatController CombatController { get; private set; } = new CombatController();
-        internal GameEnum.eCombatRoundState CombatRoundState { get; set; } = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_NA;
+        internal CombatAI AI { get; private set; } = new CombatAI();
+        internal CombatFormula Formula { get; private set; } = new CombatFormula();
+        internal CombatController Controller { get; private set; } = new CombatController();
+        internal GameEnum.eCombatRoundState CombatRoundState { get; set; }
 
-        private GameObject _panelBlock = null;
+        private GameObject _pnlBlock;
 
         public override bool Init()
         {
-            if (CombatController.Init() == false)
+            if (Controller.Init() == false)
             {
                 Debug.LogError("Init CombatController failed");
                 return false;
             }
 
-            _panelBlock = GameObject.Find("BlockPanel");
+            _pnlBlock = GameObject.Find("BlockPanel");
 
             Debug.Log("CombatManager Init OK");
             return true;
         }
-
         internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)
         {
-            if (CombatController.CreateNewCombat(playerTeamId, opponentTeamId) == false)
+            if (Controller.CreateNewCombat(playerTeamId, opponentTeamId) == false)
             {
                 Debug.LogError("CombatController create new combat failed");
                 return false;
@@ -41,43 +40,39 @@ namespace GameCombat
         }
 
         #region Round Action
-
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
             ShowBlock();
 
-            CombatController.StartRoundAction(playerAction);
+            Controller.StartRoundAction(playerAction);
 
             CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE;
         }
-
         internal void ProcessRoundAction()
         {
-            if (CombatController.IsCombatCircleRotate())
+            if (Controller.IsCombatCircleRotate())
             {
                 // 正在轉
                 return;
             }
 
 
-            if (CombatController.ProcessRoundAction() == false)
+            if (Controller.ProcessRoundAction() == false)
             {
                 return;
             }
 
             CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH;
         }
-
         internal void ExecRoundAction()
         {
-            CombatController.ExecRoundAction();
+            Controller.ExecRoundAction();
 
             CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_FINAL;
         }
-
         internal void FinishRoundAction()
         {           
-            if (CombatController.FinishRoundAction())
+            if (Controller.FinishRoundAction())
             {
                 // 戰鬥結束
                 CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_LEAVE;
@@ -86,23 +81,21 @@ namespace GameCombat
             {
                 HideBlock();
 
-                CombatController.PrepareRoundAction();
+                Controller.PrepareRoundAction();
 
                 CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
             }
         }
-        
         #endregion
 
         #region Show Hide
-        private void ShowBlock()
+        internal void ShowBlock()
         {
-            _panelBlock.SetActive(true);
+            _pnlBlock.SetActive(true);
         }
-
-        private void HideBlock()
+        internal void HideBlock()
         {
-            _panelBlock.SetActive(false);
+            _pnlBlock.SetActive(false);
         }
         #endregion
     }

@@ -13,11 +13,11 @@ namespace GameCombat
 
         private CombatTeam _combatPlayer = new CombatTeam();
         private CombatTeam _combatOpponent = new CombatTeam();
-
+        
         private int _sfxRotate = 201;
 
-        private delegate void DlgStartRoundActionFunc(CombatTeam sourceTeam, CombatTeam targetTeam);
-        private Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundActionFunc> _dicStartRoundActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundActionFunc>();
+        private delegate void DlgStartRoundAction(CombatTeam sourceTeam, CombatTeam targetTeam);
+        private Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundAction> _dicStartRoundActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundAction>();
 
         internal bool Init()
         {
@@ -47,18 +47,16 @@ namespace GameCombat
                 return false;
             }
 
-            RegistStartRoundActionFunc();
+            RegistDlgStartRoundAction();
 
             return true;
         }
-
-        private void RegistStartRoundActionFunc()
+        private void RegistDlgStartRoundAction()
         {
             _dicStartRoundActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT, StartRoundActionRotateRight);
             _dicStartRoundActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT, StartRoundActionRotateLeft);
             _dicStartRoundActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST, StartRoundActionCast);
         }
-
         internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)
         {
             if (_combatPlayer.Set(playerTeamId) == false)
@@ -77,7 +75,6 @@ namespace GameCombat
 
             return true;
         }
-
         private void FlipFirstToken()
         {
             if (_combatPlayer.HasFirstToken != _combatOpponent.HasFirstToken)
@@ -95,15 +92,13 @@ namespace GameCombat
                 _combatOpponent.SetFirstToken(!hasFirstToken);
             }
         }
-
         internal bool IsCombatCircleRotate()
         {
             return (_viewCombatPlayer.ViewCombatCircle.IsRotate() || _viewCombatOpponent.ViewCombatCircle.IsRotate());
         }
-
         private bool HandleAttributeMatch(CombatTeam player, CombatTeam opponent, out GameEnum.eCombatAttributeMatchResult outResult)
         {
-            outResult = CombatManager.Instance.CombatFormula.CheckAttributeMatch(player.GetMatchCombatRole().Role.Attribute, opponent.GetMatchCombatRole().Role.Attribute);
+            outResult = CombatManager.Instance.Formula.CheckAttributeMatch(player.GetMatchCombatRole().Role.Attribute, opponent.GetMatchCombatRole().Role.Attribute);
 
             switch (outResult)
             {
@@ -134,7 +129,6 @@ namespace GameCombat
 
             return true;
         }
-
         private bool DecideFirst(CombatTeam player, CombatTeam opponoent, GameEnum.eCombatAttributeMatchResult result, ref CombatTeam refFirst, ref CombatTeam refSecond)
         {
             switch (result)
@@ -166,7 +160,6 @@ namespace GameCombat
 
             return true;
         }
-
         private bool HandleCastSkill(CombatTeam first, CombatTeam second)
         {
             // 先攻
@@ -185,7 +178,6 @@ namespace GameCombat
 
             return true;
         }
-
         private bool HandleNormalAttack(CombatRole first, CombatRole second, GameEnum.eCombatAttributeMatchResult result)
         {
             int damage = 0;            
@@ -201,7 +193,7 @@ namespace GameCombat
                 // 先攻是因為屬性才會觸發爆擊
                 bool isCriticalHit = (result == GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN);
                 
-                damage = CombatManager.Instance.CombatFormula.GetNormalAttackDamage(first, second, isCriticalHit);
+                damage = CombatManager.Instance.Formula.GetNormalAttackDamage(first, second, isCriticalHit);
                 first.NormalDamage = damage;
                 second.ChangeHealth(-damage);
             }
@@ -214,7 +206,7 @@ namespace GameCombat
 
             if (CheckExecNormalAttack(second, first))
             {
-                damage = CombatManager.Instance.CombatFormula.GetNormalAttackDamage(second, first, false);
+                damage = CombatManager.Instance.Formula.GetNormalAttackDamage(second, first, false);
                 second.NormalDamage = damage;
                 first.ChangeHealth(-damage);
             }
@@ -223,7 +215,6 @@ namespace GameCombat
         }
 
         #region Round Action
-
         internal void StartRoundAction(GameEnum.eCombatRoundAction playerAction)
         {
             // 進行中關閉 UI
@@ -235,7 +226,7 @@ namespace GameCombat
 
             // Opponent
             GameEnum.eCombatRoundAction opponentAction = GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_NA;
-            CombatManager.Instance.CombatAI.GetRoundAction(out opponentAction);
+            CombatManager.Instance.AI.GetRoundAction(out opponentAction);
 
             _dicStartRoundActionFunc[opponentAction](_combatOpponent, _combatPlayer);
 
@@ -245,21 +236,17 @@ namespace GameCombat
                 AudioManager.Instance.PlaySfx(_sfxRotate);
             }
         }
-
         private void StartRoundActionRotateRight(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
             sourceTeam.Rotate(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT);
         }
-
         private void StartRoundActionRotateLeft(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
             sourceTeam.Rotate(GameEnum.eRotateDirection.E_ROTATE_DIRECTION_LEFT);
         }
-
         private void StartRoundActionCast(CombatTeam sourceTeam, CombatTeam targetTeam)
         {
         }
-
         internal bool ProcessRoundAction()
         {
             if (_combatPlayer.ExecCircleSocket(_combatPlayer.MatchPosId, _combatOpponent) == false)
@@ -284,7 +271,6 @@ namespace GameCombat
             // 真正靜止
             return true;
         }
-
         internal void ExecRoundAction()
         {
             // 屬性對戰
@@ -317,7 +303,6 @@ namespace GameCombat
                 Debug.LogError("HandleNormalAttack failed");
             }
         }
-
         internal bool FinishRoundAction()
         {
             if (_combatPlayer.CheckTeamAlive() == false)
@@ -337,17 +322,14 @@ namespace GameCombat
 
             return false;
         }
-
         internal void PrepareRoundAction()
         {
             _combatPlayer.Prepare();
             _combatOpponent.Prepare();
         }
-
         #endregion
 
         #region On Click
-
         internal void OnClickCombatRolePortrait(GameEnum.eCombatTeamType teamType, int memberId)
         {
             CombatTeam combatTeam = null;
@@ -378,7 +360,6 @@ namespace GameCombat
                 combatTeam.ViewCombatTeam.ViewSkillList.Show();
             }
         }
-
         internal void OnClickCircleSocketEmblem(GameEnum.eCombatTeamType teamType, int posId)
         {
             CombatTeam combatTeam = null;
@@ -409,7 +390,6 @@ namespace GameCombat
                 combatTeam.ViewCombatTeam.ViewSkillList.Show();
             }
         }
-
         internal void OnClickSkill(GameEnum.eCombatTeamType teamType, int skillId)
         {
             CombatTeam combatTeam = null;
@@ -423,11 +403,9 @@ namespace GameCombat
 
             CombatManager.Instance.StartRoundAction(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST);
         }
-
         #endregion
 
         #region Check
-
         private bool CheckAbortNormalAttack(CombatRole source, CombatRole target)
         {
             // 立即中止普攻的條件
@@ -439,14 +417,12 @@ namespace GameCombat
 
             return false;
         }
-
         private bool CheckExecNormalAttack(CombatRole source, CombatRole target)
         {
             // 排除不能普攻的條件
 
             return true;
         }
-
         private bool CheckPos(GameEnum.ePosType posType, CombatTeam combatTeam, int posId)
         {
             List<int> listPos = new List<int>();
@@ -462,7 +438,6 @@ namespace GameCombat
 
             return true;
         }
-
         private bool CheckSkillEnableCondition(Dictionary<GameEnum.eSkillEnableCondition, bool> dicEnable)
         {
             foreach (var enable in dicEnable)
@@ -475,11 +450,9 @@ namespace GameCombat
 
             return true;
         }
-
         #endregion
 
         #region Get Set
-
         internal bool GetCombatTeam(GameEnum.eCombatTeamType teamType, out CombatTeam outCombatTeam)
         {
             outCombatTeam = null;
@@ -499,7 +472,40 @@ namespace GameCombat
 
             return true;
         }
+        internal bool GetCombatRoleByMember(GameEnum.eCombatTeamType teamType, int memberId, out CombatRole outCombatRole)
+        {
+            outCombatRole = null;
 
+            CombatTeam combatTeam;
+            if (GetCombatTeam(teamType, out combatTeam) == false)
+            {
+                return false;
+            }
+
+            if (combatTeam.GetCombatRoleByMember(memberId, out outCombatRole) == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        internal bool GetCombatRoleByPos(GameEnum.eCombatTeamType teamType, int posId, out CombatRole outCombatRole)
+        {
+            outCombatRole = null;
+
+            CombatTeam combatTeam;
+            if (GetCombatTeam(teamType, out combatTeam) == false)
+            {
+                return false;
+            }
+
+            if (combatTeam.GetCombatRoleByPos(posId, out outCombatRole) == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
         internal bool GetCircleSocket(GameEnum.eCombatTeamType teamType, int posId, out CircleSocket outCircleSocket)
         {
             outCircleSocket = null;
@@ -519,7 +525,6 @@ namespace GameCombat
 
             return true;
         }
-
         private void SetViewSkillList(CombatTeam combatTeam, CombatRole combatRole)
         {
             // Todo: UI 顯示不可施放的原因
@@ -551,7 +556,6 @@ namespace GameCombat
                 dicEnable.Clear();
             }
         }
-
         #endregion
     }
 }

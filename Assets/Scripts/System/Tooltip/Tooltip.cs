@@ -19,6 +19,13 @@ namespace GameSystem.Tooltip
 
         private bool _isTextUpdate;
 
+        private RectTransform _rectTransform;
+
+        private void Awake()
+        {
+            _rectTransform = GetComponent<RectTransform>();
+        }
+
         private void Update()
         {
             if (_isTextUpdate)
@@ -30,6 +37,13 @@ namespace GameSystem.Tooltip
 
                 _isTextUpdate = false;
             }
+
+            Vector2 position = Input.mousePosition;
+            float pivotX = position.x / Screen.width;
+            float pivotY = position.y / Screen.height;
+
+            _rectTransform.pivot = new Vector2(pivotX, pivotY);
+            transform.position = position;
         }
 
         internal void SetText(string content, string header = "")

@@ -2,20 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameSystem.Tooltip;
 
 namespace GameCombat
 {
     public class ViewCombatRole : MonoBehaviour
     {
-        private Image _imgPortrait = null;
-        private Button _btnPortrait = null;
-
-        private Image _imgEmblem = null;
-        private Image _imgHealthBar = null;
-        private float _barInitLen = 0f;
-
-        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
-        private int _memberId = 0;
+        // 基本資料
+        private GameEnum.eCombatTeamType _teamType;
+        private int _memberId;
+        // 頭像
+        private Image _imgPortrait;
+        private Button _btnPortrait;
+        private TooltipTrigger _tooltipTrigger;
+        // 徽章
+        private Image _imgEmblem;
+        // 生命條
+        private Image _imgHealthBar;
+        private float _barInitLen;
 
         internal bool Init(GameEnum.eCombatTeamType teamType, int memberId)
         {
@@ -35,7 +39,15 @@ namespace GameCombat
                 Debug.LogError("Not found ButtonPortrait");
                 return false;
             }
-            _btnPortrait.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickCombatRolePortrait(_teamType, _memberId));
+            _btnPortrait.onClick.AddListener(() => CombatManager.Instance.Controller.OnClickCombatRolePortrait(_teamType, _memberId));
+
+            _tooltipTrigger = transform.Find("PortraitButton").GetComponent<TooltipTrigger>();
+            if (_tooltipTrigger == null)
+            {
+                Debug.LogError("Not found TooltipTrigger");
+                return false;
+            }
+            _tooltipTrigger._dlgGetText += GetTooltipText;
 
             _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
             if (_imgEmblem == null)
@@ -83,6 +95,21 @@ namespace GameCombat
         {
             _imgEmblem.color = new Color(1f, 1f, 1f, 1f);
             _btnPortrait.interactable = true;
+        }
+
+        internal void GetTooltipText(out string outContent, out string outHeader)
+        {
+            outContent = "";
+            outHeader = "";
+
+            CombatRole combatRole;
+            if (CombatManager.Instance.Controller.GetCombatRoleByMember(_teamType, _memberId, out combatRole) == false)
+            {
+                return;
+            }
+
+            outHeader = combatRole.Role.Name;
+            outContent = combatRole.Role.Id + "\n" + combatRole.Role.Health;
         }
     }
 }

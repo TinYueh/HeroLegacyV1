@@ -78,7 +78,7 @@ namespace GameSkill
         {            
             foreach (var target in listTarget)
             {
-                int damage = CombatManager.Instance.CombatFormula.GetSkillDamagePhysical(source, target, effect.Value);
+                int damage = CombatManager.Instance.Formula.GetSkillDamagePhysical(source, target, effect.Value);
 
                 target.ChangeHealth(-damage);
             }
@@ -90,7 +90,7 @@ namespace GameSkill
         {
             foreach (var target in listTarget)
             {
-                int damage = CombatManager.Instance.CombatFormula.GetSkillDamageMagic(source, target, effect.Value);
+                int damage = CombatManager.Instance.Formula.GetSkillDamageMagic(source, target, effect.Value);
 
                 target.ChangeHealth(-damage);
             }
@@ -102,7 +102,7 @@ namespace GameSkill
         {
             foreach (var target in listTarget)
             {
-                int heal = CombatManager.Instance.CombatFormula.GetSkillHeal(source, target, effect.Value);
+                int heal = CombatManager.Instance.Formula.GetSkillHeal(source, target, effect.Value);
 
                 target.ChangeHealth(heal);
             }
