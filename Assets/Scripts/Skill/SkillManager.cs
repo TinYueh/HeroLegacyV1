@@ -10,8 +10,8 @@ namespace GameSkill
     {
         private Dictionary<int, Skill> _dicSkill = new Dictionary<int, Skill>();
 
-        private delegate bool DlgSkillExecFunc(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget);
-        private Dictionary<GameEnum.eSkillEffectType, DlgSkillExecFunc> _dicSkillExecFunc = new Dictionary<GameEnum.eSkillEffectType, DlgSkillExecFunc>();
+        private delegate bool DlgSkillExec(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget);
+        private Dictionary<GameEnum.eSkillEffectType, DlgSkillExec> _dicSkillExec = new Dictionary<GameEnum.eSkillEffectType, DlgSkillExec>();
 
         public override bool Init()
         {
@@ -34,9 +34,9 @@ namespace GameSkill
 
         private void RegistSkillExecFunc()
         {
-            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_PHYSICAL, ExecDamagePhysical);
-            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_MAGIC, ExecDamageMagic);
-            _dicSkillExecFunc.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_HEAL, ExecHealMtk);
+            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_PHYSICAL, ExecDamagePhysical);
+            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_MAGIC, ExecDamageMagic);
+            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_HEAL, ExecHealMtk);
         }
 
         internal bool ExecSkill(int skillId, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam)
@@ -61,10 +61,10 @@ namespace GameSkill
                     break;
                 }
 
-                DlgSkillExecFunc dlgFunc = null;
-                if (_dicSkillExecFunc.TryGetValue(effect.Type, out dlgFunc) == false)
+                DlgSkillExec dlgFunc = null;
+                if (_dicSkillExec.TryGetValue(effect.Type, out dlgFunc) == false)
                 {
-                    Debug.LogError("Not found DlgSkillExecFunc for " + effect.Type);
+                    Debug.LogError("Not found DlgSkillExec for " + effect.Type);
                     return false;
                 }
 

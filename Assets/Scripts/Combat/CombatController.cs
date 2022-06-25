@@ -17,7 +17,7 @@ namespace GameCombat
         private int _sfxRotate = 201;
 
         private delegate void DlgStartRoundAction(CombatTeam sourceTeam, CombatTeam targetTeam);
-        private Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundAction> _dicStartRoundActionFunc = new Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundAction>();
+        private Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundAction> _dicDlgStartRoundAction = new Dictionary<GameEnum.eCombatRoundAction, DlgStartRoundAction>();
 
         internal bool Init()
         {
@@ -53,9 +53,9 @@ namespace GameCombat
         }
         private void RegistDlgStartRoundAction()
         {
-            _dicStartRoundActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT, StartRoundActionRotateRight);
-            _dicStartRoundActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT, StartRoundActionRotateLeft);
-            _dicStartRoundActionFunc.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST, StartRoundActionCast);
+            _dicDlgStartRoundAction.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_RIGHT, StartRoundActionRotateRight);
+            _dicDlgStartRoundAction.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT, StartRoundActionRotateLeft);
+            _dicDlgStartRoundAction.Add(GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_CAST, StartRoundActionCast);
         }
         internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)
         {
@@ -222,13 +222,13 @@ namespace GameCombat
             _combatPlayer.ViewCombatTeam.ViewSkillList.Hide();
 
             // Player
-            _dicStartRoundActionFunc[playerAction](_combatPlayer, _combatOpponent);
+            _dicDlgStartRoundAction[playerAction](_combatPlayer, _combatOpponent);
 
             // Opponent
             GameEnum.eCombatRoundAction opponentAction = GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_NA;
             CombatManager.Instance.AI.GetRoundAction(out opponentAction);
 
-            _dicStartRoundActionFunc[opponentAction](_combatOpponent, _combatPlayer);
+            _dicDlgStartRoundAction[opponentAction](_combatOpponent, _combatPlayer);
 
             if (IsCombatCircleRotate())
             {
@@ -546,7 +546,7 @@ namespace GameCombat
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_MATCH] = combatTeam.IsMatchPosAlive();
                     dicEnable[GameEnum.eSkillEnableCondition.E_SKILL_ENABLE_CONDITION_CD] = (combatRole.IsSkillCd(skill.Id) == false);
 
-                    combatTeam.ViewCombatTeam.ViewSkillList.ShowSkill(i, skill.Id, CheckSkillEnableCondition(dicEnable));
+                    combatTeam.ViewCombatTeam.ViewSkillList.ShowSkill(i, skill.Id, combatRole.GetSkillCd(skill.Id), CheckSkillEnableCondition(dicEnable));
                 }
                 else
                 {

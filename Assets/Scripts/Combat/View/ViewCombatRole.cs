@@ -8,16 +8,16 @@ namespace GameCombat
 {
     public class ViewCombatRole : MonoBehaviour
     {
-        // ∞Ú•ª∏ÍÆ∆
+        // Âü∫Êú¨Ë≥áÊñô
         private GameEnum.eCombatTeamType _teamType;
         private int _memberId;
-        // ¿Yπ≥
+        // È†≠ÂÉè
         private Image _imgPortrait;
         private Button _btnPortrait;
         private TooltipTrigger _tooltipTrigger;
-        // ¿≤≥π
+        // ÂæΩÁ´†
         private Image _imgEmblem;
-        // •Õ©R±¯
+        // ÁîüÂëΩÊ¢ù
         private Image _imgHealthBar;
         private float _barInitLen;
 
@@ -47,7 +47,7 @@ namespace GameCombat
                 Debug.LogError("Not found TooltipTrigger");
                 return false;
             }
-            _tooltipTrigger._dlgGetText += GetTooltipText;
+            _tooltipTrigger._dlgHandleTipText += HandleTipText;
 
             _imgEmblem = transform.Find("Emblem").GetComponent<Image>();
             if (_imgEmblem == null)
@@ -73,31 +73,27 @@ namespace GameCombat
             string path = AssetsPath.SPRITE_ROLE_PORTRAIT_PATH + portraitId.ToString().PadLeft(3, '0');
             _imgPortrait.sprite = Resources.Load<Sprite>(path);
         }
-
         internal void SetEmblem(int emblemId)
         {
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + emblemId.ToString().PadLeft(3, '0');
             _imgEmblem.sprite = Resources.Load<Sprite>(path);
         }
-
         internal void SetHealthBar(int value, int max)
         {
             _imgHealthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
         }
-
         internal void SetStateDying()
         {
             _imgEmblem.color = new Color(0.6f, 0.6f, 0.6f, 0.6f);
             _btnPortrait.interactable = false;
         }
-
         internal void SetStateAlive()
         {
             _imgEmblem.color = new Color(1f, 1f, 1f, 1f);
             _btnPortrait.interactable = true;
         }
-
-        internal void GetTooltipText(out string outContent, out string outHeader)
+        
+        internal void HandleTipText(out string outContent, out string outHeader)
         {
             outContent = "";
             outHeader = "";
@@ -109,7 +105,24 @@ namespace GameCombat
             }
 
             outHeader = combatRole.Role.Name;
-            outContent = combatRole.Role.Id + "\n" + combatRole.Role.Health;
+
+            string markPtk = "";
+            string markMtk = "";
+            if (combatRole.Role.AttackType == GameEnum.eRoleAttackType.E_ROLE_ATTACK_TYPE_PHYSICAL)
+            {
+                markPtk = " *";
+            }
+            else
+            {
+                markMtk = " *";
+            }
+
+            outContent = "ID: " + combatRole.Role.Id + "\n" 
+                + "ÁîüÂëΩ: " + combatRole.Health + " / " + combatRole.Role.Health + "\n"
+                + "Áâ©Êîª: " + combatRole.Role.Ptk + markPtk + "\n"
+                + "Áâ©Èò≤: " + combatRole.Role.Pef + "\n"
+                + "È≠îÊîª: " + combatRole.Role.Mtk + markMtk + "\n"
+                + "È≠îÈò≤: " + combatRole.Role.Mef;
         }
     }
 }

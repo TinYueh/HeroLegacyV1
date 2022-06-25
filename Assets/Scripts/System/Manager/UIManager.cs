@@ -9,6 +9,7 @@ namespace GameSystem.UI
         public override bool Init()
         {
             Debug.Log("UIManager Init OK");
+
             return true;
         }
     }

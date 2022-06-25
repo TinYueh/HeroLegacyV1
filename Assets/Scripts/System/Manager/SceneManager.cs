@@ -26,6 +26,7 @@ namespace GameSystem.Scene
             RegistAllScene();
 
             Debug.Log("SceneManager Init OK");
+
             return true;
         }
 

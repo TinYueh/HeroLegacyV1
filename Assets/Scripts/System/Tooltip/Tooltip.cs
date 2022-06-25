@@ -38,23 +38,29 @@ namespace GameSystem.Tooltip
                 _isTextUpdate = false;
             }
 
-            Vector2 position = Input.mousePosition;
-            float pivotX = position.x / Screen.width;
-            float pivotY = position.y / Screen.height;
-
-            if (pivotY > 0.5f)
-            {
-                pivotY += 0.1f;
-            }
-            else
-            {
-                pivotY -= 0.1f;
-            }
-
-            _rectTransform.pivot = new Vector2(pivotX, pivotY);
-            transform.position = position;
+            UpdatePosition();
         }
+        internal void UpdatePosition()
+        {
+            if (transform.position != Input.mousePosition)
+            {
+                transform.position = Input.mousePosition;
 
+                float pivotX = transform.position.x / Screen.width;
+                float pivotY = transform.position.y / Screen.height;
+
+                if (pivotY > 0.5f)
+                {
+                    pivotY += 0.1f;
+                }
+                else
+                {
+                    pivotY -= 0.1f;
+                }
+
+                _rectTransform.pivot = new Vector2(pivotX, pivotY);
+            }
+        }
         internal void SetText(string content, string header = "")
         {
             if (string.IsNullOrEmpty(header))

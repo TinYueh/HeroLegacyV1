@@ -12,12 +12,12 @@ namespace GameSystem.Tooltip
         internal string _header;
         internal string _content;
 
-        internal delegate void DlgGetText(out string outContent, out string outHeader);
-        internal DlgGetText _dlgGetText;
+        internal delegate void DlgHandleTipText(out string outContent, out string outHeader);
+        internal DlgHandleTipText _dlgHandleTipText;
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _dlgGetText(out _content, out _header);
+            _dlgHandleTipText(out _content, out _header);
 
             _delay = LeanTween.delayedCall(0.5f, () => {
                 TooltipManager.Instance.Show(_content, _header);

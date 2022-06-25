@@ -24,6 +24,7 @@ namespace GameCombat
             _pnlBlock = GameObject.Find("BlockPanel");
 
             Debug.Log("CombatManager Init OK");
+
             return true;
         }
         internal bool CreateNewCombat(int playerTeamId, int opponentTeamId)

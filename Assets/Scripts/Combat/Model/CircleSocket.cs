@@ -11,8 +11,8 @@ namespace GameCombat
         internal int PosId { get; private set; } = 0;
         internal GameEnum.eCircleSocketType Type { get; private set; } = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_NA;
 
-        private delegate bool DlgExecFunc(CombatTeam target);
-        private Dictionary<GameEnum.eCircleSocketType, DlgExecFunc> _dicExecFunc = new Dictionary<GameEnum.eCircleSocketType, DlgExecFunc>();
+        private delegate bool DlgExec(CombatTeam target);
+        private Dictionary<GameEnum.eCircleSocketType, DlgExec> _dicDlgExec = new Dictionary<GameEnum.eCircleSocketType, DlgExec>();
 
         internal void Init(int posId, ViewCircleSocket viewCircleSocket)
         {
@@ -25,8 +25,8 @@ namespace GameCombat
 
         private void RegistExecFunc()
         {
-            _dicExecFunc.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE, ExecSpace);
-            _dicExecFunc.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ExecCombatRole);
+            _dicDlgExec.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE, ExecSpace);
+            _dicDlgExec.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ExecCombatRole);
         }
 
         internal void Set(GameEnum.eCircleSocketType socketType, CombatRole combatRole)
@@ -48,8 +48,8 @@ namespace GameCombat
 
         internal bool Exec(CombatTeam target)
         {
-            DlgExecFunc dlgFunc = null;
-            if (_dicExecFunc.TryGetValue(Type, out dlgFunc) == false)
+            DlgExec dlgFunc = null;
+            if (_dicDlgExec.TryGetValue(Type, out dlgFunc) == false)
             {
                 Debug.LogError("Not found ExecFunc for " + Type);
                 return false;

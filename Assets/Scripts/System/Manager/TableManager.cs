@@ -17,20 +17,28 @@ namespace GameSystem.Table
         private delegate bool DlgLoadCsvData(string[] rowData, out int outIndex);
 
         // LoadCsvData delegate dictionary
-        private Dictionary<string, DlgLoadCsvData> _dicLoadCsvFunc = new Dictionary<string, DlgLoadCsvData>();
+        private Dictionary<string, DlgLoadCsvData> _dicDlgLoadCsv = new Dictionary<string, DlgLoadCsvData>();
 
         public override bool Init()
         {
             // 註冊 Load function
-            RegistLoadFunc();
+            RegistDlgLoadCsv();
 
             // 讀取所有的 csv
             LoadTable();
 
             Debug.Log("TableManager Init OK");
+
             return true;
         }
-
+        private void RegistDlgLoadCsv()
+        {
+            _dicDlgLoadCsv.Add("Team", LoadTeamCsvData);
+            _dicDlgLoadCsv.Add("Role", LoadRoleCsvData);
+            _dicDlgLoadCsv.Add("Skill", LoadSkillCsvData);
+            // 新增 Table: 註冊
+        }
+        
         private void LoadTable()
         {
             // 所有的 Table
@@ -43,8 +51,8 @@ namespace GameSystem.Table
                 string fileName = t.name.Substring(preIndex + 3);
 
                 // Load function
-                DlgLoadCsvData dlgFunc = null;
-                if (_dicLoadCsvFunc.TryGetValue(fileName, out dlgFunc) == false)
+                DlgLoadCsvData dlgFunc;
+                if (_dicDlgLoadCsv.TryGetValue(fileName, out dlgFunc) == false)
                 {
                     Debug.LogError("Not found LoadCsvFunc for " + fileName);
                     continue;
@@ -56,7 +64,7 @@ namespace GameSystem.Table
                 // 資料從第 2 行開始
                 for (int i = 1; i < fileData.Length; ++i)
                 {
-                    int index = 0;
+                    int index;
                     string[] rowData = fileData[i].Split(',');
 
                     if (dlgFunc(rowData, out index) == false)
@@ -71,15 +79,6 @@ namespace GameSystem.Table
                 }
             }
         }
-
-        private void RegistLoadFunc()
-        {
-            _dicLoadCsvFunc.Add("Team", LoadTeamCsvData);
-            _dicLoadCsvFunc.Add("Role", LoadRoleCsvData);
-            _dicLoadCsvFunc.Add("Skill", LoadSkillCsvData);
-            // 新增 Table: 註冊
-        }
-
         private bool LoadTeamCsvData(string[] rowData, out int outIndex)
         {
             TeamCsvData data = new TeamCsvData();
@@ -96,7 +95,6 @@ namespace GameSystem.Table
 
             return true;
         }
-
         private bool LoadRoleCsvData(string[] rowData, out int outIndex)
         {
             RoleCsvData data = new RoleCsvData();
@@ -126,7 +124,6 @@ namespace GameSystem.Table
 
             return true;
         }
-
         private bool LoadSkillCsvData(string[] rowData, out int outIndex)
         {
             SkillCsvData data = new SkillCsvData();
@@ -152,7 +149,6 @@ namespace GameSystem.Table
 
             return true;
         }
-
         // 新增 Table: 定義 Load function
 
         public bool GetTeamCsvData(int id, out TeamCsvData outCsvData)
@@ -164,7 +160,6 @@ namespace GameSystem.Table
 
             return false;
         }
-
         public bool GetRoleCsvData(int id, out RoleCsvData outCsvData)
         {
             if (_dicRoleCsvData.TryGetValue(id, out outCsvData))
@@ -174,7 +169,6 @@ namespace GameSystem.Table
 
             return false;
         }
-
         public bool GetSkillCsvData(int id, out SkillCsvData outCsvData)
         {
             if (_dicSkillCsvData.TryGetValue(id, out outCsvData))
@@ -184,7 +178,6 @@ namespace GameSystem.Table
 
             return false;
         }
-
         // 新增 Table: 定義 Get function
     }
 }

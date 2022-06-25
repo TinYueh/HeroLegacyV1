@@ -19,15 +19,15 @@ namespace GameSystem.Tooltip
             _tooltip.gameObject.SetActive(false);
 
             Debug.Log("TooltipManager Init OK");
+
             return true;
         }
-
         public void Show(string content, string header = "")
         {
             _tooltip.SetText(content, header);
             _tooltip.gameObject.SetActive(true);
+            _tooltip.UpdatePosition();
         }
-
         public void Hide()
         {
             _tooltip.gameObject.SetActive(false);
