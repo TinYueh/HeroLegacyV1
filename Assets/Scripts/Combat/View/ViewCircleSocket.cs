@@ -40,7 +40,7 @@ namespace GameCombat
                 Debug.LogError("Not found ButtonEmblem");
                 return false;
             }
-            _btnEmblem.onClick.AddListener(() => CombatManager.Instance.CombatController.OnClickCircleSocketEmblem(_teamType, _posId));
+            _btnEmblem.onClick.AddListener(() => CombatManager.Instance.Controller.OnClickCircleSocketEmblem(_teamType, _posId));
 
             HideEmblem();
 

@@ -7,11 +7,11 @@ namespace GameCombat
     public class ViewSkillList : MonoBehaviour
     {
         [SerializeField]
-        private float initPosX = 0;     // 0, 750
+        private float initPosX;     // 0, 750
         [SerializeField]
-        private float deltaPosX = 0;    // 150, -150
+        private float deltaPosX;    // 150, -150
 
-        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        private GameEnum.eCombatTeamType _teamType;
         private List<ViewSkill> _listViewSkill = new List<ViewSkill>();
 
         internal bool Init(GameEnum.eCombatTeamType teamType)
@@ -38,31 +38,6 @@ namespace GameCombat
             return true;
         }
 
-        internal void ShowSkill(int index, int skillId, bool isEnable)
-        {
-            ViewSkill viewSkill = _listViewSkill[index];
-            
-            viewSkill.Set(skillId);
-            
-            if (isEnable)
-            {
-                viewSkill.Enable();
-            }
-            else
-            {
-                viewSkill.Disable();
-            }
-            
-            viewSkill.Show();
-        }
-
-        internal void HideSkill(int index)
-        {
-            ViewSkill viewSkill = _listViewSkill[index];
-            
-            viewSkill.Hide();
-        }
-
         internal bool IsShow()
         {
             return gameObject.activeInHierarchy;
@@ -72,10 +47,32 @@ namespace GameCombat
         {
             gameObject.SetActive(true);
         }
-
         internal void Hide()
         {
             gameObject.SetActive(false);
+        }
+        internal void ShowSkill(int index, int skillId, int cd, bool isEnable)
+        {
+            ViewSkill viewSkill = _listViewSkill[index];
+
+            viewSkill.Set(skillId, cd);
+
+            if (isEnable)
+            {
+                viewSkill.Enable();
+            }
+            else
+            {
+                viewSkill.Disable();
+            }
+
+            viewSkill.Show();
+        }
+        internal void HideSkill(int index)
+        {
+            ViewSkill viewSkill = _listViewSkill[index];
+
+            viewSkill.Hide();
         }
     }
 }

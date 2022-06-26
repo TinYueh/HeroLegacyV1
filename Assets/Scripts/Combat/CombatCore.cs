@@ -12,8 +12,8 @@ namespace GameCombat
         [SerializeField]
         private int _opponentTeamId = 0;    // 敵對隊伍 TeamId
 
-        private delegate void DlgCombatRoundStateFunc();
-        private Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc> _dicCombatRoundStateFunc = new Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundStateFunc>();
+        private delegate void DlgCombatRoundState();
+        private Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundState> _dicDlgCombatRoundState = new Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundState>();
 
         private void Awake()
         {
@@ -32,8 +32,8 @@ namespace GameCombat
 
         private void Update()
         {
-            DlgCombatRoundStateFunc dlgFunc = null;
-            if (_dicCombatRoundStateFunc.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc) == false)
+            DlgCombatRoundState dlgFunc = null;
+            if (_dicDlgCombatRoundState.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc) == false)
             {
                 Debug.LogError("Not found CombatRoundStateFunc for " + CombatManager.Instance.CombatRoundState);
                 return;
@@ -44,11 +44,11 @@ namespace GameCombat
 
         private void RegistCombatRoundStateFunc()
         {
-            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY, CombatRoundStateStandby);
-            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
-            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH, CombatRoundStateMatch);
-            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_FINAL, CombatRoundStateFinal);
-            _dicCombatRoundStateFunc.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_LEAVE, CombatRoundStateLeave);
+            _dicDlgCombatRoundState.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY, CombatRoundStateStandby);
+            _dicDlgCombatRoundState.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
+            _dicDlgCombatRoundState.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_MATCH, CombatRoundStateMatch);
+            _dicDlgCombatRoundState.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_FINAL, CombatRoundStateFinal);
+            _dicDlgCombatRoundState.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_LEAVE, CombatRoundStateLeave);
         }
 
         private void CombatRoundStateStandby()
