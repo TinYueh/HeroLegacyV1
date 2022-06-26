@@ -77,8 +77,8 @@ namespace GameCombat
 
         internal void HandleTipText(out string outContent, out string outHeader)
         {
-            outContent = "";
-            outHeader = "";
+            outContent = string.Empty;
+            outHeader = string.Empty;
 
             Skill skill;
             if (SkillManager.Instance.GetSkill(_skillId, out skill) == false)

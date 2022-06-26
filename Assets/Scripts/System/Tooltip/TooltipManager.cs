@@ -22,7 +22,7 @@ namespace GameSystem.Tooltip
 
             return true;
         }
-        public void Show(string content, string header = "")
+        public void Show(string content, string header)
         {
             _tooltip.SetText(content, header);
             _tooltip.gameObject.SetActive(true);

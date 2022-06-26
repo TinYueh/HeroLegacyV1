@@ -61,7 +61,7 @@ namespace GameSystem.Tooltip
                 _rectTransform.pivot = new Vector2(pivotX, pivotY);
             }
         }
-        internal void SetText(string content, string header = "")
+        internal void SetText(string content, string header)
         {
             if (string.IsNullOrEmpty(header))
             {

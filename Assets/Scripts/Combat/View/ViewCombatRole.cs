@@ -95,8 +95,8 @@ namespace GameCombat
         
         internal void HandleTipText(out string outContent, out string outHeader)
         {
-            outContent = "";
-            outHeader = "";
+            outContent = string.Empty;
+            outHeader = string.Empty;
 
             CombatRole combatRole;
             if (CombatManager.Instance.Controller.GetCombatRoleByMember(_teamType, _memberId, out combatRole) == false)
@@ -106,8 +106,8 @@ namespace GameCombat
 
             outHeader = combatRole.Role.Name;
 
-            string markPtk = "";
-            string markMtk = "";
+            string markPtk = string.Empty;
+            string markMtk = string.Empty;
             if (combatRole.Role.AttackType == GameEnum.eRoleAttackType.E_ROLE_ATTACK_TYPE_PHYSICAL)
             {
                 markPtk = " *";
