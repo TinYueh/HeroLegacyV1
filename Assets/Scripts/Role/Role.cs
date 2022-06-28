@@ -3,52 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameSystem.Table;
 
-public class Role
+namespace GameProperty
 {
-    public int Id { get; internal set; } = 0;
-    public string Name { get; internal set; } = null;
-    public int UIName { get; internal set; } = 0;
-    public int Portrait { get; internal set; } = 0;
-    public int Emblem { get; internal set; } = 0;
-    public GameEnum.eRoleAttribute Attribute { get; internal set; } = GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_NA;
-    public int Talent { get; internal set; } = 0;
-    public int Health { get; internal set; } = 0;
-    public GameEnum.eRoleAttackType AttackType { get; internal set; } = GameEnum.eRoleAttackType.E_ROLE_ATTACK_TYPE_NA;
-    public int Ptk { get; internal set; } = 0;
-    public int Mtk { get; internal set; } = 0;
-    public int Pef { get; internal set; } = 0;
-    public int Mef { get; internal set; } = 0;
-    public int Ai { get; internal set; } = 0;
-    public List<int> ListSkill { get; private set; } = new List<int>();
-
-    public bool Init(RoleCsvData csvData)
+    public class Role
     {
-        Id = csvData._id;
-        Name = csvData._name;
-        UIName = csvData._uiName;
-        Portrait = csvData._portrait;
-        Emblem = csvData._emblem;
-        Name = csvData._name;
-        Attribute = (GameEnum.eRoleAttribute)csvData._attribute;
-        Talent = csvData._talent;
-        Health = csvData._health;
-        AttackType = (GameEnum.eRoleAttackType)csvData._attackType;
-        Ptk = csvData._ptk;
-        Mtk = csvData._mtk;
-        Pef = csvData._pef;
-        Mef = csvData._mef;
-        Ai = csvData._ai;
+        #region Property
 
-        foreach (var skillId in csvData._skillId)
+        public int Id { get; internal set; }
+        public string Name { get; internal set; }
+        public int UIName { get; internal set; }
+        public int Portrait { get; internal set; }
+        public int Emblem { get; internal set; }
+        public GameEnum.eRoleAttribute Attribute { get; internal set; }
+        public int Talent { get; internal set; }
+        public int Health { get; internal set; }
+        public GameEnum.eRoleAttackType AttackType { get; internal set; }
+        public int Ptk { get; internal set; }
+        public int Mtk { get; internal set; }
+        public int Pef { get; internal set; }
+        public int Mef { get; internal set; }
+        public int Ai { get; internal set; }
+        public List<int> ListSkill { get; private set; } = new List<int>();
+
+        #endregion  // Property
+
+        #region Init
+
+        public bool Init(RoleCsvData csvData)
         {
-            if (skillId == 0)
+            Id = csvData._id;
+            Name = csvData._name;
+            UIName = csvData._uiName;
+            Portrait = csvData._portrait;
+            Emblem = csvData._emblem;
+            Name = csvData._name;
+            Attribute = (GameEnum.eRoleAttribute)csvData._attribute;
+            Talent = csvData._talent;
+            Health = csvData._health;
+            AttackType = (GameEnum.eRoleAttackType)csvData._attackType;
+            Ptk = csvData._ptk;
+            Mtk = csvData._mtk;
+            Pef = csvData._pef;
+            Mef = csvData._mef;
+            Ai = csvData._ai;
+
+            foreach (var skillId in csvData._skillId)
             {
-                break;
+                if (skillId == 0)
+                {
+                    break;
+                }
+
+                ListSkill.Add(skillId);
             }
 
-            ListSkill.Add(skillId);
+            return true;
         }
 
-        return true;
+        #endregion  // Init
     }
 }

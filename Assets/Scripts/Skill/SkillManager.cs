@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameSystem.Table;
 using GameCombat;
+using GameSystem.Table;
 
 namespace GameSkill
 {
@@ -17,7 +17,7 @@ namespace GameSkill
 
         #endregion  // Property
 
-        #region Method
+        #region Init
 
         public override bool Init()
         {
@@ -40,89 +40,7 @@ namespace GameSkill
             return true;
         }
 
-        #endregion  // Method
-
-        #region Skill Exec
-
-        private void RegistDlgSkillExec()
-        {
-            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_PHYSICAL, ExecDamagePhysical);
-            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_MAGIC, ExecDamageMagic);
-            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_HEAL, ExecHealMtk);
-        }
-
-        internal bool ExecSkill(int skillId, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam)
-        {
-            Skill skill;
-            if (GetSkill(skillId, out skill) == false)
-            {
-                return false;
-            }
-
-            sourceTeam.ChangeEnergyOrb(-skill.Cost);
-
-            source.SetSkillCd(skill.Id, skill.Cd + 1); // 不包含本回合
-
-            List<CombatRole> listTarget = new List<CombatRole>();
-            GetRangeTarget(skill.Range, source, sourceTeam, targetTeam, ref listTarget);
-
-            foreach (var effect in skill._listEffect)
-            {
-                if (effect.Type == GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_NA)
-                {
-                    break;
-                }
-
-                DlgSkillExec dlg;
-                if (_dicSkillExec.TryGetValue(effect.Type, out dlg) == false)
-                {
-                    Debug.LogError("Not found DlgSkillExec for " + effect.Type);
-                    return false;
-                }
-
-                dlg(skill, effect, source, sourceTeam, targetTeam, listTarget);
-            }
-
-            return true;
-        }
-
-        private bool ExecDamagePhysical(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
-        {            
-            foreach (var target in listTarget)
-            {
-                int damage = CombatManager.Instance.Formula.GetPhysicalSkillDamage(source, target, effect.Value);
-
-                target.ChangeHealth(-damage);
-            }
-
-            return true;
-        }
-
-        private bool ExecDamageMagic(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
-        {
-            foreach (var target in listTarget)
-            {
-                int damage = CombatManager.Instance.Formula.GetMagicSkillDamage(source, target, effect.Value);
-
-                target.ChangeHealth(-damage);
-            }
-
-            return true;
-        }
-
-        private bool ExecHealMtk(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
-        {
-            foreach (var target in listTarget)
-            {
-                int heal = CombatManager.Instance.Formula.GetSkillHeal(source, target, effect.Value);
-
-                target.ChangeHealth(heal);
-            }
-
-            return true;
-        }
-
-        #endregion  // Skill Exec
+        #endregion  // Init
 
         #region Get Set
 
@@ -234,5 +152,87 @@ namespace GameSkill
         }
 
         #endregion  // Get Set
+
+        #region Skill Exec
+
+        private void RegistDlgSkillExec()
+        {
+            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_PHYSICAL, ExecDamagePhysical);
+            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_MAGIC, ExecDamageMagic);
+            _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_HEAL, ExecHealMtk);
+        }
+
+        internal bool ExecSkill(int skillId, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam)
+        {
+            Skill skill;
+            if (GetSkill(skillId, out skill) == false)
+            {
+                return false;
+            }
+
+            sourceTeam.ChangeEnergyOrb(-skill.Cost);
+
+            source.SetSkillCd(skill.Id, skill.Cd + 1); // 不包含本回合
+
+            List<CombatRole> listTarget = new List<CombatRole>();
+            GetRangeTarget(skill.Range, source, sourceTeam, targetTeam, ref listTarget);
+
+            foreach (var effect in skill._listEffect)
+            {
+                if (effect.Type == GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_NA)
+                {
+                    break;
+                }
+
+                DlgSkillExec dlg;
+                if (_dicSkillExec.TryGetValue(effect.Type, out dlg) == false)
+                {
+                    Debug.LogError("Not found DlgSkillExec for " + effect.Type);
+                    return false;
+                }
+
+                dlg(skill, effect, source, sourceTeam, targetTeam, listTarget);
+            }
+
+            return true;
+        }
+
+        private bool ExecDamagePhysical(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
+        {            
+            foreach (var target in listTarget)
+            {
+                int damage = CombatManager.Instance.Formula.GetPhysicalSkillDamage(source, target, effect.Value);
+
+                target.ChangeHealth(-damage);
+            }
+
+            return true;
+        }
+
+        private bool ExecDamageMagic(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
+        {
+            foreach (var target in listTarget)
+            {
+                int damage = CombatManager.Instance.Formula.GetMagicSkillDamage(source, target, effect.Value);
+
+                target.ChangeHealth(-damage);
+            }
+
+            return true;
+        }
+
+        private bool ExecHealMtk(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget)
+        {
+            foreach (var target in listTarget)
+            {
+                int heal = CombatManager.Instance.Formula.GetSkillHeal(source, target, effect.Value);
+
+                target.ChangeHealth(heal);
+            }
+
+            return true;
+        }
+
+        #endregion  // Skill Exec
     }
 }

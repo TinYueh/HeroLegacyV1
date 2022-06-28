@@ -14,7 +14,7 @@ namespace GameSkill
 
         #endregion  // Property
 
-        #region Method
+        #region Init
 
         internal bool Init(SkillEffectCsvData csvData)
         {
@@ -25,6 +25,6 @@ namespace GameSkill
             return true;
         }
 
-        #endregion  // Method
+        #endregion  // Init
     }
 }
