@@ -81,7 +81,7 @@ namespace GameCombat
             return damage;
         }
 
-        internal int GetSkillDamagePhysical(CombatRole source, CombatRole target, int effectValue)
+        internal int GetPhysicalSkillDamage(CombatRole source, CombatRole target, int effectValue)
         {
             int rand = Random.Range(90, 101);
             int sourceAtk = GetValuePercent(source.Role.Ptk, effectValue);
@@ -94,7 +94,7 @@ namespace GameCombat
             return damage;
         }
 
-        internal int GetSkillDamageMagic(CombatRole source, CombatRole target, int effectValue)
+        internal int GetMagicSkillDamage(CombatRole source, CombatRole target, int effectValue)
         {
             int rand = Random.Range(90, 101);
             int sourceAtk = GetValuePercent(source.Role.Mtk, effectValue);

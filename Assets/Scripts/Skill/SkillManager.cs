@@ -8,10 +8,16 @@ namespace GameSkill
 {
     public class SkillManager : Singleton<SkillManager>
     {
+        #region Property
+
         private Dictionary<int, Skill> _dicSkill = new Dictionary<int, Skill>();
 
         private delegate bool DlgSkillExec(Skill skill, Effect effect, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam, List<CombatRole> listTarget);
         private Dictionary<GameEnum.eSkillEffectType, DlgSkillExec> _dicSkillExec = new Dictionary<GameEnum.eSkillEffectType, DlgSkillExec>();
+
+        #endregion  // Property
+
+        #region Method
 
         public override bool Init()
         {
@@ -27,12 +33,18 @@ namespace GameSkill
                 _dicSkill.Add(skill.Id, skill);
             }
 
-            RegistSkillExecFunc();
+            RegistDlgSkillExec();
+
+            Debug.Log("SkillManager Init OK");
 
             return true;
         }
 
-        private void RegistSkillExecFunc()
+        #endregion  // Method
+
+        #region Skill Exec
+
+        private void RegistDlgSkillExec()
         {
             _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_PHYSICAL, ExecDamagePhysical);
             _dicSkillExec.Add(GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_DAMAGE_MAGIC, ExecDamageMagic);
@@ -41,7 +53,7 @@ namespace GameSkill
 
         internal bool ExecSkill(int skillId, CombatRole source, CombatTeam sourceTeam, CombatTeam targetTeam)
         {
-            Skill skill = null;
+            Skill skill;
             if (GetSkill(skillId, out skill) == false)
             {
                 return false;
@@ -49,7 +61,7 @@ namespace GameSkill
 
             sourceTeam.ChangeEnergyOrb(-skill.Cost);
 
-            source.SetSkillCd(skill.Id, skill.Cd + 1); // 不包含此回合
+            source.SetSkillCd(skill.Id, skill.Cd + 1); // 不包含本回合
 
             List<CombatRole> listTarget = new List<CombatRole>();
             GetRangeTarget(skill.Range, source, sourceTeam, targetTeam, ref listTarget);
@@ -61,14 +73,14 @@ namespace GameSkill
                     break;
                 }
 
-                DlgSkillExec dlgFunc = null;
-                if (_dicSkillExec.TryGetValue(effect.Type, out dlgFunc) == false)
+                DlgSkillExec dlg;
+                if (_dicSkillExec.TryGetValue(effect.Type, out dlg) == false)
                 {
                     Debug.LogError("Not found DlgSkillExec for " + effect.Type);
                     return false;
                 }
 
-                dlgFunc(skill, effect, source, sourceTeam, targetTeam, listTarget);
+                dlg(skill, effect, source, sourceTeam, targetTeam, listTarget);
             }
 
             return true;
@@ -78,7 +90,7 @@ namespace GameSkill
         {            
             foreach (var target in listTarget)
             {
-                int damage = CombatManager.Instance.Formula.GetSkillDamagePhysical(source, target, effect.Value);
+                int damage = CombatManager.Instance.Formula.GetPhysicalSkillDamage(source, target, effect.Value);
 
                 target.ChangeHealth(-damage);
             }
@@ -90,7 +102,7 @@ namespace GameSkill
         {
             foreach (var target in listTarget)
             {
-                int damage = CombatManager.Instance.Formula.GetSkillDamageMagic(source, target, effect.Value);
+                int damage = CombatManager.Instance.Formula.GetMagicSkillDamage(source, target, effect.Value);
 
                 target.ChangeHealth(-damage);
             }
@@ -109,6 +121,10 @@ namespace GameSkill
 
             return true;
         }
+
+        #endregion  // Skill Exec
+
+        #region Get Set
 
         internal bool GetSkill(int skillId, out Skill outSkill)
         {
@@ -216,5 +232,7 @@ namespace GameSkill
                     }
             }
         }
+
+        #endregion  // Get Set
     }
 }
