@@ -6,21 +6,26 @@ using GameSystem.Table;
 namespace GameCombat
 {
     public class CombatTeam
-    {        
-        internal ViewCombatTeam ViewCombatTeam { get; private set; } = null;  // View
+    {
+        #region Property
 
-        internal GameEnum.eCombatTeamType TeamType { get; private set; } = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
-        internal int EnergyPoint { get; private set; } = 0;
-        internal int EnergyOrb { get; private set; } = 0;
-        internal int MatchPosId { get; private set; } = 0;  // 對戰位
-        internal int CastPosId { get; set; } = 0;           // 施放位
-        internal int CastSkillId { get; set; } = 0;         // 施放技能
-        internal GameEnum.eRotateDirection RotateDirection { get; private set; } = GameEnum.eRotateDirection.E_ROTATE_DIRECTION_NA;
+        internal ViewCombatTeam ViewCombatTeam { get; private set; }    // View
+
+        internal GameEnum.eCombatTeamType TeamType { get; private set; }
+        internal int EnergyPoint { get; private set; }
+        internal int EnergyOrb { get; private set; }
+        internal int MatchPosId { get; private set; }   // 對戰位
+        internal int CastPosId { get; set; }            // 施放位
+        internal int CastSkillId { get; set; }          // 施放技能
+        internal GameEnum.eRotateDirection RotateDirection { get; private set; }
+        internal bool HasFirstToken { get; private set; }   // 判決平先
 
         private Dictionary<int, CombatRole> _dicCombatRole = new Dictionary<int, CombatRole>();         // <PosId, CombatRole>
         private Dictionary<int, CircleSocket> _dicCircleSocket = new Dictionary<int, CircleSocket>();   // <PosId, CircleSocket>
 
-        internal bool HasFirstToken { get; private set; } = false;  // 判決平先
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType, ViewCombatTeam viewCombatTeam)
         {
@@ -47,9 +52,56 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Energy
+
+        internal void ChangeEnergyOrb(int deltaOrb)
+        {
+            ChangeEnergyPoint(deltaOrb * GameConst.BAR_ENERGY_POINT);
+        }
+
+        internal void ChangeEnergyPoint(int deltaPoint)
+        {
+            int tmpPoint = EnergyPoint + deltaPoint;
+
+            SetEnergyPoint(tmpPoint);
+        }
+
+        internal void SetEnergyPoint(int point)
+        {
+            if (point < 0)
+            {
+                EnergyPoint = 0;
+            }
+            else if (point > GameConst.MAX_ENERGY_POINT)
+            {
+                EnergyPoint = GameConst.MAX_ENERGY_POINT;
+            }
+            else
+            {
+                EnergyPoint = point;
+            }
+
+            int viewPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
+            EnergyOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
+
+            ViewCombatTeam.ViewEnergyBar.SetEnergyBar(viewPoint);
+            ViewCombatTeam.ViewEnergyBar.SetEnergyOrb(EnergyOrb);
+
+            if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
+            {
+                // Todo: Lock EnergyBar
+            }
+        }
+
+        #endregion  // Energy
+
+        #region Get Set
+
         internal bool Set(int teamId)
         {
-            TeamCsvData teamCsvData = null;
+            TeamCsvData teamCsvData;
             if (TableManager.Instance.GetTeamCsvData(teamId, out teamCsvData) == false)
             {
                 Debug.LogError("Not found TeamCsvData, TeamId: " + teamId);
@@ -85,93 +137,6 @@ namespace GameCombat
             return true;
         }
 
-        internal bool CreateCombatRole(int memberId, int posId, int roleId)
-        {
-            RoleCsvData csvData = null;
-            if (TableManager.Instance.GetRoleCsvData(roleId, out csvData) == false)
-            {
-                Debug.LogError("Not found RoleCsvData, RoleId: " + roleId);
-                return false;
-            }
-
-            ViewCombatRole viewCombatRole = null;
-            if (ViewCombatTeam.ViewMemberList.GetViewCombatRole(memberId, out viewCombatRole) == false)
-            {
-                Debug.LogError("Not found RoleCsvData, MemberId: " + memberId);
-                return false;
-            }
-
-            CombatRole combatRole = new CombatRole();
-            if (combatRole.Init(TeamType, memberId, posId, csvData, viewCombatRole) == false)
-            {
-                Debug.LogError("Init CombatRole failed, RoleId: " + roleId);
-                return false;
-            }
-
-            _dicCombatRole.Add(posId, combatRole);            
-
-            ViewCombatTeam.ViewMemberList.SetViewCombatRole(memberId, combatRole);
-
-            SetCircleSocket(posId, combatRole);
-
-            return true;
-        }
-
-        internal void Rotate(GameEnum.eRotateDirection direction)
-        {
-            RotateDirection = direction;
-
-            ChangeMatchPosId(RotateDirection);
-            ViewCombatTeam.Rotate(RotateDirection);
-        }
-
-        internal bool ExecCircleSocket(int posId, CombatTeam target)
-        {
-            CircleSocket circleSocket = null;
-            if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
-            {
-                Debug.LogError("Not found CircleSocket, PosId: " + posId);
-            }
-
-            return circleSocket.Exec(target);
-        }
-
-        internal bool CheckTeamAlive()
-        {
-            foreach (var combatRole in _dicCombatRole)
-            {
-                if (combatRole.Value.IsAlive())
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        internal void Prepare()
-        {
-            var e = _dicCombatRole.GetEnumerator();
-            while (e.MoveNext())
-            {
-                // 降技能 Cd
-                e.Current.Value.ChangeAllSkillCd(-1);
-            }
-        }
-
-        internal void ClearSkill()
-        {
-            CastPosId = 0;
-            CastSkillId = 0;
-        }
-
-        internal bool IsCastSkill()
-        {
-            return (CastPosId > 0 && CastSkillId > 0);
-        }
-
-        #region Get Set
-
         internal bool GetCombatRoleByPos(int posId, out CombatRole outCombatRole)
         {
             if (_dicCombatRole.TryGetValue(posId, out outCombatRole) == false)
@@ -201,7 +166,7 @@ namespace GameCombat
 
         internal CombatRole GetMatchCombatRole()
         {
-            CombatRole combatRole = null;
+            CombatRole combatRole;
             GetCombatRoleByPos(MatchPosId, out combatRole);
 
             return combatRole;
@@ -209,7 +174,7 @@ namespace GameCombat
 
         internal CombatRole GetCastCombatRole()
         {
-            CombatRole combatRole = null;
+            CombatRole combatRole;
             GetCombatRoleByPos(CastPosId, out combatRole);
 
             return combatRole;
@@ -228,7 +193,7 @@ namespace GameCombat
 
         private bool SetCircleSocket(int posId, CombatRole combatRole)
         {
-            CircleSocket circleSocket = null;
+            CircleSocket circleSocket;
             if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
             {
                 Debug.LogError("Not found CircleSocket, PosId: " + posId);
@@ -236,6 +201,7 @@ namespace GameCombat
             }
 
             circleSocket.Set(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, combatRole);
+
             return true;
         }
 
@@ -255,7 +221,8 @@ namespace GameCombat
 
         internal void GetCombatRoleList(List<int> listPos, ref List<CombatRole> refListCombatRole)
         {
-            CombatRole combatRole = null;
+            CombatRole combatRole;
+
             foreach (var posId in listPos)
             {
                 if (GetCombatRoleByPos(posId, out combatRole))
@@ -276,50 +243,29 @@ namespace GameCombat
             GetCombatRoleList(listPos, ref refListCombatRole);
         }
 
-        #endregion
+        #endregion  // Get Set
 
-        #region Energy
+        #region Logic
 
-        internal void ChangeEnergyOrb(int deltaOrb)
+        internal bool CheckTeamAlive()
         {
-            ChangeEnergyPoint(deltaOrb * GameConst.BAR_ENERGY_POINT);
+            foreach (var combatRole in _dicCombatRole)
+            {
+                if (combatRole.Value.IsAlive())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        internal void ChangeEnergyPoint(int deltaPoint)
+        internal bool IsCastSkill()
         {
-            int tmpPoint = EnergyPoint + deltaPoint; 
-
-            SetEnergyPoint(tmpPoint);
+            return (CastPosId > 0 && CastSkillId > 0);
         }
 
-        internal void SetEnergyPoint(int point)
-        {
-            if (point < 0)
-            {
-                EnergyPoint = 0;
-            }
-            else if (point > GameConst.MAX_ENERGY_POINT)
-            {
-                EnergyPoint = GameConst.MAX_ENERGY_POINT;
-            }
-            else
-            {
-                EnergyPoint = point;
-            }
-
-            int viewPoint = EnergyPoint % GameConst.BAR_ENERGY_POINT;
-            EnergyOrb = EnergyPoint / GameConst.BAR_ENERGY_POINT;
-
-            ViewCombatTeam.ViewEnergyBar.SetEnergyBar(viewPoint);
-            ViewCombatTeam.ViewEnergyBar.SetEnergyOrb(EnergyOrb);
-
-            if (EnergyPoint == GameConst.MAX_ENERGY_POINT)
-            {
-                // Todo: Lock EnergyBar
-            }
-        } 
-
-        #endregion
+        #endregion  // Logic
 
         #region Pos
 
@@ -421,7 +367,7 @@ namespace GameCombat
 
         internal bool IsMatchPosAlive()
         {
-            CombatRole combatRole = null;
+            CombatRole combatRole;
             if (GetCombatRoleByPos(MatchPosId, out combatRole) == false)
             {
                 return false;
@@ -430,6 +376,77 @@ namespace GameCombat
             return combatRole.IsAlive();
         }
 
-        #endregion
+        #endregion  // Pos
+
+        #region Method
+
+        internal bool CreateCombatRole(int memberId, int posId, int roleId)
+        {
+            RoleCsvData csvData = null;
+            if (TableManager.Instance.GetRoleCsvData(roleId, out csvData) == false)
+            {
+                Debug.LogError("Not found RoleCsvData, RoleId: " + roleId);
+                return false;
+            }
+
+            ViewCombatRole viewCombatRole = null;
+            if (ViewCombatTeam.ViewMemberList.GetViewCombatRole(memberId, out viewCombatRole) == false)
+            {
+                Debug.LogError("Not found RoleCsvData, MemberId: " + memberId);
+                return false;
+            }
+
+            CombatRole combatRole = new CombatRole();
+            if (combatRole.Init(TeamType, memberId, posId, csvData, viewCombatRole) == false)
+            {
+                Debug.LogError("Init CombatRole failed, RoleId: " + roleId);
+                return false;
+            }
+
+            _dicCombatRole.Add(posId, combatRole);
+
+            ViewCombatTeam.ViewMemberList.SetViewCombatRole(memberId, combatRole);
+
+            SetCircleSocket(posId, combatRole);
+
+            return true;
+        }
+
+        internal void Rotate(GameEnum.eRotateDirection direction)
+        {
+            RotateDirection = direction;
+
+            ChangeMatchPosId(RotateDirection);
+            ViewCombatTeam.Rotate(RotateDirection);
+        }
+
+        internal bool ExecCircleSocket(int posId, CombatTeam target)
+        {
+            CircleSocket circleSocket = null;
+            if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
+            {
+                Debug.LogError("Not found CircleSocket, PosId: " + posId);
+            }
+
+            return circleSocket.Exec(target);
+        }
+
+        internal void Prepare()
+        {
+            var e = _dicCombatRole.GetEnumerator();
+            while (e.MoveNext())
+            {
+                // 降技能 Cd
+                e.Current.Value.ChangeAllSkillCd(-1);
+            }
+        }
+
+        internal void ClearSkill()
+        {
+            CastPosId = 0;
+            CastSkillId = 0;
+        }
+
+        #endregion  // Method
     }
 }

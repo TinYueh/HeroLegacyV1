@@ -6,13 +6,19 @@ namespace GameCombat
 {
     public class CircleSocket
     {
-        private ViewCircleSocket _viewCircleSocket = null;    // View
+        #region Property
 
-        internal int PosId { get; private set; } = 0;
-        internal GameEnum.eCircleSocketType Type { get; private set; } = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_NA;
+        private ViewCircleSocket _viewCircleSocket;    // View
+
+        internal int PosId { get; private set; }
+        internal GameEnum.eCircleSocketType Type { get; private set; }
 
         private delegate bool DlgExec(CombatTeam target);
         private Dictionary<GameEnum.eCircleSocketType, DlgExec> _dicDlgExec = new Dictionary<GameEnum.eCircleSocketType, DlgExec>();
+
+        #endregion  // Property
+
+        #region Init
 
         internal void Init(int posId, ViewCircleSocket viewCircleSocket)
         {
@@ -20,42 +26,29 @@ namespace GameCombat
             Type = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE;
             _viewCircleSocket = viewCircleSocket;   // Attach View
 
-            RegistExecFunc();
+            RegistDlgExec();
         }
 
-        private void RegistExecFunc()
+        #endregion  // Init
+
+        #region Exec
+
+        private void RegistDlgExec()
         {
             _dicDlgExec.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE, ExecSpace);
             _dicDlgExec.Add(GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_COMBAT_ROLE, ExecCombatRole);
         }
 
-        internal void Set(GameEnum.eCircleSocketType socketType, CombatRole combatRole)
-        {
-            Type = socketType;
-
-            _viewCircleSocket.SetSocket(combatRole.Role.Attribute);
-            _viewCircleSocket.SetEmblem(combatRole.Role.Emblem);
-            _viewCircleSocket.ShowEmblem();
-        }
-
-        internal void Clear()
-        {
-            Type = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE;
-
-            _viewCircleSocket.SetSocket(GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_NA);
-            _viewCircleSocket.HideEmblem();
-        }
-
         internal bool Exec(CombatTeam target)
         {
-            DlgExec dlgFunc = null;
-            if (_dicDlgExec.TryGetValue(Type, out dlgFunc) == false)
+            DlgExec dlg;
+            if (_dicDlgExec.TryGetValue(Type, out dlg) == false)
             {
                 Debug.LogError("Not found ExecFunc for " + Type);
                 return false;
             }
 
-            return dlgFunc(target);
+            return dlg(target);
         }
 
         private bool ExecSpace(CombatTeam target)
@@ -69,5 +62,32 @@ namespace GameCombat
         {
             return true;
         }
+
+        #endregion  // Exec
+
+        #region Get Set
+
+        internal void Set(GameEnum.eCircleSocketType socketType, CombatRole combatRole)
+        {
+            Type = socketType;
+
+            _viewCircleSocket.SetSocket(combatRole.Role.Attribute);
+            _viewCircleSocket.SetEmblem(combatRole.Role.Emblem);
+            _viewCircleSocket.ShowEmblem();
+        }
+
+        #endregion  // Get Set
+
+        #region Method
+
+        internal void Clear()
+        {
+            Type = GameEnum.eCircleSocketType.E_CIRCLE_SOCKET_TYPE_SPACE;
+
+            _viewCircleSocket.SetSocket(GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_NA);
+            _viewCircleSocket.HideEmblem();
+        }
+
+        #endregion  // Method
     }
 }
