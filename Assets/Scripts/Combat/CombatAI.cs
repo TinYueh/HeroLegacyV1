@@ -6,6 +6,8 @@ namespace GameCombat
 {
     public class CombatAI
     {
+        #region Method
+
         internal void GetRoundAction(out GameEnum.eCombatRoundAction outAction)
         {
             int rand = Random.Range(0, 2);
@@ -19,5 +21,7 @@ namespace GameCombat
                 outAction = GameEnum.eCombatRoundAction.E_COMBAT_ROUND_ACTION_ROTATE_LEFT;
             }
         }
+
+        #endregion  // Method
     }
 }

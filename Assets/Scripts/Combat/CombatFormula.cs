@@ -6,44 +6,7 @@ namespace GameCombat
 {
     public class CombatFormula
     {
-        internal GameEnum.eCombatAttributeMatchResult CheckAttributeMatch(GameEnum.eRoleAttribute player, GameEnum.eRoleAttribute opponent)
-        {
-            if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
-            {
-                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
-                {
-                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
-                }
-                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
-                {
-                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
-                }
-            }
-            else if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
-            {
-                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
-                {
-                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
-                }
-                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
-                {
-                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
-                }
-            }
-            else if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
-            {
-                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
-                {
-                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
-                }
-                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
-                {
-                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
-                }
-            }
-
-            return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW;
-        }
+        #region Get Set
 
         internal int GetValuePercent(int source, int percent)
         {
@@ -117,6 +80,50 @@ namespace GameCombat
 
             return heal;
         }
+
+        #endregion  // Get Set
+
+        #region Logic
+
+        internal GameEnum.eCombatAttributeMatchResult CheckAttributeMatch(GameEnum.eRoleAttribute player, GameEnum.eRoleAttribute opponent)
+        {
+            if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
+            {
+                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
+                }
+                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
+                }
+            }
+            else if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
+            {
+                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
+                }
+                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
+                }
+            }
+            else if (player == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_TECHNIQUE)
+            {
+                if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_POWER)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_WIN;
+                }
+                else if (opponent == GameEnum.eRoleAttribute.E_ROLE_ATTRIBUTE_SPEED)
+                {
+                    return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_LOSE;
+                }
+            }
+
+            return GameEnum.eCombatAttributeMatchResult.E_COMBAT_ATTRIBUTE_MATCH_DRAW;
+        }
+
+        #endregion  // Logic
     }
 }
-

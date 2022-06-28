@@ -7,42 +7,51 @@ namespace GameCombat
 {
     public class CombatCore : MonoBehaviour
     {
+        #region Property
+
         [SerializeField]
-        private int _playerTeamId = 0;      // 玩家隊伍 TeamId
+        private int _playerTeamId;      // 玩家隊伍 TeamId
         [SerializeField]
-        private int _opponentTeamId = 0;    // 敵對隊伍 TeamId
+        private int _opponentTeamId;    // 敵對隊伍 TeamId
 
         private delegate void DlgCombatRoundState();
         private Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundState> _dicDlgCombatRoundState = new Dictionary<GameEnum.eCombatRoundState, DlgCombatRoundState>();
+
+        #endregion  // Property
+
+        #region Mono
 
         private void Awake()
         {
             CombatManager.Instance.Init();
 
-            RegistCombatRoundStateFunc();
+            RegistDlgCombatRoundState();
         }
 
         private void Start()
         {
             CombatManager.Instance.CreateNewCombat(_playerTeamId, _opponentTeamId);
 
-            // CombatRoundState 保持在 CombatCore 中做切換
             CombatManager.Instance.CombatRoundState = GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY;
         }
 
         private void Update()
         {
-            DlgCombatRoundState dlgFunc = null;
-            if (_dicDlgCombatRoundState.TryGetValue(CombatManager.Instance.CombatRoundState, out dlgFunc) == false)
+            DlgCombatRoundState dlg;
+            if (_dicDlgCombatRoundState.TryGetValue(CombatManager.Instance.CombatRoundState, out dlg) == false)
             {
                 Debug.LogError("Not found CombatRoundStateFunc for " + CombatManager.Instance.CombatRoundState);
                 return;
             }
 
-            dlgFunc();
+            dlg();
         }
 
-        private void RegistCombatRoundStateFunc()
+        #endregion  // Mono
+
+        #region Combat Round State
+
+        private void RegistDlgCombatRoundState()
         {
             _dicDlgCombatRoundState.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_STANDBY, CombatRoundStateStandby);
             _dicDlgCombatRoundState.Add(GameEnum.eCombatRoundState.E_COMBAT_ROUND_STATE_ROTATE, CombatRoundStateRotate);
@@ -86,5 +95,7 @@ namespace GameCombat
         {
             // 戰鬥結束
         }
+
+        #endregion  // Combat Round State
     }
 }
