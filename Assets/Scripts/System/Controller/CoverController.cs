@@ -6,10 +6,16 @@ namespace GameSystem
 {
     public class CoverController : MonoBehaviour
     {
+        #region Property
+
         [SerializeField]
         private int _pictureId = 0;
 
         SpriteRenderer _sprPicture = null;
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init()
         {
@@ -43,10 +49,18 @@ namespace GameSystem
             transform.localScale = scale;
         }
 
+        #endregion  // Init
+
+        #region Get Set
+
         internal void SetPicture(int pictureId)
         {
             _sprPicture.sprite = Resources.Load<Sprite>(AssetsPath.SPRITE_PICTURE_PATH + pictureId.ToString().PadLeft(3, '0'));
         }
+
+        #endregion  // Get Set
+
+        #region Show Hide
 
         internal void ShowPicture()
         {
@@ -57,5 +71,7 @@ namespace GameSystem
         {
             _sprPicture.gameObject.SetActive(false);
         }
+
+        #endregion  // Show Hide
     }
 }

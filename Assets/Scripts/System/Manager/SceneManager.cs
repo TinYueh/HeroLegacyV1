@@ -7,11 +7,17 @@ namespace GameSystem.Scene
 {
     public class SceneManager : Singleton<SceneManager>
     {
-        BackgroundController _backgroundController = null;
-        CoverController _coverController = null;
+        #region Property
+
+        BackgroundController _backgroundController;
+        CoverController _coverController;
 
         // 所有場景
         Dictionary<SystemCore.eGameScene, string> _dicScene = new Dictionary<SystemCore.eGameScene, string>();
+
+        #endregion  // Property
+
+        #region Init
 
         public override bool Init()
         {
@@ -47,6 +53,10 @@ namespace GameSystem.Scene
             return true;
         }
 
+        #endregion  // Init
+
+        #region Get Set
+
         internal bool GetSceneName(SystemCore.eGameScene gameScene, out string outSceneName)
         {
             if (_dicScene.TryGetValue(gameScene, out outSceneName) == false)
@@ -58,9 +68,13 @@ namespace GameSystem.Scene
             return true;
         }
 
+        #endregion  // Get Set
+
+        #region Method
+
         internal IEnumerator LoadScene(SystemCore.eGameScene gameScene)
         {
-            string sceneName = null;
+            string sceneName;
             if (GetSceneName(gameScene, out sceneName) == false)
             {
                 yield break;
@@ -80,5 +94,7 @@ namespace GameSystem.Scene
 
             asyncOperation.allowSceneActivation = true;
         }
+
+        #endregion  // Method
     }
 }

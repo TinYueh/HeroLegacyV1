@@ -7,6 +7,8 @@ namespace GameSystem.Tooltip
 {
     public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        #region Property
+
         private static LTDescr _delay;
 
         internal string _header;
@@ -14,6 +16,10 @@ namespace GameSystem.Tooltip
 
         internal delegate void DlgHandleTipText(out string outContent, out string outHeader);
         internal DlgHandleTipText _dlgHandleTipText;
+
+        #endregion  // Property
+
+        #region Method
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -29,5 +35,7 @@ namespace GameSystem.Tooltip
             LeanTween.cancel(_delay.uniqueId);
             TooltipManager.Instance.Hide();
         }
+
+        #endregion  // Method
     }
 }

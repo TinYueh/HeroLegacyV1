@@ -7,6 +7,8 @@ namespace GameSystem.Table
 {
     public class TableManager : Singleton<TableManager>
     {
+        #region Property
+
         // CsvData dictionary
         internal readonly Dictionary<int, TeamCsvData> _dicTeamCsvData = new Dictionary<int, TeamCsvData>();
         internal readonly Dictionary<int, RoleCsvData> _dicRoleCsvData = new Dictionary<int, RoleCsvData>();
@@ -15,9 +17,12 @@ namespace GameSystem.Table
 
         // LoadCsvData delegate
         private delegate bool DlgLoadCsvData(string[] rowData, out int outIndex);
-
         // LoadCsvData delegate dictionary
         private Dictionary<string, DlgLoadCsvData> _dicDlgLoadCsv = new Dictionary<string, DlgLoadCsvData>();
+
+        #endregion  // Property
+
+        #region Init
 
         public override bool Init()
         {
@@ -38,7 +43,11 @@ namespace GameSystem.Table
             _dicDlgLoadCsv.Add("Skill", LoadSkillCsvData);
             // 新增 Table: 註冊
         }
-        
+
+        #endregion  // Init
+
+        #region Load
+
         private void LoadTable()
         {
             // 所有的 Table
@@ -79,6 +88,7 @@ namespace GameSystem.Table
                 }
             }
         }
+
         private bool LoadTeamCsvData(string[] rowData, out int outIndex)
         {
             TeamCsvData data = new TeamCsvData();
@@ -95,6 +105,7 @@ namespace GameSystem.Table
 
             return true;
         }
+
         private bool LoadRoleCsvData(string[] rowData, out int outIndex)
         {
             RoleCsvData data = new RoleCsvData();
@@ -124,6 +135,7 @@ namespace GameSystem.Table
 
             return true;
         }
+
         private bool LoadSkillCsvData(string[] rowData, out int outIndex)
         {
             SkillCsvData data = new SkillCsvData();
@@ -149,7 +161,11 @@ namespace GameSystem.Table
 
             return true;
         }
-        // 新增 Table: 定義 Load function
+        // 新增 Table: 定義 Load Method
+
+        #endregion  // Load
+
+        #region Get Set
 
         public bool GetTeamCsvData(int id, out TeamCsvData outCsvData)
         {
@@ -160,6 +176,7 @@ namespace GameSystem.Table
 
             return false;
         }
+
         public bool GetRoleCsvData(int id, out RoleCsvData outCsvData)
         {
             if (_dicRoleCsvData.TryGetValue(id, out outCsvData))
@@ -169,6 +186,7 @@ namespace GameSystem.Table
 
             return false;
         }
+
         public bool GetSkillCsvData(int id, out SkillCsvData outCsvData)
         {
             if (_dicSkillCsvData.TryGetValue(id, out outCsvData))
@@ -178,6 +196,8 @@ namespace GameSystem.Table
 
             return false;
         }
-        // 新增 Table: 定義 Get function
+        // 新增 Table: 定義 Get Method
+
+        #endregion  // Get Set
     }
 }

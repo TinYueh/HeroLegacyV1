@@ -1,25 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameSkill;
 using GameSystem.Audio;
 using GameSystem.Scene;
 using GameSystem.Table;
 using GameSystem.Tooltip;
-using GameSystem.UI;
-using GameSkill;
 
 namespace GameSystem
 {
     public class SystemCore : MonoBehaviour
     {
-        [SerializeField]
-        private int _bgmId = 0;
-        [SerializeField]
-        private float _masterVolume = 0;
-        [SerializeField]
-        private float _bgmVolume = 0;
-        [SerializeField]
-        private float _sfxVolume = 0;
+        #region Enum
 
         internal enum eGameScene
         {
@@ -31,12 +23,28 @@ namespace GameSystem
             E_GAME_SCENE_LIMIT,
         }
 
+        #endregion  // Enum
+
+        #region Property
+
+        [SerializeField]
+        private int _bgmId;
+        [SerializeField]
+        private float _masterVolume;
+        [SerializeField]
+        private float _bgmVolume;
+        [SerializeField]
+        private float _sfxVolume;
+
+        #endregion  // Property
+
+        #region Mono
+
         private void Awake()
         {
             DontDestroyOnLoad(this);
 
             TableManager.Instance.Init();
-            UIManager.Instance.Init();
             AudioManager.Instance.Init();
             SceneManager.Instance.Init();
             SkillManager.Instance.Init();
@@ -68,5 +76,7 @@ namespace GameSystem
                 AudioManager.Instance.StopBgm();
             }
         }
+
+        #endregion  // Mono
     }
 }

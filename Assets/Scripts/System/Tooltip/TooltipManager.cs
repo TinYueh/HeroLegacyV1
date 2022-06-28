@@ -6,7 +6,13 @@ namespace GameSystem.Tooltip
 {
     public class TooltipManager : Singleton<TooltipManager>
     {
+        #region Property
+
         internal Tooltip _tooltip;
+
+        #endregion  // Property
+
+        #region Init
 
         public override bool Init()
         {
@@ -22,15 +28,23 @@ namespace GameSystem.Tooltip
 
             return true;
         }
+
+        #endregion  // Init
+
+        #region Show Hide
+
         public void Show(string content, string header)
         {
             _tooltip.SetText(content, header);
             _tooltip.gameObject.SetActive(true);
             _tooltip.UpdatePosition();
         }
+        
         public void Hide()
         {
             _tooltip.gameObject.SetActive(false);
         }
+
+        #endregion  // Show Hide
     }
 }

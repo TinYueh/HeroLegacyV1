@@ -8,6 +8,8 @@ namespace GameSystem.Tooltip
 {
     public class Tooltip : MonoBehaviour
     {
+        #region Property
+
         [SerializeField]
         private TextMeshProUGUI _header;
         [SerializeField]
@@ -18,8 +20,11 @@ namespace GameSystem.Tooltip
         private int _charWrapLimit;
 
         private bool _isTextUpdate;
-
         private RectTransform _rectTransform;
+
+        #endregion  // Property
+
+        #region Mono
 
         private void Awake()
         {
@@ -40,27 +45,28 @@ namespace GameSystem.Tooltip
 
             UpdatePosition();
         }
+
+        #endregion  // Mono
+
+        #region Method
+
         internal void UpdatePosition()
         {
             if (transform.position != Input.mousePosition)
             {
+                // Todo: 改成相對 UI 的位置, 而不跟隨滑鼠
+
                 transform.position = Input.mousePosition;
 
                 float pivotX = transform.position.x / Screen.width;
                 float pivotY = transform.position.y / Screen.height;
-
-                if (pivotY > 0.5f)
-                {
-                    pivotY += 0.1f;
-                }
-                else
-                {
-                    pivotY -= 0.1f;
-                }
+                
+                pivotY += (pivotY > 0.5) ? 0.1f : -0.1f;
 
                 _rectTransform.pivot = new Vector2(pivotX, pivotY);
             }
         }
+
         internal void SetText(string content, string header)
         {
             if (string.IsNullOrEmpty(header))
@@ -77,5 +83,7 @@ namespace GameSystem.Tooltip
 
             _isTextUpdate = true;
         }
+
+        #endregion  // Method
     }
 }
