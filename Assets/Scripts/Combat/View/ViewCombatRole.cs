@@ -20,8 +20,11 @@ namespace GameCombat
         // 徽章
         private Image _imgEmblem;
         // 生命條
+        private Image _imgBufferingEffect;
         private Image _imgHealthBar;
         private float _barInitLen;
+        //private float _preHealthProp = 1f;
+        //private float _healthProp = 1f;
 
         #endregion  // Property
 
@@ -62,6 +65,13 @@ namespace GameCombat
                 return false;
             }
 
+            _imgBufferingEffect = transform.Find("HealthBar").transform.Find("BufferingEffect").GetComponent<Image>();
+            if (_imgBufferingEffect == null)
+            {
+                Debug.LogError("Not found ImageBufferingEffect");
+                return false;
+            }
+
             _imgHealthBar = transform.Find("HealthBar").transform.Find("Bar").GetComponent<Image>();
             if (_imgHealthBar == null)
             {
@@ -92,7 +102,12 @@ namespace GameCombat
 
         internal void SetHealthBar(int value, int max)
         {
-            _imgHealthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
+            _imgHealthBar.fillAmount = (float)value / max;
+
+            if (_imgHealthBar.fillAmount != _imgBufferingEffect.fillAmount)
+            {
+                StartCoroutine(HandleBufferingEffect());
+            }
         }
 
         internal void SetStateDying()
@@ -141,6 +156,20 @@ namespace GameCombat
                 + "物防: " + combatRole.Role.Pef + "\n"
                 + "魔攻: " + combatRole.Role.Mtk + markMtk + "\n"
                 + "魔防: " + combatRole.Role.Mef;
+        }
+
+        private IEnumerator HandleBufferingEffect()
+        {
+            while (_imgHealthBar.fillAmount < _imgBufferingEffect.fillAmount)
+            {
+                _imgBufferingEffect.fillAmount -= 0.003f;
+                yield return new WaitForSeconds(0.005f);
+            }
+
+            if (_imgHealthBar.fillAmount > _imgBufferingEffect.fillAmount)
+            {
+                _imgBufferingEffect.fillAmount = _imgHealthBar.fillAmount;
+            }
         }
 
         #endregion  // Method
