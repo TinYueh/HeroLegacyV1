@@ -7,11 +7,17 @@ namespace GameCombat
 {
     public class ViewEnergyBar : MonoBehaviour
     {
-        private Image _imgBar = null;
-        private Image _imgOrb = null;
-        private float _barInitLen = 0f;
-        private float _barLenPerUnit = 0f;
-        GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        #region Property
+
+        private Image _imgBar;
+        private Image _imgOrb;
+        private float _barInitLen;
+        private float _barLenPerUnit;
+        GameEnum.eCombatTeamType _teamType;
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType)
         {
@@ -38,6 +44,10 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Get Set
+
         internal void SetEnergyBar(int value)
         {
             _imgBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _barLenPerUnit * value);
@@ -48,5 +58,7 @@ namespace GameCombat
             string path = AssetsPath.SPRITE_ENERGY_ORB_NUM_PATH + value;
             _imgOrb.sprite = Resources.Load<Sprite>(path);
         }
+
+        #endregion  // Get Set
     }
 }

@@ -7,13 +7,19 @@ namespace GameCombat
 {
     public class ViewCombatTeam : MonoBehaviour
     {
-        internal ViewCombatCircle ViewCombatCircle { get; private set ; } = null;
-        internal ViewEnergyBar ViewEnergyBar { get; private set; } = null;
-        internal ViewMemberList ViewMemberList { get; private set; } = null;
-        internal ViewCombatStats ViewCombatStats { get; private set; } = null;
-        internal ViewSkillList ViewSkillList { get; private set; } = null;
+        #region Property
 
-        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        internal ViewCombatCircle ViewCombatCircle { get; private set ; }
+        internal ViewEnergyBar ViewEnergyBar { get; private set; }
+        internal ViewMemberList ViewMemberList { get; private set; }
+        internal ViewCombatStats ViewCombatStats { get; private set; }
+        internal ViewSkillList ViewSkillList { get; private set; }
+
+        private GameEnum.eCombatTeamType _teamType;
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType)
         {
@@ -57,6 +63,10 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Method
+
         internal void Rotate(GameEnum.eRotateDirection direction)
         {
             if (direction == GameEnum.eRotateDirection.E_ROTATE_DIRECTION_RIGHT)
@@ -73,8 +83,9 @@ namespace GameCombat
             }
 
             ViewCombatCircle.RotateAngleRemaining = GameConst.COMBAT_CIRCLE_SLOT_ANGLE;
-            
-            ViewCombatCircle.Rotate();
-        }           
+            ViewCombatCircle.SetRotate();
+        }
+
+        #endregion  // Method
     }
 }

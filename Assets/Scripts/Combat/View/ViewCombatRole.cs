@@ -8,6 +8,8 @@ namespace GameCombat
 {
     public class ViewCombatRole : MonoBehaviour
     {
+        #region Property
+
         // 基本資料
         private GameEnum.eCombatTeamType _teamType;
         private int _memberId;
@@ -20,6 +22,10 @@ namespace GameCombat
         // 生命條
         private Image _imgHealthBar;
         private float _barInitLen;
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType, int memberId)
         {
@@ -68,31 +74,43 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Get Set
+
         internal void SetPortrait(int portraitId)
         {
             string path = AssetsPath.SPRITE_ROLE_PORTRAIT_PATH + portraitId.ToString().PadLeft(3, '0');
             _imgPortrait.sprite = Resources.Load<Sprite>(path);
         }
+
         internal void SetEmblem(int emblemId)
         {
             string path = AssetsPath.SPRITE_ROLE_EMBLEM_PATH + emblemId.ToString().PadLeft(3, '0');
             _imgEmblem.sprite = Resources.Load<Sprite>(path);
         }
+
         internal void SetHealthBar(int value, int max)
         {
             _imgHealthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
         }
+
         internal void SetStateDying()
         {
             _imgEmblem.color = new Color(0.6f, 0.6f, 0.6f, 0.6f);
             _btnPortrait.interactable = false;
         }
+
         internal void SetStateAlive()
         {
             _imgEmblem.color = new Color(1f, 1f, 1f, 1f);
             _btnPortrait.interactable = true;
         }
-        
+
+        #endregion  // Get Set
+
+        #region Method
+
         internal void HandleTipText(out string outContent, out string outHeader)
         {
             outContent = string.Empty;
@@ -124,5 +142,7 @@ namespace GameCombat
                 + "魔攻: " + combatRole.Role.Mtk + markMtk + "\n"
                 + "魔防: " + combatRole.Role.Mef;
         }
+
+        #endregion  // Method
     }
 }

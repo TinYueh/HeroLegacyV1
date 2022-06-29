@@ -6,13 +6,20 @@ namespace GameCombat
 {
     public class ViewMemberList : MonoBehaviour
     {
-        [SerializeField]
-        private float initPosX = 0;     // 0, 750
-        [SerializeField]
-        private float deltaPosX = 0;    // 150, -150
+        #region Property
 
-        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        [SerializeField]
+        private float initPosX;     // 0, 750
+        [SerializeField]
+        private float deltaPosX;    // 150, -150
+
+        private GameEnum.eCombatTeamType _teamType;
+
         private Dictionary<int, ViewCombatRole> _dicViewCombatRole = new Dictionary<int, ViewCombatRole>();   // <memberId, ViewCombatRole>
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType)
         {
@@ -40,6 +47,8 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
         #region Get Set
 
         internal bool GetViewCombatRole(int memberId, out ViewCombatRole outViewCombatRole)
@@ -55,7 +64,7 @@ namespace GameCombat
 
         internal void SetViewCombatRole(int memberId, CombatRole combatRole)
         {
-            ViewCombatRole viewCombatRole = null;
+            ViewCombatRole viewCombatRole;
             if (GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;
@@ -65,13 +74,13 @@ namespace GameCombat
             viewCombatRole.SetEmblem(combatRole.Role.Emblem);
         }
 
-        #endregion
+        #endregion  // Get Set
 
         #region Show Hide
 
         internal void ShowViewCombatRole(int memberId)
         {
-            ViewCombatRole viewCombatRole = null;
+            ViewCombatRole viewCombatRole;
             if (GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;
@@ -82,7 +91,7 @@ namespace GameCombat
 
         internal void HideViewCombatRole(int memberId)
         {
-            ViewCombatRole viewCombatRole = null;
+            ViewCombatRole viewCombatRole;
             if (GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 return;   
@@ -91,6 +100,6 @@ namespace GameCombat
             viewCombatRole.gameObject.SetActive(false);
         }
 
-        #endregion
+        #endregion  // Show Hide
     }
 }
