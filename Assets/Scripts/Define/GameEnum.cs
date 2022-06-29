@@ -89,7 +89,7 @@ public class GameEnum
         E_POS_TYPE_MATCH   = 1, // 對戰位
         E_POS_TYPE_WING    = 2, // 側翼
         E_POS_TYPE_FORWARD = 3, // 前排
-        E_POS_TYPE_GUARD,       // 後排           
+        E_POS_TYPE_GUARD,       // 後排
         E_POS_TYPE_ALL,         // 全體
         E_POS_TYPE_LIMIT,
     }

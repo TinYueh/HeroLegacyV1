@@ -7,6 +7,8 @@ namespace GameCombat
 {
     public class ViewCombatCircle : MonoBehaviour
     {
+        #region Enum
+
         private enum eCombatCircleState
         {
             E_COMBAT_CIRCLE_STATE_NA = 0,
@@ -15,19 +17,27 @@ namespace GameCombat
             E_COMBAT_CIRCLE_STATE_LIMIT,
         }
 
+        #endregion  // Enum
+
+        #region Property
+
         [SerializeField]
-        private float _adjustRadiusForSocket = 0f;  // -70f 微調 CircleSocket 與圓心的距離
+        private float _adjustRadiusForSocket;  // -70f 微調 CircleSocket 與圓心的距離
         [SerializeField]
-        private float _initAngle = 0f;              // 45f 和 225f 戰鬥開始時的起始角度
+        private float _initAngle;              // 45f 和 225f 戰鬥開始時的起始角度
 
         internal float RotateAnglePerFrame { get; set; } = 2f;  // 每個 frame 的旋轉角度
-        internal float RotateAnglePerFrameActual { get; set; } = 0f;
-        internal float RotateAngleRemaining { get; set; } = 0f;
+        internal float RotateAnglePerFrameActual { get; set; }
+        internal float RotateAngleRemaining { get; set; }
 
-        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        private GameEnum.eCombatTeamType _teamType;
+        private eCombatCircleState _combatCircleState;
 
-        private eCombatCircleState _combatCircleState = eCombatCircleState.E_COMBAT_CIRCLE_STATE_NA;
         private Dictionary<int, ViewCircleSocket> _dicViewCircleSocket = new Dictionary<int, ViewCircleSocket>();
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType)
         {
@@ -61,6 +71,10 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Mono
+
         private void FixedUpdate()
         {
             if (_combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE)
@@ -89,29 +103,13 @@ namespace GameCombat
             }
         }
 
-        internal bool IsStationary()
-        {
-            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STATIONARY;
-        }
+        #endregion  // Mono
 
-        internal bool IsRotate()
-        {
-            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
-        }
+        #region Get Set
 
-        internal void Rotate()
+        internal void SetRotate()
         {
             _combatCircleState = ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
-        }
-
-        internal void Rotate(float angle)
-        {
-            transform.Rotate(0, 0, angle);
-
-            foreach (var viewSocket in _dicViewCircleSocket)
-            {
-                viewSocket.Value.transform.Rotate(0, 0, -angle);
-            }
         }
 
         internal bool GetCircleSocket(int posId, out ViewCircleSocket outViewCircleSocket)
@@ -124,5 +122,35 @@ namespace GameCombat
 
             return true;
         }
+
+        #endregion
+
+        #region Logic
+
+        internal bool IsStationary()
+        {
+            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_STATIONARY;
+        }
+
+        internal bool IsRotate()
+        {
+            return _combatCircleState == ViewCombatCircle.eCombatCircleState.E_COMBAT_CIRCLE_STATE_ROTATE;
+        }
+
+        #endregion  // Logic
+
+        #region Method
+
+        internal void Rotate(float angle)
+        {
+            transform.Rotate(0, 0, angle);
+
+            foreach (var viewSocket in _dicViewCircleSocket)
+            {
+                viewSocket.Value.transform.Rotate(0, 0, -angle);
+            }
+        }
+
+        #endregion  // Method
     }
 }

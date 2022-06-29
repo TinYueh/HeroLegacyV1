@@ -7,13 +7,19 @@ namespace GameCombat
 {
     public class ViewCircleSocket : MonoBehaviour
     {
-        private Image _imgSocket = null;
+        #region Property
 
-        private Image _imgEmblem = null;
-        private Button _btnEmblem = null;
+        private Image _imgSocket;
 
-        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
-        private int _posId = 0;
+        private Image _imgEmblem;
+        private Button _btnEmblem;
+
+        private GameEnum.eCombatTeamType _teamType;
+        private int _posId;
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType, int posId)
         {
@@ -47,6 +53,10 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Get Set
+
         internal void SetSocket(GameEnum.eRoleAttribute attribute)
         {
             string path = AssetsPath.SPRITE_ROLE_ATTRIBUTE_PATH + (int)attribute;
@@ -59,6 +69,10 @@ namespace GameCombat
             _imgEmblem.sprite = Resources.Load<Sprite>(path);
         }
 
+        #endregion  // Get Set
+
+        #region Show Hide
+
         internal void ShowEmblem()
         {
             _imgEmblem.gameObject.SetActive(true);
@@ -68,5 +82,7 @@ namespace GameCombat
         {
             _imgEmblem.gameObject.SetActive(false);
         }
+
+        #endregion  // Show Hide
     }
 }

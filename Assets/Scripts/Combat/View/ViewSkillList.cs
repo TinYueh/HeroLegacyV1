@@ -6,13 +6,20 @@ namespace GameCombat
 {
     public class ViewSkillList : MonoBehaviour
     {
+        #region Property
+
         [SerializeField]
         private float initPosX;     // 0, 750
         [SerializeField]
         private float deltaPosX;    // 150, -150
 
         private GameEnum.eCombatTeamType _teamType;
+
         private List<ViewSkill> _listViewSkill = new List<ViewSkill>();
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType)
         {
@@ -38,19 +45,29 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Logic
+
         internal bool IsShow()
         {
             return gameObject.activeInHierarchy;
         }
 
+        #endregion  // Logic
+
+        #region Show Hide
+
         internal void Show()
         {
             gameObject.SetActive(true);
         }
+
         internal void Hide()
         {
             gameObject.SetActive(false);
         }
+        
         internal void ShowSkill(int index, int skillId, int cd, bool isEnable)
         {
             ViewSkill viewSkill = _listViewSkill[index];
@@ -68,11 +85,14 @@ namespace GameCombat
 
             viewSkill.Show();
         }
+
         internal void HideSkill(int index)
         {
             ViewSkill viewSkill = _listViewSkill[index];
 
             viewSkill.Hide();
         }
+
+        #endregion  // Show Hide
     }
 }

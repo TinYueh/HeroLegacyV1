@@ -8,8 +8,14 @@ namespace GameSystem.Audio
 {
     public class AudioManager : Singleton<AudioManager>
     {
-        private AudioSource _bgmSource = null;
-        private AudioSource _sfxSource = null;
+        #region Property
+
+        private AudioSource _bgmSource;
+        private AudioSource _sfxSource;
+
+        #endregion  // Property
+
+        #region Init
 
         public override bool Init()
         {
@@ -31,6 +37,41 @@ namespace GameSystem.Audio
 
             return true;
         }
+
+        #endregion  // Init
+
+        #region Get Set
+
+        public void SetMasterVolume(float value)
+        {
+            AudioListener.volume = value;
+        }
+
+        public void SetBgmVolume(float value)
+        {
+            if (_bgmSource == null)
+            {
+                Debug.LogError("Not found Bgm AudioSource");
+                return;
+            }
+
+            _bgmSource.volume = value;
+        }
+
+        public void SetSfxVolume(float value)
+        {
+            if (_bgmSource == null)
+            {
+                Debug.LogError("Not found Sfx AudioSource");
+                return;
+            }
+
+            _sfxSource.volume = value;
+        }
+
+        #endregion  // Get Set
+
+        #region Play Stop
 
         public void PlayBgm(int id, bool isLoop)
         {
@@ -85,31 +126,6 @@ namespace GameSystem.Audio
             _sfxSource.PlayOneShot(clip);
         }
 
-        public void SetMasterVolume(float value)
-        {
-            AudioListener.volume = value;
-        }
-
-        public void SetBgmVolume(float value)
-        {
-            if (_bgmSource == null)
-            {
-                Debug.LogError("Not found Bgm AudioSource");
-                return;
-            }
-
-            _bgmSource.volume = value;
-        }
-
-        public void SetSfxVolume(float value)
-        {
-            if (_bgmSource == null)
-            {
-                Debug.LogError("Not found Sfx AudioSource");
-                return;
-            }
-
-            _sfxSource.volume = value;
-        }
+        #endregion  // Play Stop
     }
 }

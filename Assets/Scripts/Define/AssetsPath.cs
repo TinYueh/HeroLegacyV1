@@ -23,4 +23,5 @@ public static class AssetsPath
     public static string PREFAB_UI_CIRCLE_SOCKET = "Prefabs/Combat/UICircleSocket";
     public static string PREFAB_UI_COMBAT_ROLE = "Prefabs/Combat/UICombatRole";
     public static string PREFAB_UI_SKILL = "Prefabs/Combat/UISkill";
+    public static string PREFAB_UI_TOOLTIP = "Prefabs/System/Tooltip";
 }

@@ -99,7 +99,6 @@
     <Compile Include="Assets\Scripts\Combat\CombatCore.cs" />
     <Compile Include="Assets\Scripts\System\Manager\AudioManager.cs" />
     <Compile Include="Assets\LeanTween\Framework\LeanTest.cs" />
-    <Compile Include="Assets\Scripts\System\Manager\UIManager.cs" />
     <Compile Include="Assets\Scripts\System\Tooltip\TooltipTrigger.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\TestingZLegacy.cs" />
     <Compile Include="Assets\Scripts\System\Controller\CoverController.cs" />

@@ -6,9 +6,15 @@ namespace GameSkill
 {
     public class Effect
     {
-        internal GameEnum.eSkillEffectType Type { get; private set; } = GameEnum.eSkillEffectType.E_SKILL_EFFECT_TYPE_NA;
-        internal GameEnum.eSkillEffectValueType ValueType { get; private set; } = GameEnum.eSkillEffectValueType.E_SKILL_EFFECT_VALUE_TYPE_NA;
-        internal int Value { get; private set; } = 0;
+        #region Property
+
+        internal GameEnum.eSkillEffectType Type { get; private set; }
+        internal GameEnum.eSkillEffectValueType ValueType { get; private set; }
+        internal int Value { get; private set; }
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(SkillEffectCsvData csvData)
         {
@@ -18,5 +24,7 @@ namespace GameSkill
 
             return true;
         }
+
+        #endregion  // Init
     }
 }

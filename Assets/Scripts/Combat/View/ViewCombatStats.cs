@@ -7,8 +7,14 @@ namespace GameCombat
 {
     public class ViewCombatStats : MonoBehaviour
     {
-        private Image _imgFirstToken = null;
-        private GameEnum.eCombatTeamType _teamType = GameEnum.eCombatTeamType.E_COMBAT_TEAM_TYPE_NA;
+        #region Property
+
+        private Image _imgFirstToken;
+        private GameEnum.eCombatTeamType _teamType;
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType)
         {
@@ -24,6 +30,10 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
+        #region Show Hide
+
         internal void ShowFirstToken()
         {
             _imgFirstToken.gameObject.SetActive(true);
@@ -33,5 +43,7 @@ namespace GameCombat
         {
             _imgFirstToken.gameObject.SetActive(false);
         }
+
+        #endregion  // Show Hide
     }
 }

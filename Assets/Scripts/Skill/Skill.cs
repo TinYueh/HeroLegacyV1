@@ -6,15 +6,21 @@ namespace GameSkill
 {
     public class Skill
     {
-        internal int Id { get; private set; } = 0;
-        public string Name { get; internal set; } = null;
-        internal int UIName { get; private set; } = 0;
-        internal GameEnum.ePosType PosType { get; private set; } = GameEnum.ePosType.E_POS_TYPE_NA;
-        internal int Cost { get; private set; } = 0;
-        internal int Cd { get; private set; } = 0;
-        internal GameEnum.eSkillRange Range { get; private set; } = GameEnum.eSkillRange.E_SKILL_RANGE_NA;
+        #region Property
+
+        internal int Id { get; private set; }
+        public string Name { get; internal set; }
+        internal int UIName { get; private set; }
+        internal GameEnum.ePosType PosType { get; private set; }
+        internal int Cost { get; private set; }
+        internal int Cd { get; private set; }
+        internal GameEnum.eSkillRange Range { get; private set; }
 
         internal List<Effect> _listEffect = new List<Effect>();
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(SkillCsvData csvData)
         {
@@ -47,5 +53,7 @@ namespace GameSkill
 
             return true;
         }
+
+        #endregion  // Init
     }
 }

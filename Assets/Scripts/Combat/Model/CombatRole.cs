@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using GameProperty;
 
 namespace GameCombat
 {
     public class CombatRole
     {
+        #region Property
+
         private ViewCombatRole _viewCombatRole;    // View
 
         internal GameEnum.eCombatTeamType TeamType { get; private set; }
@@ -18,6 +21,10 @@ namespace GameCombat
         internal int NormalDamage { get; set; }
 
         private Dictionary<int, int> _dicSkillCd = new Dictionary<int, int>();  // <SkillId, Cd>
+
+        #endregion  // Property
+
+        #region Init
 
         internal bool Init(GameEnum.eCombatTeamType teamType, int memberId, int posId, RoleCsvData csvData, ViewCombatRole viewCombatRole)
         {
@@ -37,13 +44,17 @@ namespace GameCombat
             return true;
         }
 
+        #endregion  // Init
+
         #region Get Set
+
         internal void ChangeHealth(int deltaHealth)
         {
             int tmpHealth = Health + deltaHealth;
 
             SetHealth(tmpHealth);
         }
+
         internal void SetHealth(int health)
         {
             if (health < 0)
@@ -80,6 +91,7 @@ namespace GameCombat
             //    _viewCombatRole.SetStateAlive();
             //}
         }
+
         internal void ChangeAllSkillCd(int deltaCd)
         {
             for (int i = 0; i < _dicSkillCd.Count; ++i)
@@ -87,6 +99,7 @@ namespace GameCombat
                 ChangeSkillCd(_dicSkillCd.ElementAt(i).Key, deltaCd);
             }
         }
+
         internal void ChangeSkillCd(int skillId, int deltaCd)
         {
             if (_dicSkillCd.ContainsKey(skillId))
@@ -106,10 +119,12 @@ namespace GameCombat
                 _dicSkillCd[skillId] = value;
             }
         }
+
         internal void SetSkillCd(int skillId, int cd)
         {
             _dicSkillCd[skillId] = cd;
         }
+
         internal int GetSkillCd(int skillId)
         {
             int cd;
@@ -117,23 +132,28 @@ namespace GameCombat
 
             return cd;
         }
-        #endregion
+
+        #endregion  // Get Set
 
         #region Logic
+
         internal bool IsAlive()
         {
             return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_ALIVE);
         }
+
         internal bool IsDying()
         {
             return (State == GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING);
         }
+
         internal bool IsSkillCd(int skillId)
         {
             int cd = GetSkillCd(skillId);
 
             return (cd > 0);
         }
-        #endregion
+
+        #endregion  // Logic
     }
 }
