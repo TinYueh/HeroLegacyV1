@@ -20,11 +20,9 @@ namespace GameCombat
         // 徽章
         private Image _imgEmblem;
         // 生命條
-        private Image _imgBufferingEffect;
+        private Image _imgBufferingEffectAdd;
+        private Image _imgBufferingEffectSub;
         private Image _imgHealthBar;
-        private float _barInitLen;
-        //private float _preHealthProp = 1f;
-        //private float _healthProp = 1f;
 
         #endregion  // Property
 
@@ -65,10 +63,17 @@ namespace GameCombat
                 return false;
             }
 
-            _imgBufferingEffect = transform.Find("HealthBar").transform.Find("BufferingEffect").GetComponent<Image>();
-            if (_imgBufferingEffect == null)
+            _imgBufferingEffectAdd = transform.Find("HealthBar").transform.Find("BufferingEffectAdd").GetComponent<Image>();
+            if (_imgBufferingEffectAdd == null)
             {
-                Debug.LogError("Not found ImageBufferingEffect");
+                Debug.LogError("Not found ImageBufferingEffectAdd");
+                return false;
+            }
+
+            _imgBufferingEffectSub = transform.Find("HealthBar").transform.Find("BufferingEffectSub").GetComponent<Image>();
+            if (_imgBufferingEffectSub == null)
+            {
+                Debug.LogError("Not found ImageBufferingEffectSub");
                 return false;
             }
 
@@ -78,8 +83,6 @@ namespace GameCombat
                 Debug.LogError("Not found ImageHealthBar");
                 return false;
             }
-
-            _barInitLen = _imgHealthBar.rectTransform.rect.width;
 
             return true;
         }
@@ -102,11 +105,24 @@ namespace GameCombat
 
         internal void SetHealthBar(int value, int max)
         {
-            _imgHealthBar.fillAmount = (float)value / max;
+            float healthProp = (float)value / max;
 
-            if (_imgHealthBar.fillAmount != _imgBufferingEffect.fillAmount)
+            if (_imgHealthBar.fillAmount > healthProp)
             {
-                StartCoroutine(HandleBufferingEffect());
+                _imgBufferingEffectAdd.gameObject.SetActive(false);
+                _imgBufferingEffectSub.gameObject.SetActive(true);
+                _imgHealthBar.fillAmount = healthProp;
+
+                StartCoroutine(HandleBufferingEffectSub());
+            }
+            else if (_imgHealthBar.fillAmount < healthProp)
+            {
+                _imgBufferingEffectAdd.gameObject.SetActive(true);
+                _imgBufferingEffectSub.gameObject.SetActive(false);
+
+                _imgBufferingEffectAdd.fillAmount = healthProp;
+
+                StartCoroutine(HandleBufferingEffectAdd());
             }
         }
 
@@ -158,17 +174,33 @@ namespace GameCombat
                 + "魔防: " + combatRole.Role.Mef;
         }
 
-        private IEnumerator HandleBufferingEffect()
+        private IEnumerator HandleBufferingEffectAdd()
         {
-            while (_imgHealthBar.fillAmount < _imgBufferingEffect.fillAmount)
+            while (_imgHealthBar.fillAmount < _imgBufferingEffectAdd.fillAmount)
             {
-                _imgBufferingEffect.fillAmount -= 0.003f;
+                _imgHealthBar.fillAmount += 0.002f;
                 yield return new WaitForSeconds(0.005f);
             }
 
-            if (_imgHealthBar.fillAmount > _imgBufferingEffect.fillAmount)
+            if (_imgHealthBar.fillAmount > _imgBufferingEffectAdd.fillAmount)
             {
-                _imgBufferingEffect.fillAmount = _imgHealthBar.fillAmount;
+                _imgHealthBar.fillAmount = _imgBufferingEffectAdd.fillAmount;
+                _imgBufferingEffectSub.fillAmount = _imgBufferingEffectAdd.fillAmount;
+            }
+        }
+
+        private IEnumerator HandleBufferingEffectSub()
+        {
+            while (_imgHealthBar.fillAmount < _imgBufferingEffectSub.fillAmount)
+            {
+                _imgBufferingEffectSub.fillAmount -= 0.002f;
+                yield return new WaitForSeconds(0.005f);
+            }
+
+            if (_imgHealthBar.fillAmount > _imgBufferingEffectSub.fillAmount)
+            {
+                _imgBufferingEffectSub.fillAmount = _imgHealthBar.fillAmount;
+                _imgBufferingEffectAdd.fillAmount = _imgHealthBar.fillAmount;
             }
         }
 

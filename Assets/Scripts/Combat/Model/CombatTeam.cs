@@ -36,7 +36,7 @@ namespace GameCombat
             {
                 int posId = i + 1;
 
-                ViewCircleSocket viewCircleSocket = null;
+                ViewCircleSocket viewCircleSocket;
                 if (ViewCombatTeam.ViewCombatCircle.GetCircleSocket(posId, out viewCircleSocket) == false)
                 {
                     Debug.LogError("Not found ViewCircleSocket, PosId: " + posId);
@@ -382,14 +382,14 @@ namespace GameCombat
 
         internal bool CreateCombatRole(int memberId, int posId, int roleId)
         {
-            RoleCsvData csvData = null;
+            RoleCsvData csvData;
             if (TableManager.Instance.GetRoleCsvData(roleId, out csvData) == false)
             {
                 Debug.LogError("Not found RoleCsvData, RoleId: " + roleId);
                 return false;
             }
 
-            ViewCombatRole viewCombatRole = null;
+            ViewCombatRole viewCombatRole;
             if (ViewCombatTeam.ViewMemberList.GetViewCombatRole(memberId, out viewCombatRole) == false)
             {
                 Debug.LogError("Not found RoleCsvData, MemberId: " + memberId);
@@ -422,7 +422,7 @@ namespace GameCombat
 
         internal bool ExecCircleSocket(int posId, CombatTeam target)
         {
-            CircleSocket circleSocket = null;
+            CircleSocket circleSocket;
             if (_dicCircleSocket.TryGetValue(posId, out circleSocket) == false)
             {
                 Debug.LogError("Not found CircleSocket, PosId: " + posId);

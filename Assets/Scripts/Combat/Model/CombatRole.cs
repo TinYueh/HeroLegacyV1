@@ -78,7 +78,7 @@ namespace GameCombat
                 State = GameEnum.eCombatRoleState.E_COMBAT_ROLE_STATE_DYING;
                 _viewCombatRole.SetStateDying();
 
-                CircleSocket circleSocket = null;
+                CircleSocket circleSocket;
                 if (CombatManager.Instance.Controller.GetCircleSocket(TeamType, PosId, out circleSocket))
                 {
                     circleSocket.Clear();
