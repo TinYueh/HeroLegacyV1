@@ -20,8 +20,9 @@ namespace GameCombat
         // 徽章
         private Image _imgEmblem;
         // 生命條
+        private Image _imgBufferingEffectAdd;
+        private Image _imgBufferingEffectSub;
         private Image _imgHealthBar;
-        private float _barInitLen;
 
         #endregion  // Property
 
@@ -62,14 +63,26 @@ namespace GameCombat
                 return false;
             }
 
+            _imgBufferingEffectAdd = transform.Find("HealthBar").transform.Find("BufferingEffectAdd").GetComponent<Image>();
+            if (_imgBufferingEffectAdd == null)
+            {
+                Debug.LogError("Not found ImageBufferingEffectAdd");
+                return false;
+            }
+
+            _imgBufferingEffectSub = transform.Find("HealthBar").transform.Find("BufferingEffectSub").GetComponent<Image>();
+            if (_imgBufferingEffectSub == null)
+            {
+                Debug.LogError("Not found ImageBufferingEffectSub");
+                return false;
+            }
+
             _imgHealthBar = transform.Find("HealthBar").transform.Find("Bar").GetComponent<Image>();
             if (_imgHealthBar == null)
             {
                 Debug.LogError("Not found ImageHealthBar");
                 return false;
             }
-
-            _barInitLen = _imgHealthBar.rectTransform.rect.width;
 
             return true;
         }
@@ -92,7 +105,25 @@ namespace GameCombat
 
         internal void SetHealthBar(int value, int max)
         {
-            _imgHealthBar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_barInitLen / max) * value);
+            float healthProp = (float)value / max;
+
+            if (_imgHealthBar.fillAmount > healthProp)
+            {
+                _imgBufferingEffectAdd.gameObject.SetActive(false);
+                _imgBufferingEffectSub.gameObject.SetActive(true);
+                _imgHealthBar.fillAmount = healthProp;
+
+                StartCoroutine(HandleBufferingEffectSub());
+            }
+            else if (_imgHealthBar.fillAmount < healthProp)
+            {
+                _imgBufferingEffectAdd.gameObject.SetActive(true);
+                _imgBufferingEffectSub.gameObject.SetActive(false);
+
+                _imgBufferingEffectAdd.fillAmount = healthProp;
+
+                StartCoroutine(HandleBufferingEffectAdd());
+            }
         }
 
         internal void SetStateDying()
@@ -141,6 +172,36 @@ namespace GameCombat
                 + "物防: " + combatRole.Role.Pef + "\n"
                 + "魔攻: " + combatRole.Role.Mtk + markMtk + "\n"
                 + "魔防: " + combatRole.Role.Mef;
+        }
+
+        private IEnumerator HandleBufferingEffectAdd()
+        {
+            while (_imgHealthBar.fillAmount < _imgBufferingEffectAdd.fillAmount)
+            {
+                _imgHealthBar.fillAmount += 0.002f;
+                yield return new WaitForSeconds(0.005f);
+            }
+
+            if (_imgHealthBar.fillAmount > _imgBufferingEffectAdd.fillAmount)
+            {
+                _imgHealthBar.fillAmount = _imgBufferingEffectAdd.fillAmount;
+                _imgBufferingEffectSub.fillAmount = _imgBufferingEffectAdd.fillAmount;
+            }
+        }
+
+        private IEnumerator HandleBufferingEffectSub()
+        {
+            while (_imgHealthBar.fillAmount < _imgBufferingEffectSub.fillAmount)
+            {
+                _imgBufferingEffectSub.fillAmount -= 0.002f;
+                yield return new WaitForSeconds(0.005f);
+            }
+
+            if (_imgHealthBar.fillAmount > _imgBufferingEffectSub.fillAmount)
+            {
+                _imgBufferingEffectSub.fillAmount = _imgHealthBar.fillAmount;
+                _imgBufferingEffectAdd.fillAmount = _imgHealthBar.fillAmount;
+            }
         }
 
         #endregion  // Method
